@@ -1,0 +1,118 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{5605381E-E375-47F4-939D-E984A8A277F3}</ProjectGuid>
+    <RootNamespace>Quadrotor</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v110</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v110</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup />
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>C:\Program Files (x86)\Arduino\hardware\arduino\cores\arduino;C:\Program Files (x86)\Arduino\hardware\arduino\variants\mega;C:\Program Files (x86)\Arduino\libraries\Wire;C:\Program Files (x86)\Arduino\libraries\Wire\utility;c:\program files (x86)\arduino\hardware\tools\avr\avr\include\;c:\program files (x86)\arduino\hardware\tools\avr\avr\include\avr\;c:\program files (x86)\arduino\hardware\tools\avr\avr\;c:\program files (x86)\arduino\hardware\tools\avr\lib\gcc\avr\4.3.2\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ForcedIncludeFiles>C:\Users\kuczu_000\Desktop\Quadrotor\trunk\Quadrotor\Visual Micro\.Quadrotor.vsarduino.h;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <ForcedIncludeFiles>C:\Users\derstinepa1\Desktop\Quadrotor\trunk\Quadrotor\Visual Micro\.Quadrotor.vsarduino.h;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <IgnoreStandardIncludePath>true</IgnoreStandardIncludePath>
+      <PreprocessorDefinitions>__AVR_ATmega2560__;ARDUINO=105;ARDUINO_MAIN;__AVR__;F_CPU=16000000L;__cplusplus;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <None Include="Quadrotor.ino">
+      <FileType>CppCode</FileType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="AbstractIMUSensor.h" />
+    <ClInclude Include="ADXL345.h" />
+    <ClInclude Include="Bluetooth.h" />
+    <ClInclude Include="ControllerManager.h" />
+    <ClInclude Include="HMC5883L.h" />
+    <ClInclude Include="I2C.h" />
+    <ClInclude Include="IMU.h" />
+    <ClInclude Include="ITG3200.h" />
+    <ClInclude Include="Motor.h" />
+    <ClInclude Include="OrientationManager.h" />
+    <ClInclude Include="PIDController.h" />
+    <ClInclude Include="Ping.h" />
+    <ClInclude Include="Quadrotor.h" />
+    <ClInclude Include="QuadrotorAPI.h" />
+    <ClInclude Include="SparkFun9DOF.h" />
+    <ClInclude Include="Test.h" />
+    <ClInclude Include="Visual Micro\.Quadrotor.vsarduino.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="ADXL345.cpp" />
+    <ClCompile Include="Bluetooth.cpp" />
+    <ClCompile Include="ControllerManager.cpp" />
+    <ClCompile Include="HMC5883L.cpp" />
+    <ClCompile Include="I2C.cpp" />
+    <ClCompile Include="ITG3200.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="Motor.cpp" />
+    <ClCompile Include="OrientationManager.cpp" />
+    <ClCompile Include="PIDController.cpp" />
+    <ClCompile Include="Ping.cpp" />
+    <ClCompile Include="Quadrotor.cpp" />
+    <ClCompile Include="QuadrotorAPI.cpp" />
+    <ClCompile Include="SparkFun9DOF.cpp" />
+    <ClCompile Include="Test.cpp" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+  <ProjectExtensions>
+    <VisualStudio>
+      <UserProperties arduino.board.name="mega2560" arduino.board.desc="Arduino Mega 2560 or Mega ADK" arduino.board.property_bag="name=Arduino Mega 2560 or Mega ADK&#xD;&#xA;upload.protocol=wiring&#xD;&#xA;upload.maximum_size=258048&#xD;&#xA;upload.speed=115200&#xD;&#xA;bootloader.low_fuses=0xFF&#xD;&#xA;bootloader.high_fuses=0xD8&#xD;&#xA;bootloader.extended_fuses=0xFD&#xD;&#xA;bootloader.path=stk500v2&#xD;&#xA;bootloader.file=stk500boot_v2_mega2560.hex&#xD;&#xA;bootloader.unlock_bits=0x3F&#xD;&#xA;bootloader.lock_bits=0x0F&#xD;&#xA;build.mcu=atmega2560&#xD;&#xA;build.f_cpu=16000000L&#xD;&#xA;build.core=arduino&#xD;&#xA;build.variant=mega&#xD;&#xA;runtime.ide.path=C:\Program Files (x86)\Arduino&#xD;&#xA;build.system.path=C:\Program Files (x86)\Arduino\hardware\arduino\system&#xD;&#xA;runtime.ide.version=105&#xD;&#xA;originalid=mega2560&#xD;&#xA;vm.core.include=arduino.h&#xD;&#xA;vm.boardsource.path=C:\Program Files (x86)\Arduino\hardware\arduino&#xD;&#xA;vm.platformname.name=avr&#xD;&#xA;build.arch=AVR&#xD;&#xA;ide.hint=Arduino 0023 and 1.0.x Ide&#xD;&#xA;ide.location.key=Arduino&#xD;&#xA;ide.location.ide.winreg=Arduino 1.0.x Application&#xD;&#xA;ide.location.sketchbook.winreg=Arduino 1.0.x Sketchbook&#xD;&#xA;ide.location.sketchbook.preferences=sketchbook.path&#xD;&#xA;ide.location.sketchbook.default=%MYDOCUMENTS%\arduino&#xD;&#xA;ide.location.preferences=%VM_APPDATA_ROAMING%\arduino\preferences.txt&#xD;&#xA;ide.default.package=arduino&#xD;&#xA;ide.default.platform=avr&#xD;&#xA;ide.multiplatform=true&#xD;&#xA;ide.includes=arduino.h&#xD;&#xA;ide.platformswithoutpackage=true&#xD;&#xA;ide.sketchfolder.platforms.exclude=avr&#xD;&#xA;ide.includes.fallback=wprogram.h&#xD;&#xA;ide.extension=ino&#xD;&#xA;ide.extension.fallback=pde&#xD;&#xA;ide.versionLTEQ=149&#xD;&#xA;ide.exe=arduino.exe&#xD;&#xA;ide.hosts=atmel&#xD;&#xA;ide.url=http://arduino.cc/en/Main/Software&#xD;&#xA;vm.debug=true&#xD;&#xA;software=ARDUINO&#xD;&#xA;ide.appid=arduino10x&#xD;&#xA;location.sketchbook=C:\Users\wontropzs1\Desktop\Quadrotor\trunk\Quadrotor&#xD;&#xA;compiler.path=C:\Program Files (x86)\Arduino\hardware\tools\avr\bin\&#xD;&#xA;includes= -I&quot;C:\Program Files (x86)\Arduino\hardware\arduino\cores\arduino&quot;  -I&quot;C:\Program Files (x86)\Arduino\hardware\arduino\variants\mega&quot;  -I&quot;C:\Program Files (x86)\Arduino\libraries\Wire&quot;  -I&quot;C:\Program Files (x86)\Arduino\libraries\Wire\utility&quot;&#xD;&#xA;build.path=C:\Users\wontropzs1\AppData\Local\VMicro\Arduino\Builds\Quadrotor\mega2560&#xD;&#xA;build.project_name=Quadrotor&#xD;&#xA;build.variant.path=C:\Program Files (x86)\Arduino\hardware\arduino\variants\mega&#xD;&#xA;archive_file=core.a&#xD;&#xA;object_file=C:\Users\wontropzs1\AppData\Local\VMicro\Arduino\Builds\Quadrotor\mega2560\Wire\utility\twi.c.o&#xD;&#xA;source_file=C:\Program Files (x86)\Arduino\libraries\Wire\utility\twi.c&#xD;&#xA;build.architecture=avr&#xD;&#xA;vmresolved.compiler.path=C:\Program Files (x86)\Arduino\hardware\tools\avr\bin\&#xD;&#xA;vmresolved.tools.path=C:\Program Files (x86)\Arduino\hardware\tools\avr&#xD;&#xA;object_files=&quot;C:\Users\wontropzs1\AppData\Local\VMicro\Arduino\Builds\Quadrotor\mega2560\ADXL345.cpp.o&quot; &quot;C:\Users\wontropzs1\AppData\Local\VMicro\Arduino\Builds\Quadrotor\mega2560\Bluetooth.cpp.o&quot; &quot;C:\Users\wontropzs1\AppData\Local\VMicro\Arduino\Builds\Quadrotor\mega2560\ControllerManager.cpp.o&quot; &quot;C:\Users\wontropzs1\AppData\Local\VMicro\Arduino\Builds\Quadrotor\mega2560\HMC5883L.cpp.o&quot; &quot;C:\Users\wontropzs1\AppData\Local\VMicro\Arduino\Builds\Quadrotor\mega2560\I2C.cpp.o&quot; &quot;C:\Users\wontropzs1\AppData\Local\VMicro\Arduino\Builds\Quadrotor\mega2560\ITG3200.cpp.o&quot; &quot;C:\Users\wontropzs1\AppData\Local\VMicro\Arduino\Builds\Quadrotor\mega2560\main.cpp.o&quot; &quot;C:\Users\wontropzs1\AppData\Local\VMicro\Arduino\Builds\Quadrotor\mega2560\Motor.cpp.o&quot; &quot;C:\Users\wontropzs1\AppData\Local\VMicro\Arduino\Builds\Quadrotor\mega2560\OrientationManager.cpp.o&quot; &quot;C:\Users\wontropzs1\AppData\Local\VMicro\Arduino\Builds\Quadrotor\mega2560\PIDController.cpp.o&quot; &quot;C:\Users\wontropzs1\AppData\Local\VMicro\Arduino\Builds\Quadrotor\mega2560\Quadrotor.cpp.o&quot; &quot;C:\Users\wontropzs1\AppData\Local\VMicro\Arduino\Builds\Quadrotor\mega2560\QuadrotorAPI.cpp.o&quot; &quot;C:\Users\wontropzs1\AppData\Local\VMicro\Arduino\Builds\Quadrotor\mega2560\SparkFun9DOF.cpp.o&quot; &quot;C:\Users\wontropzs1\AppData\Local\VMicro\Arduino\Builds\Quadrotor\mega2560\Test.cpp.o&quot; &quot;C:\Users\wontropzs1\AppData\Local\VMicro\Arduino\Builds\Quadrotor\mega2560\Wire\Wire.cpp.o&quot; &quot;C:\Users\wontropzs1\AppData\Local\VMicro\Arduino\Builds\Quadrotor\mega2560\Wire\utility\twi.c.o&quot; &#xD;&#xA;" arduino.build.mcu="atmega2560" arduino.build.f_cpu="16000000L" arduino.build.core="arduino" arduino.upload.protocol="wiring" arduino.upload.speed="115200" arduino.upload.maximum_size="258048" visualmicro.application.name="arduino10x" visualmicro.package.name="arduino" visualmicro.platform.name="avr" arduino.upload.port="COM4" />
+		<UserProperties arduino.board.name="mega2560" arduino.board.desc="Arduino Mega 2560 or Mega ADK" arduino.board.property_bag="name=Arduino Mega 2560 or Mega ADK&#xD;&#xA;upload.protocol=wiring&#xD;&#xA;upload.maximum_size=258048&#xD;&#xA;upload.speed=115200&#xD;&#xA;bootloader.low_fuses=0xFF&#xD;&#xA;bootloader.high_fuses=0xD8&#xD;&#xA;bootloader.extended_fuses=0xFD&#xD;&#xA;bootloader.path=stk500v2&#xD;&#xA;bootloader.file=stk500boot_v2_mega2560.hex&#xD;&#xA;bootloader.unlock_bits=0x3F&#xD;&#xA;bootloader.lock_bits=0x0F&#xD;&#xA;build.mcu=atmega2560&#xD;&#xA;build.f_cpu=16000000L&#xD;&#xA;build.core=arduino&#xD;&#xA;build.variant=mega&#xD;&#xA;runtime.ide.path=C:\Program Files (x86)\Arduino&#xD;&#xA;build.system.path=C:\Program Files (x86)\Arduino\hardware\arduino\system&#xD;&#xA;runtime.ide.version=101&#xD;&#xA;originalid=mega2560&#xD;&#xA;vm.platform.root.path=C:\Program Files (x86)\Visual Micro\Visual Micro for Arduino\Micro Platforms\arduino10x&#xD;&#xA;vm.core.include=arduino.h&#xD;&#xA;ide.hint=Arduino 0023 and 1.0.x Ide&#xD;&#xA;ide.location.key=Arduino&#xD;&#xA;ide.location.ide.winreg=Arduino 1.0.x Application&#xD;&#xA;ide.location.sketchbook.winreg=Arduino 1.0.x Sketchbook&#xD;&#xA;ide.location.sketchbook.preferences=sketchbook.path&#xD;&#xA;ide.location.sketchbook.default=%MYDOCUMENTS%\arduino&#xD;&#xA;ide.location.preferences=%VM_APPDATA_ROAMING%\arduino\preferences.txt&#xD;&#xA;ide.default.package=arduino&#xD;&#xA;ide.default.platform=avr&#xD;&#xA;ide.multiplatform=true&#xD;&#xA;ide.includes=arduino.h&#xD;&#xA;ide.platformswithoutpackage=true&#xD;&#xA;ide.includes.fallback=wprogram.h&#xD;&#xA;ide.extension=ino&#xD;&#xA;ide.extension.fallback=pde&#xD;&#xA;ide.versionLTEQ=149&#xD;&#xA;ide.exe=arduino.exe&#xD;&#xA;ide.hosts=atmel&#xD;&#xA;ide.url=http://arduino.cc/en/Main/Software&#xD;&#xA;vm.debug=true&#xD;&#xA;software=ARDUINO&#xD;&#xA;ide.appid=arduino10x&#xD;&#xA;location.sketchbook=C:\Users\derstinepa1\Documents\Arduino&#xD;&#xA;build.board=AVR_MEGA2560&#xD;&#xA;vm.boardsource.path=C:\Program Files (x86)\Arduino\hardware\arduino&#xD;&#xA;vm.platformname.name=avr&#xD;&#xA;build.arch=AVR&#xD;&#xA;" arduino.build.mcu="atmega2560" arduino.build.f_cpu="16000000L" arduino.build.core="arduino" arduino.upload.protocol="wiring" arduino.upload.speed="115200" arduino.upload.maximum_size="258048" visualmicro.application.name="arduino10x" visualmicro.package.name="arduino" visualmicro.platform.name="avr" arduino.upload.port="COM4" /></VisualStudio>
+  </ProjectExtensions>
+</Project>

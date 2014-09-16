@@ -1,0 +1,3 @@
+The magnetometer seems to not give very accurate data as you rotate it - the 360 degrees are not evenly spaced.
+-either just use the magnetometer when holding a position which it seems to do well although the actual number isn't accurate
+-or try and scale the x,y,z values with an offset once it is mounted on the quadrotor and we can see what kind of interference it reads
