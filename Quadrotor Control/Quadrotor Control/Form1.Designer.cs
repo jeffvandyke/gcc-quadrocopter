@@ -241,7 +241,7 @@
          this.matlabButton.TabIndex = 19;
          this.matlabButton.Text = "Matlab";
          this.matlabButton.UseVisualStyleBackColor = true;
-         this.matlabButton.Click += new System.EventHandler(this.matlabButton_Click);
+//         this.matlabButton.Click += new System.EventHandler(this.matlabButton_Click);
          // 
          // Form1
          // 

@@ -302,22 +302,22 @@ namespace Quadrotor_Control
          filenameLabel.Text = "";
       }
 
-      private void matlabButton_Click(object sender, EventArgs e)
-      {
-         MLApp.MLApp matlab = new MLApp.MLApp();
-         System.Threading.Thread.Sleep(3000); // wait for matlab to open
-         // find the directory of the matlab test script
-         String dir = Directory.GetCurrentDirectory().ToString();
-         dir = dir.Substring(0, dir.IndexOf("\\trunk") + 6) + "\\Quadrotor";
-         String cmd = "cd " + dir.Replace("\\", "\\\\");
-         matlab.Execute(cmd);
-         String name = latestFileName.Replace("\\", "\\\\");
-         String script = "PlotMultipleTests('" + name + "')";
-         // close the file so that matlab can use it
-         if (streamWriter != null) streamWriter.Close();
-         filenameLabel.Text = "";
+      //private void matlabButton_Click(object sender, EventArgs e)
+      //{
+      //   MLApp.MLApp matlab = new MLApp.MLApp();
+      //   System.Threading.Thread.Sleep(3000); // wait for matlab to open
+      //   // find the directory of the matlab test script
+      //   String dir = Directory.GetCurrentDirectory().ToString();
+      //   dir = dir.Substring(0, dir.IndexOf("\\trunk") + 6) + "\\Quadrotor";
+      //   String cmd = "cd " + dir.Replace("\\", "\\\\");
+      //   matlab.Execute(cmd);
+      //   String name = latestFileName.Replace("\\", "\\\\");
+      //   String script = "PlotMultipleTests('" + name + "')";
+      //   // close the file so that matlab can use it
+      //   if (streamWriter != null) streamWriter.Close();
+      //   filenameLabel.Text = "";
      
-         String result = matlab.Execute(script);
-      }
+      //   String result = matlab.Execute(script);
+      //}
    }
 }
