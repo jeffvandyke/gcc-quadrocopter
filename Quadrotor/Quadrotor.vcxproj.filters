@@ -69,6 +69,12 @@
     <ClInclude Include="Ping.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="TestCompass.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="compassTest.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Quadrotor.cpp">
@@ -114,6 +120,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Ping.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TestCompass.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="compassTest.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
