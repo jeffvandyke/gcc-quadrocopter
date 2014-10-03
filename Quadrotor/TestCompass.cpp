@@ -11,23 +11,23 @@ compassTest::compassTest(struct Motors *motors, OrientationManager *orientationM
    : motors(motors), orientationManager(orientationManager), controllerManager(controllerManager), bluetooth(bluetooth), mag(mag)
 {
 	XYZData compassBearing;
-	int xComp, yComp, zComp;
+	int xComp, yComp, zComp, constant=1;
 	mag->initialize();
 	mag->selfTest();
 	waitForStartCommand();
 	for(int i =0; i < 11; i++)
 	{
 		setSpeed(10*i);
-		for(int j=0; j<30; j++)
+		for(int j=0; j<50; j++)
 		{
 			mag->readData(compassBearing);
-			delay(10);
+			delay(200);
 			xComp = compassBearing.X;
 			yComp = compassBearing.Y;
 			zComp = compassBearing.Z;
-			Serial.write(xComp);
-			Serial.write(yComp);
-			Serial.write(zComp);
+			Serial.println(xComp);
+			Serial.println(yComp);
+			Serial.println(zComp);
 		}
 	}
 	shutdownSequence();

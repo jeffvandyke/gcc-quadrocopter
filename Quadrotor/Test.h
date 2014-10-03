@@ -1,7 +1,7 @@
 // TestCompass
 
-#ifndef _TESTCOMPASS_h
-#define _TESTCOMPASS_h
+#ifndef _TEST_h
+#define _TEST_h
 
 #if defined(ARDUINO) && ARDUINO >= 100
 	#include "Arduino.h"

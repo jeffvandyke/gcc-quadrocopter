@@ -7,7 +7,7 @@
 /*    Arduino routine but with the quadrotor    */
 /*    class                                     */
 /************************************************/
-
+#define TESTING;
 #include <Arduino.h>
 #include "Quadrotor.h"
 

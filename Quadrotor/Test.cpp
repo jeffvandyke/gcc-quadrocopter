@@ -5,7 +5,7 @@
 #include "Test.h"
 #include "QuadrotorAPI.h"
 
-const char *MATLAB_STOP_CONDITION = "StopTransmission";
+//const char *MATLAB_STOP_CONDITION = "StopTransmission";
 
 Test::Test(struct Motors *motors, OrientationManager *orientationManager, ControllerManager *controllerManager, Bluetooth *bluetooth, ITG3200 *gyro, ADXL345 *accel, HMC5883L *mag)
    : motors(motors), orientationManager(orientationManager), controllerManager(controllerManager), bluetooth(bluetooth), gyro(gyro), accel(accel), mag(mag)
@@ -118,7 +118,7 @@ void Test::RollTest()
       }
    }
 
-   Serial.println(MATLAB_STOP_CONDITION);
+//   Serial.println(MATLAB_STOP_CONDITION);
 }
 
 void Test::YawTest()
@@ -168,7 +168,7 @@ void Test::YawTest()
       }
    }
 
-   Serial.println(MATLAB_STOP_CONDITION);
+//   Serial.println(MATLAB_STOP_CONDITION);
 }
 
 void Test::GyroTest()

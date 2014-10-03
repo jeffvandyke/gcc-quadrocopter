@@ -24,6 +24,7 @@
 #include "Ping.h"
 #include "OrientationManager.h"
 #include "ControllerManager.h"
+#include "TestCompass.h"
 
 class Quadrotor
 {

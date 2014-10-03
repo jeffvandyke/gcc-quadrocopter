@@ -118,14 +118,15 @@ void Quadrotor::loop()
  //  }
 
    struct Motors motors(motor1, motor2, motor3, motor4);
-   Test test(&motors, orientationManager, controller, bluetooth, (ITG3200*)imu->getGyroscope(), (ADXL345*)imu->getAccelerometer(), (HMC5883L*)imu->getMagnetometer());
+   compassTest test(&motors, orientationManager, controller, bluetooth, (HMC5883L*)imu->getMagnetometer())
+   //Test test(&motors, orientationManager, controller, bluetooth, (ITG3200*)imu->getGyroscope(), (ADXL345*)imu->getAccelerometer(), (HMC5883L*)imu->getMagnetometer());
    //test.debug();
    //test.RPYTest();
    //test.PitchAxis();
    //test.RollPitchTest();
-   test.FullFlightTest();
-   test.AltitudeTest();
-   test.yawOnStandTest();
+   //test.FullFlightTest();
+   //test.AltitudeTest();
+   //test.yawOnStandTest();
    //test.RollPitchYawTest();
    //test.PitchAxisTest();  
    //test.PitchAxisTestWithMotorValues(); 

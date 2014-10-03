@@ -1,7 +1,6 @@
-// Test.h
 
-#ifndef _TEST_h
-#define _TEST_h
+#ifndef _TESTCOMPASS_h
+#define _TESTCOMPASS_h
 
 #if defined(ARDUINO) && ARDUINO >= 100
 	#include "Arduino.h"
@@ -17,46 +16,8 @@
 #include "HMC5883L.h"
 #include "ITG3200.h"
 #include "string.h"
+#include "Test.h"
 
-struct Motors
-{
-   Motors(Motor *motor1, Motor *motor2, Motor *motor3, Motor *motor4)
-   {
-      this->m1 = motor1;
-      this->m2 = motor2;
-      this->m3 = motor3;
-      this->m4 = motor4;
-   }
-
-   Motor *m1;
-   Motor *m2;
-   Motor *m3;
-   Motor *m4;
-};
-
-struct TestParameters
-{
-   TestParameters()
-   {
-      kP = 0.0;
-      kI = 0.0;
-      kD = 0.0;
-      gyroWeight = 0.97;
-   }
-
-   TestParameters(float _kP, float _kI, float _kD, float _gyroWeight)
-   {
-      kP = _kP;
-      kI = _kI;
-      kD = _kD;
-      gyroWeight = _gyroWeight;
-   }
-
-   float kP;
-   float kI;
-   float kD;
-   float gyroWeight;
-};
 
 class compassTest
 {
