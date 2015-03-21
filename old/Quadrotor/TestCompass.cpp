@@ -5,32 +5,44 @@
 #include "TestCompass.h"
 #include "QuadrotorAPI.h"
 
-const char *MATLAB_STOP_CONDITION = "StopTransmission";
-
-compassTest::compassTest(struct Motors *motors, OrientationManager *orientationManager, ControllerManager *controllerManager, Bluetooth *bluetooth, HMC5883L *mag)
-   : motors(motors), orientationManager(orientationManager), controllerManager(controllerManager), bluetooth(bluetooth), mag(mag)
+compassTest::compassTest(struct Motors *motors, Bluetooth *bluetooth, HMC5883L *mag)
+   : motors(motors), bluetooth(bluetooth), mag(mag)
 {
 	XYZData compassBearing;
 	int xComp, yComp, zComp, constant=1;
 	mag->initialize();
 	mag->selfTest();
+//	motors->m1->initialize(CLOCKWISE, FOUR);
+
+	// waits for a command from the GUI
 	waitForStartCommand();
-	for(int i =0; i < 11; i++)
+	
+	//each iteration of this loop sets the duty cycle to a new value and then takes 50 samples over time.
+	for(int i =0; i < 10; i++)
 	{
+		bluetooth->writeInt(i);
+		//increases the duty cycle by 10% of the total
 		setSpeed(10*i);
-		for(int j=0; j<50; j++)
+		//samples the data and sends it through the bluetooth to the computer
+		for(int j=0; j<50; j++)	
 		{
+			//reads all of the data from the compass into a struct
 			mag->readData(compassBearing);
+			//ensures that the sampling data is measured at times that are somewhat far apart.  200 milliseconds.
 			delay(200);
+			//typcasts the compass readings to ints so that they can be sent.  Since the compass 
+			//readings are in degrees the data loss is not large.
 			xComp = compassBearing.X;
 			yComp = compassBearing.Y;
 			zComp = compassBearing.Z;
-			Serial.println(xComp);
-			Serial.println(yComp);
-			Serial.println(zComp);
+
+			//rights through the bluetooth
+			bluetooth->writeInt(xComp);
+			bluetooth->writeInt(yComp);
+			bluetooth->writeInt(zComp);
 		}
 	}
-	shutdownSequence();
+	endTest();
 }
 
 void compassTest::handleMessage(String message)
@@ -61,57 +73,14 @@ void compassTest::waitForStartCommand()
    Serial.println("Received Start command");
 }
 
-void compassTest::shutdownSequence()
+void compassTest::endTest()
 {
-   unsigned long currentTime;
-	unsigned long previousTime = millis();
-	float deltaTime;
-	struct RPYData orientation;
-	String message;
 	int count = 0;
 	// slowly decrease the height
-	int height = controllerManager->getAltitudeController()->getSetpoint();
-	while (height > 1)
-	{
-      currentTime = millis();
-      if (currentTime - previousTime >= 30)
-      {		
-		   ++count;
-         // get the delta time in seconds for calculations
-         deltaTime = (currentTime - previousTime) / 1000.0;
-
-			previousTime = currentTime;
-
-         // get current orientation
-         RETURN_CODE retVal = orientationManager->getCurrentOrientation(deltaTime, orientation);
-			if (retVal == SUCCESS)
-			{
-			   // use the current orientation to adjust the motors
-				controllerManager->flightControl(orientation, deltaTime);
-				// check for commands via bluetooth
-				message = bluetooth->readLine();
-
-				// remove any whitespace
-				message.trim();
-
-				// handle the message if present
-				if (!message.equals("")) handleMessage(message);
-
-            // every half a second lower the quadrotor an inch
-				if (count >= 16)
-				{
-					count = 0;
-					controllerManager->getAltitudeController()->setSetpoint(--height);
-				}
-			}
-      }
-      // wait for 30ms to complete
-	}
-	// shut off motors
 	motors->m1->setSpeed(0.0);
-   motors->m2->setSpeed(0.0);
-   motors->m3->setSpeed(0.0);
-   motors->m4->setSpeed(0.0);
+	motors->m2->setSpeed(0.0);
+	motors->m3->setSpeed(0.0);
+	motors->m4->setSpeed(0.0);
 }
 
 void compassTest::setSpeed(int speed)

@@ -72,6 +72,9 @@
     <ClInclude Include="TestCompass.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="compassTest.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Quadrotor.cpp">

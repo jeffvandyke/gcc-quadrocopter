@@ -22,7 +22,7 @@
 class compassTest
 {
 public:
-   compassTest(struct Motors *motors, OrientationManager *orientationManager, ControllerManager *controllerManager, Bluetooth *bluetooth, HMC5883L *mag);
+   compassTest(struct Motors *motors,  Bluetooth *bluetooth, HMC5883L *mag);
 
    // various tests - not all of them are still working but they can be used
    // as a basis or guideline for future testing
@@ -30,12 +30,10 @@ public:
 private:
    void handleMessage(String message);
    void waitForStartCommand();
-   void shutdownSequence();
+   void endTest();
    void setSpeed(int speed);
 
    struct Motors *motors;
-   OrientationManager *orientationManager;
-   ControllerManager *controllerManager;
    Bluetooth *bluetooth;
    HMC5883L *mag;
 };
