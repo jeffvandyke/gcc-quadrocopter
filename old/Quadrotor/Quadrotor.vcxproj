@@ -75,6 +75,9 @@
     <ClInclude Include="AbstractIMUSensor.h" />
     <ClInclude Include="ADXL345.h" />
     <ClInclude Include="Bluetooth.h" />
+    <ClInclude Include="compassTest.h">
+      <FileType>CppCode</FileType>
+    </ClInclude>
     <ClInclude Include="ControllerManager.h" />
     <ClInclude Include="HMC5883L.h" />
     <ClInclude Include="I2C.h" />

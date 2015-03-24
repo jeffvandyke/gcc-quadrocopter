@@ -21,10 +21,10 @@ Quadrotor::Quadrotor()
    motor3 = new Motor;
    motor4 = new Motor;
 
-   orientationManager = new OrientationManager;
-   controller         = new ControllerManager;
+//   orientationManager = new OrientationManager;
+//   controller         = new ControllerManager;
    bluetooth          = new Bluetooth;
-   altitudeSensor     = new Ping(22);
+//   altitudeSensor     = new Ping(22);
 
    message = "";
    previousTime = 0;
@@ -69,10 +69,10 @@ void Quadrotor::initialize()
    motor4->initialize(COUNTER_CLOCKWISE, FOUR);
 
    // attach the motors to the controller so that it can adjust speeds for stability and control
-   controller->attachMotors(motor1, motor2, motor3, motor4);
+//   controller->attachMotors(motor1, motor2, motor3, motor4);
 
    // initialize orientationManager
-   orientationManager->initialize(imu, altitudeSensor);
+//   orientationManager->initialize(imu, altitudeSensor);
 
 // if not testing then finish initialization
 #ifndef TESTING
@@ -118,7 +118,7 @@ void Quadrotor::loop()
  //  }
 
    struct Motors motors(motor1, motor2, motor3, motor4);
-   compassTest test(&motors, orientationManager, controller, bluetooth, (HMC5883L*)imu->getMagnetometer())
+   compassTest test(&motors, orientationManager, controller, bluetooth, (HMC5883L*)imu->getMagnetometer());
    //Test test(&motors, orientationManager, controller, bluetooth, (ITG3200*)imu->getGyroscope(), (ADXL345*)imu->getAccelerometer(), (HMC5883L*)imu->getMagnetometer());
    //test.debug();
    //test.RPYTest();
@@ -132,17 +132,17 @@ void Quadrotor::loop()
    //test.PitchAxisTestWithMotorValues(); 
 #endif            // end testing block
 
-   currentTime = millis();
-   if (currentTime - previousTime >= SAMPLE_RATE)
-   {
+//   currentTime = millis();
+  // if (currentTime - previousTime >= SAMPLE_RATE)
+  // {
       // get the delta time in seconds for calculations
-      deltaTime = (currentTime - previousTime) / 1000.0;
+//      deltaTime = (currentTime - previousTime) / 1000.0;
 
       // get current orientation
-      orientationManager->getCurrentOrientation(deltaTime, orientation);
+//      orientationManager->getCurrentOrientation(deltaTime, orientation);
 
       // use the current orientation to adjust the motors
-      controller->flightControl(orientation, deltaTime);
+//      controller->flightControl(orientation, deltaTime);
 
       // check for commands via bluetooth
       message = bluetooth->readLine();
@@ -153,8 +153,8 @@ void Quadrotor::loop()
       // handle the message if present
       if (!message.equals("")) handleMessage(message);
 
-      previousTime = currentTime;
-   }
+//      previousTime = currentTime;
+//   }
 
    // wait for 30ms to complete
 }
