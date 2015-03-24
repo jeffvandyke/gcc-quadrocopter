@@ -1,0 +1,147 @@
+﻿Build started 3/24/2015 4:32:05 PM.
+     1>Project "c:\Users\kloostermancw1\documents\visual studio 2012\Projects\kalmanTester\kalmanTester\kalmanTester.vcxproj" on node 2 (Build target(s)).
+     1>InitializeBuildStatus:
+         Touching "Debug\kalmanTester.unsuccessfulbuild".
+       ClCompile:
+         C:\Program Files\Microsoft Visual Studio 11.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc110.pdb" /Gd /TP /analyze- /errorReport:prompt Kalman.cpp main.cpp
+         main.cpp
+     1>c:\users\kloostermancw1\documents\visual studio 2012\projects\kalmantester\kalmantester\kalman.h(59): error C2086: 'int KalmanFilter::Paa' : redefinition
+                 c:\users\kloostermancw1\documents\visual studio 2012\projects\kalmantester\kalmantester\kalman.h(58) : see declaration of 'KalmanFilter::Paa'
+     1>c:\users\kloostermancw1\documents\visual studio 2012\projects\kalmantester\kalmantester\kalman.h(60): error C2086: 'int KalmanFilter::Paa' : redefinition
+                 c:\users\kloostermancw1\documents\visual studio 2012\projects\kalmantester\kalmantester\kalman.h(58) : see declaration of 'KalmanFilter::Paa'
+     1>c:\users\kloostermancw1\documents\visual studio 2012\projects\kalmantester\kalmantester\kalman.h(62): error C2086: 'int KalmanFilter::abb' : redefinition
+                 c:\users\kloostermancw1\documents\visual studio 2012\projects\kalmantester\kalmantester\kalman.h(61) : see declaration of 'KalmanFilter::abb'
+     1>c:\users\kloostermancw1\documents\visual studio 2012\projects\kalmantester\kalmantester\kalman.h(63): error C2086: 'int KalmanFilter::abb' : redefinition
+                 c:\users\kloostermancw1\documents\visual studio 2012\projects\kalmantester\kalmantester\kalman.h(61) : see declaration of 'KalmanFilter::abb'
+     1>c:\users\kloostermancw1\documents\visual studio 2012\projects\kalmantester\kalmantester\kalman.h(101): error C2370: 'KalmanFilter::H_gx_Xr' : redefinition; different storage class
+                 c:\users\kloostermancw1\documents\visual studio 2012\projects\kalmantester\kalmantester\kalman.h(100) : see declaration of 'KalmanFilter::H_gx_Xr'
+     1>c:\users\kloostermancw1\documents\visual studio 2012\projects\kalmantester\kalmantester\kalman.h(101): error C2370: 'KalmanFilter::H_gy_Yr' : redefinition; different storage class
+                 c:\users\kloostermancw1\documents\visual studio 2012\projects\kalmantester\kalmantester\kalman.h(100) : see declaration of 'KalmanFilter::H_gy_Yr'
+     1>c:\users\kloostermancw1\documents\visual studio 2012\projects\kalmantester\kalmantester\kalman.h(101): error C2370: 'KalmanFilter::H_gz_Zr' : redefinition; different storage class
+                 c:\users\kloostermancw1\documents\visual studio 2012\projects\kalmantester\kalmantester\kalman.h(100) : see declaration of 'KalmanFilter::H_gz_Zr'
+     1>c:\users\kloostermancw1\documents\visual studio 2012\projects\kalmantester\kalmantester\main.cpp(8): error C2248: 'KalmanFilter::KalmanFilter' : cannot access private member declared in class 'KalmanFilter'
+                 c:\users\kloostermancw1\documents\visual studio 2012\projects\kalmantester\kalmantester\kalman.h(5) : see declaration of 'KalmanFilter::KalmanFilter'
+                 c:\users\kloostermancw1\documents\visual studio 2012\projects\kalmantester\kalmantester\kalman.h(3) : see declaration of 'KalmanFilter'
+     1>c:\users\kloostermancw1\documents\visual studio 2012\projects\kalmantester\kalmantester\main.cpp(11): error C2064: term does not evaluate to a function taking 0 arguments
+     1>c:\users\kloostermancw1\documents\visual studio 2012\projects\kalmantester\kalmantester\main.cpp(15): error C2143: syntax error : missing ';' before ')'
+         Kalman.cpp
+     1>c:\users\kloostermancw1\documents\visual studio 2012\projects\kalmantester\kalmantester\kalman.h(59): error C2086: 'int KalmanFilter::Paa' : redefinition
+                 c:\users\kloostermancw1\documents\visual studio 2012\projects\kalmantester\kalmantester\kalman.h(58) : see declaration of 'KalmanFilter::Paa'
+     1>c:\users\kloostermancw1\documents\visual studio 2012\projects\kalmantester\kalmantester\kalman.h(60): error C2086: 'int KalmanFilter::Paa' : redefinition
+                 c:\users\kloostermancw1\documents\visual studio 2012\projects\kalmantester\kalmantester\kalman.h(58) : see declaration of 'KalmanFilter::Paa'
+     1>c:\users\kloostermancw1\documents\visual studio 2012\projects\kalmantester\kalmantester\kalman.h(62): error C2086: 'int KalmanFilter::abb' : redefinition
+                 c:\users\kloostermancw1\documents\visual studio 2012\projects\kalmantester\kalmantester\kalman.h(61) : see declaration of 'KalmanFilter::abb'
+     1>c:\users\kloostermancw1\documents\visual studio 2012\projects\kalmantester\kalmantester\kalman.h(63): error C2086: 'int KalmanFilter::abb' : redefinition
+                 c:\users\kloostermancw1\documents\visual studio 2012\projects\kalmantester\kalmantester\kalman.h(61) : see declaration of 'KalmanFilter::abb'
+     1>c:\users\kloostermancw1\documents\visual studio 2012\projects\kalmantester\kalmantester\kalman.h(101): error C2370: 'KalmanFilter::H_gx_Xr' : redefinition; different storage class
+                 c:\users\kloostermancw1\documents\visual studio 2012\projects\kalmantester\kalmantester\kalman.h(100) : see declaration of 'KalmanFilter::H_gx_Xr'
+     1>c:\users\kloostermancw1\documents\visual studio 2012\projects\kalmantester\kalmantester\kalman.h(101): error C2370: 'KalmanFilter::H_gy_Yr' : redefinition; different storage class
+                 c:\users\kloostermancw1\documents\visual studio 2012\projects\kalmantester\kalmantester\kalman.h(100) : see declaration of 'KalmanFilter::H_gy_Yr'
+     1>c:\users\kloostermancw1\documents\visual studio 2012\projects\kalmantester\kalmantester\kalman.h(101): error C2370: 'KalmanFilter::H_gz_Zr' : redefinition; different storage class
+                 c:\users\kloostermancw1\documents\visual studio 2012\projects\kalmantester\kalmantester\kalman.h(100) : see declaration of 'KalmanFilter::H_gz_Zr'
+     1>c:\users\kloostermancw1\documents\visual studio 2012\projects\kalmantester\kalmantester\kalman.cpp(114): error C2039: 'initialize' : is not a member of 'KalmanFilter'
+                 c:\users\kloostermancw1\documents\visual studio 2012\projects\kalmantester\kalmantester\kalman.h(3) : see declaration of 'KalmanFilter'
+     1>c:\users\kloostermancw1\documents\visual studio 2012\projects\kalmantester\kalmantester\kalman.cpp(117): error C2065: 'Q_xpp' : undeclared identifier
+     1>c:\users\kloostermancw1\documents\visual studio 2012\projects\kalmantester\kalmantester\kalman.cpp(118): error C2065: 'Q_xvv' : undeclared identifier
+     1>c:\users\kloostermancw1\documents\visual studio 2012\projects\kalmantester\kalmantester\kalman.cpp(119): error C2065: 'Q_xaa' : undeclared identifier
+     1>c:\users\kloostermancw1\documents\visual studio 2012\projects\kalmantester\kalmantester\kalman.cpp(121): error C2065: 'Q_ypp' : undeclared identifier
+     1>c:\users\kloostermancw1\documents\visual studio 2012\projects\kalmantester\kalmantester\kalman.cpp(122): error C2065: 'Q_yvv' : undeclared identifier
+     1>c:\users\kloostermancw1\documents\visual studio 2012\projects\kalmantester\kalmantester\kalman.cpp(123): error C2065: 'Q_yaa' : undeclared identifier
+     1>c:\users\kloostermancw1\documents\visual studio 2012\projects\kalmantester\kalmantester\kalman.cpp(125): error C2065: 'Q_zpp' : undeclared identifier
+     1>c:\users\kloostermancw1\documents\visual studio 2012\projects\kalmantester\kalmantester\kalman.cpp(126): error C2065: 'Q_zvv' : undeclared identifier
+     1>c:\users\kloostermancw1\documents\visual studio 2012\projects\kalmantester\kalmantester\kalman.cpp(127): error C2065: 'Q_zaa' : undeclared identifier
+     1>c:\users\kloostermancw1\documents\visual studio 2012\projects\kalmantester\kalmantester\kalman.cpp(130): error C2065: 'Q_Xaa' : undeclared identifier
+     1>c:\users\kloostermancw1\documents\visual studio 2012\projects\kalmantester\kalmantester\kalman.cpp(131): error C2065: 'Q_Xrr' : undeclared identifier
+     1>c:\users\kloostermancw1\documents\visual studio 2012\projects\kalmantester\kalmantester\kalman.cpp(132): error C2065: 'Q_Xbb' : undeclared identifier
+     1>c:\users\kloostermancw1\documents\visual studio 2012\projects\kalmantester\kalmantester\kalman.cpp(134): error C2065: 'Q_Yaa' : undeclared identifier
+     1>c:\users\kloostermancw1\documents\visual studio 2012\projects\kalmantester\kalmantester\kalman.cpp(135): error C2065: 'Q_Yrr' : undeclared identifier
+     1>c:\users\kloostermancw1\documents\visual studio 2012\projects\kalmantester\kalmantester\kalman.cpp(136): error C2065: 'Q_Ybb' : undeclared identifier
+     1>c:\users\kloostermancw1\documents\visual studio 2012\projects\kalmantester\kalmantester\kalman.cpp(138): error C2065: 'Q_Zaa' : undeclared identifier
+     1>c:\users\kloostermancw1\documents\visual studio 2012\projects\kalmantester\kalmantester\kalman.cpp(139): error C2065: 'Q_Zrr' : undeclared identifier
+     1>c:\users\kloostermancw1\documents\visual studio 2012\projects\kalmantester\kalmantester\kalman.cpp(140): error C2065: 'Q_Zbb' : undeclared identifier
+     1>c:\users\kloostermancw1\documents\visual studio 2012\projects\kalmantester\kalmantester\kalman.cpp(144): error C2065: 'R_ax' : undeclared identifier
+     1>c:\users\kloostermancw1\documents\visual studio 2012\projects\kalmantester\kalmantester\kalman.cpp(144): error C2065: 'R_ay' : undeclared identifier
+     1>c:\users\kloostermancw1\documents\visual studio 2012\projects\kalmantester\kalmantester\kalman.cpp(144): error C2065: 'R_az' : undeclared identifier
+     1>c:\users\kloostermancw1\documents\visual studio 2012\projects\kalmantester\kalmantester\kalman.cpp(146): error C2065: 'R_gx' : undeclared identifier
+     1>c:\users\kloostermancw1\documents\visual studio 2012\projects\kalmantester\kalmantester\kalman.cpp(146): error C2065: 'R_gy' : undeclared identifier
+     1>c:\users\kloostermancw1\documents\visual studio 2012\projects\kalmantester\kalmantester\kalman.cpp(146): error C2065: 'R_gz' : undeclared identifier
+     1>c:\users\kloostermancw1\documents\visual studio 2012\projects\kalmantester\kalmantester\kalman.cpp(147): error C2065: 'R_Px' : undeclared identifier
+     1>c:\users\kloostermancw1\documents\visual studio 2012\projects\kalmantester\kalmantester\kalman.cpp(147): error C2065: 'R_Py' : undeclared identifier
+     1>c:\users\kloostermancw1\documents\visual studio 2012\projects\kalmantester\kalmantester\kalman.cpp(147): error C2065: 'R_Pz' : undeclared identifier
+     1>c:\users\kloostermancw1\documents\visual studio 2012\projects\kalmantester\kalmantester\kalman.cpp(149): error C2065: 'R_Ox' : undeclared identifier
+     1>c:\users\kloostermancw1\documents\visual studio 2012\projects\kalmantester\kalmantester\kalman.cpp(149): error C2065: 'R_Oy' : undeclared identifier
+     1>c:\users\kloostermancw1\documents\visual studio 2012\projects\kalmantester\kalmantester\kalman.cpp(149): error C2065: 'R_Oz' : undeclared identifier
+     1>c:\users\kloostermancw1\documents\visual studio 2012\projects\kalmantester\kalmantester\kalman.cpp(159): error C2511: 'void KalmanFilter::assignSensorValues(int,int,int,int,int,int,int,int,int,int,int,bool)' : overloaded member function not found in 'KalmanFilter'
+                 c:\users\kloostermancw1\documents\visual studio 2012\projects\kalmantester\kalmantester\kalman.h(3) : see declaration of 'KalmanFilter'
+     1>c:\users\kloostermancw1\documents\visual studio 2012\projects\kalmantester\kalmantester\kalman.cpp(227): error C2065: 'P_xaa' : undeclared identifier
+     1>c:\users\kloostermancw1\documents\visual studio 2012\projects\kalmantester\kalmantester\kalman.cpp(231): error C2065: 'P_yaa' : undeclared identifier
+     1>c:\users\kloostermancw1\documents\visual studio 2012\projects\kalmantester\kalmantester\kalman.cpp(235): error C2065: 'P_zaa' : undeclared identifier
+     1>c:\users\kloostermancw1\documents\visual studio 2012\projects\kalmantester\kalmantester\kalman.cpp(239): error C2065: 'P_Xbb' : undeclared identifier
+     1>c:\users\kloostermancw1\documents\visual studio 2012\projects\kalmantester\kalmantester\kalman.cpp(243): error C2065: 'P_Ybb' : undeclared identifier
+     1>c:\users\kloostermancw1\documents\visual studio 2012\projects\kalmantester\kalmantester\kalman.cpp(247): error C2065: 'P_Zbb' : undeclared identifier
+     1>c:\users\kloostermancw1\documents\visual studio 2012\projects\kalmantester\kalmantester\kalman.cpp(290): error C2065: 'H_gx_Yr' : undeclared identifier
+     1>c:\users\kloostermancw1\documents\visual studio 2012\projects\kalmantester\kalmantester\kalman.cpp(291): error C2065: 'H_gx_Zr' : undeclared identifier
+     1>c:\users\kloostermancw1\documents\visual studio 2012\projects\kalmantester\kalmantester\kalman.cpp(294): error C2065: 'H_gy_Xr' : undeclared identifier
+     1>c:\users\kloostermancw1\documents\visual studio 2012\projects\kalmantester\kalmantester\kalman.cpp(296): error C2065: 'H_gy_Zr' : undeclared identifier
+     1>c:\users\kloostermancw1\documents\visual studio 2012\projects\kalmantester\kalmantester\kalman.cpp(299): error C2065: 'H_gz_Xr' : undeclared identifier
+     1>c:\users\kloostermancw1\documents\visual studio 2012\projects\kalmantester\kalmantester\kalman.cpp(300): error C2065: 'H_gz_Yr' : undeclared identifier
+     1>c:\users\kloostermancw1\documents\visual studio 2012\projects\kalmantester\kalmantester\kalman.cpp(330): error C2065: 'R_ax' : undeclared identifier
+     1>c:\users\kloostermancw1\documents\visual studio 2012\projects\kalmantester\kalmantester\kalman.cpp(330): error C2065: 'R_ay' : undeclared identifier
+     1>c:\users\kloostermancw1\documents\visual studio 2012\projects\kalmantester\kalmantester\kalman.cpp(330): error C2065: 'R_az' : undeclared identifier
+     1>c:\users\kloostermancw1\documents\visual studio 2012\projects\kalmantester\kalmantester\kalman.cpp(337): error C2065: 'H_gx_Yr' : undeclared identifier
+     1>c:\users\kloostermancw1\documents\visual studio 2012\projects\kalmantester\kalmantester\kalman.cpp(337): error C2065: 'H_gx_Zr' : undeclared identifier
+     1>c:\users\kloostermancw1\documents\visual studio 2012\projects\kalmantester\kalmantester\kalman.cpp(338): error C2065: 'H_gy_Xr' : undeclared identifier
+     1>c:\users\kloostermancw1\documents\visual studio 2012\projects\kalmantester\kalmantester\kalman.cpp(338): error C2065: 'H_gy_Zr' : undeclared identifier
+     1>c:\users\kloostermancw1\documents\visual studio 2012\projects\kalmantester\kalmantester\kalman.cpp(339): error C2065: 'H_gz_Xr' : undeclared identifier
+     1>c:\users\kloostermancw1\documents\visual studio 2012\projects\kalmantester\kalmantester\kalman.cpp(339): error C2065: 'H_gz_Yr' : undeclared identifier
+     1>c:\users\kloostermancw1\documents\visual studio 2012\projects\kalmantester\kalmantester\kalman.cpp(341): error C2065: 'R_gx' : undeclared identifier
+     1>c:\users\kloostermancw1\documents\visual studio 2012\projects\kalmantester\kalmantester\kalman.cpp(341): error C2065: 'R_gy' : undeclared identifier
+     1>c:\users\kloostermancw1\documents\visual studio 2012\projects\kalmantester\kalmantester\kalman.cpp(341): error C2065: 'R_gz' : undeclared identifier
+     1>c:\users\kloostermancw1\documents\visual studio 2012\projects\kalmantester\kalmantester\kalman.cpp(344): error C2065: 'R_Px' : undeclared identifier
+     1>c:\users\kloostermancw1\documents\visual studio 2012\projects\kalmantester\kalmantester\kalman.cpp(345): error C2065: 'R_Py' : undeclared identifier
+     1>c:\users\kloostermancw1\documents\visual studio 2012\projects\kalmantester\kalmantester\kalman.cpp(346): error C2065: 'R_Pz' : undeclared identifier
+     1>c:\users\kloostermancw1\documents\visual studio 2012\projects\kalmantester\kalmantester\kalman.cpp(349): error C2065: 'R_Ox' : undeclared identifier
+     1>c:\users\kloostermancw1\documents\visual studio 2012\projects\kalmantester\kalmantester\kalman.cpp(350): error C2065: 'R_Oy' : undeclared identifier
+     1>c:\users\kloostermancw1\documents\visual studio 2012\projects\kalmantester\kalmantester\kalman.cpp(351): error C2065: 'R_Oz' : undeclared identifier
+     1>c:\users\kloostermancw1\documents\visual studio 2012\projects\kalmantester\kalmantester\kalman.cpp(405): error C2065: 'H_gy_Xr' : undeclared identifier
+     1>c:\users\kloostermancw1\documents\visual studio 2012\projects\kalmantester\kalmantester\kalman.cpp(405): error C2065: 'H_gz_Xr' : undeclared identifier
+     1>c:\users\kloostermancw1\documents\visual studio 2012\projects\kalmantester\kalmantester\kalman.cpp(406): error C2065: 'H_gx_Yr' : undeclared identifier
+     1>c:\users\kloostermancw1\documents\visual studio 2012\projects\kalmantester\kalmantester\kalman.cpp(406): error C2065: 'H_gz_Yr' : undeclared identifier
+     1>c:\users\kloostermancw1\documents\visual studio 2012\projects\kalmantester\kalmantester\kalman.cpp(407): error C2065: 'H_gx_Zr' : undeclared identifier
+     1>c:\users\kloostermancw1\documents\visual studio 2012\projects\kalmantester\kalmantester\kalman.cpp(407): error C2065: 'H_gy_Zr' : undeclared identifier
+     1>c:\users\kloostermancw1\documents\visual studio 2012\projects\kalmantester\kalmantester\kalman.cpp(442): error C2143: syntax error : missing ';' before ','
+     1>c:\users\kloostermancw1\documents\visual studio 2012\projects\kalmantester\kalmantester\kalman.cpp(510): error C2065: 'K_Xa_Ox' : undeclared identifier
+     1>c:\users\kloostermancw1\documents\visual studio 2012\projects\kalmantester\kalmantester\kalman.cpp(532): error C2065: 'P_xaa' : undeclared identifier
+     1>c:\users\kloostermancw1\documents\visual studio 2012\projects\kalmantester\kalmantester\kalman.cpp(537): error C2065: 'P_yaa' : undeclared identifier
+     1>c:\users\kloostermancw1\documents\visual studio 2012\projects\kalmantester\kalmantester\kalman.cpp(542): error C2065: 'P_zaa' : undeclared identifier
+     1>c:\users\kloostermancw1\documents\visual studio 2012\projects\kalmantester\kalmantester\kalman.cpp(548): error C2065: 'K_Xa_Ox' : undeclared identifier
+     1>c:\users\kloostermancw1\documents\visual studio 2012\projects\kalmantester\kalmantester\kalman.cpp(554): error C2065: 'H_gy_Xr' : undeclared identifier
+     1>c:\users\kloostermancw1\documents\visual studio 2012\projects\kalmantester\kalmantester\kalman.cpp(555): error C2065: 'H_gz_Xr' : undeclared identifier
+     1>c:\users\kloostermancw1\documents\visual studio 2012\projects\kalmantester\kalmantester\kalman.cpp(558): error C2065: 'H_gx_Yr' : undeclared identifier
+     1>c:\users\kloostermancw1\documents\visual studio 2012\projects\kalmantester\kalmantester\kalman.cpp(560): error C2065: 'H_gz_Yr' : undeclared identifier
+     1>c:\users\kloostermancw1\documents\visual studio 2012\projects\kalmantester\kalmantester\kalman.cpp(563): error C2065: 'H_gx_Zr' : undeclared identifier
+     1>c:\users\kloostermancw1\documents\visual studio 2012\projects\kalmantester\kalmantester\kalman.cpp(564): error C2065: 'H_gy_Zr' : undeclared identifier
+     1>c:\users\kloostermancw1\documents\visual studio 2012\projects\kalmantester\kalmantester\kalman.cpp(567): error C2065: 'P_Xbb' : undeclared identifier
+     1>c:\users\kloostermancw1\documents\visual studio 2012\projects\kalmantester\kalmantester\kalman.cpp(568): error C2065: 'P_Ybb' : undeclared identifier
+     1>c:\users\kloostermancw1\documents\visual studio 2012\projects\kalmantester\kalmantester\kalman.cpp(569): error C2065: 'P_Zbb' : undeclared identifier
+     1>c:\users\kloostermancw1\documents\visual studio 2012\projects\kalmantester\kalmantester\kalman.cpp(591): error C2146: syntax error : missing ';' before identifier 'getQuadState'
+     1>c:\users\kloostermancw1\documents\visual studio 2012\projects\kalmantester\kalmantester\kalman.cpp(591): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+     1>c:\users\kloostermancw1\documents\visual studio 2012\projects\kalmantester\kalmantester\kalman.cpp(592): error C2146: syntax error : missing ';' before identifier 'state'
+     1>c:\users\kloostermancw1\documents\visual studio 2012\projects\kalmantester\kalmantester\kalman.cpp(592): error C2065: 'state' : undeclared identifier
+     1>c:\users\kloostermancw1\documents\visual studio 2012\projects\kalmantester\kalmantester\kalman.cpp(593): error C2065: 'state' : undeclared identifier
+     1>c:\users\kloostermancw1\documents\visual studio 2012\projects\kalmantester\kalmantester\kalman.cpp(593): error C2228: left of '.xPosition' must have class/struct/union
+                 type is ''unknown-type''
+     1>c:\users\kloostermancw1\documents\visual studio 2012\projects\kalmantester\kalmantester\kalman.cpp(593): error C2065: 'x_xp' : undeclared identifier
+     1>c:\users\kloostermancw1\documents\visual studio 2012\projects\kalmantester\kalmantester\kalman.cpp(594): error C2065: 'state' : undeclared identifier
+     1>c:\users\kloostermancw1\documents\visual studio 2012\projects\kalmantester\kalmantester\kalman.cpp(594): error C2228: left of '.yPosition' must have class/struct/union
+                 type is ''unknown-type''
+     1>c:\users\kloostermancw1\documents\visual studio 2012\projects\kalmantester\kalmantester\kalman.cpp(594): error C2065: 'x_yp' : undeclared identifier
+     1>c:\users\kloostermancw1\documents\visual studio 2012\projects\kalmantester\kalmantester\kalman.cpp(595): error C2065: 'state' : undeclared identifier
+     1>c:\users\kloostermancw1\documents\visual studio 2012\projects\kalmantester\kalmantester\kalman.cpp(595): error C2228: left of '.zPosition' must have class/struct/union
+     1>c:\users\kloostermancw1\documents\visual studio 2012\projects\kalmantester\kalmantester\kalman.cpp(595): fatal error C1003: error count exceeds 100; stopping compilation
+         Generating Code...
+     1>Done Building Project "c:\Users\kloostermancw1\documents\visual studio 2012\Projects\kalmanTester\kalmanTester\kalmanTester.vcxproj" (Build target(s)) -- FAILED.
+
+Build FAILED.
+
+Time Elapsed 00:00:02.02

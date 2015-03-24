@@ -15,12 +15,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\Neil%27s backup\Neil%27s homework\design project\IMUVariance\IMUVariance - Copy\Accelerometer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Neil%27s backup\Neil%27s homework\design project\IMUVariance\IMUVariance - Copy\Kalman.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\Neil%27s backup\Neil%27s homework\design project\IMUVariance\IMUVariance - Copy\Trig.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -98,12 +92,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\Neil%27s backup\Neil%27s homework\design project\IMUVariance\IMUVariance - Copy\Accelerometer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Neil%27s backup\Neil%27s homework\design project\IMUVariance\IMUVariance - Copy\Adafruit_ADXL345_U.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Neil%27s backup\Neil%27s homework\design project\IMUVariance\IMUVariance - Copy\Adafruit_BMP085_U.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -135,9 +123,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Neil%27s backup\Neil%27s homework\design project\IMUVariance\IMUVariance - Copy\ITG3200.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Neil%27s backup\Neil%27s homework\design project\IMUVariance\IMUVariance - Copy\Kalman.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Neil%27s backup\Neil%27s homework\design project\IMUVariance\IMUVariance - Copy\Trig.h">
@@ -186,6 +171,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Trig.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Kalman.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

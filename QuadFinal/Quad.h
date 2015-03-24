@@ -6,21 +6,8 @@
 #include "Compass.h"
 #include "GPS.h"
 #include "Trig.h"
+#include "Kalman.h"
 //#include <HardwareSerial.h>
-
-enum SensorMode {
-	ACCEL_X,
-	ACCEL_Y,
-	ACCEL_Z,
-	GYRO_X,
-	GYRO_Y,
-	GYRO_Z,
-	COMP_X,
-	COMP_Y,
-	COMP_Z,
-	BAROMETER,
-	ALL
-};
 
 class Quad
 {
@@ -38,11 +25,22 @@ public:
 	Barometer bar;
 	Compass comp;
 	GPS gps;
+	Kalman Filter;
 	Trig trig;
 
 	int executeCycle(void);
 	int setup(void);
-private:
-	
+	int motorInitialize(void);
+	int motorSet(void);
+	int getSensorVals(void);
+	int getGPSval(void);
+	int findSensorBias(void);
+
+
+	//bitshifted ints to be passed to the Kalman filter
+	int compX, compY, compZ, gyroX, gyroY, gyroZ, accX, accY, accZ, latitude, longitude;
+	quadState_T quadState;
+	int dutyCycle1, dutyCycle2, dutyCycle3, dutyCycle4;
+
 	void readSerialCommand(void);
 };

@@ -85,6 +85,7 @@ extern "C" void __cxa_pure_virtual() {;}
 #include <I2Cdev.h>
 #include <ITG3200.cpp>
 #include <Kalman.cpp>
+#include <Kalman.h>
 #include <Quad.cpp>
 #include <Quad.h>
 #include <Trig.cpp>

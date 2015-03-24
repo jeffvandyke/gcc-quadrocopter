@@ -44,8 +44,8 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>C:\Program Files\Arduino\hardware\arduino\cores\arduino;C:\Program Files\Arduino\hardware\arduino\variants\mega;C:\Users\kloostermancw1\Documents\Arduino\QuadFinal;C:\Program Files\Arduino\libraries\Wire;C:\Program Files\Arduino\libraries\Wire\utility;C:\Program Files\Arduino\libraries;C:\Program Files\Arduino\hardware\arduino\libraries;C:\Program Files\Visual Micro\Visual Micro for Arduino\Micro Platforms\default\debuggers;C:\Users\kloostermancw1\Documents\Arduino\libraries;c:\program files\arduino\hardware\tools\avr\avr\include\;c:\program files\arduino\hardware\tools\avr\avr\include\avr\;c:\program files\arduino\hardware\tools\avr\avr\;c:\program files\arduino\hardware\tools\avr\lib\gcc\avr\4.3.2\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <ForcedIncludeFiles>C:\Users\kloostermancw1\Documents\Arduino\QuadFinal\Visual Micro\.QuadFinal.vsarduino.h;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <AdditionalIncludeDirectories>C:\Program Files\Arduino\hardware\arduino\cores\arduino;C:\Program Files\Arduino\hardware\arduino\variants\mega;C:\Users\kloostermancw1\Documents\GitHub\gcc-quadrocopter\QuadFinal;C:\Program Files\Arduino\libraries\Wire;C:\Program Files\Arduino\libraries\Wire\utility;C:\Program Files\Arduino\libraries;C:\Program Files\Arduino\hardware\arduino\libraries;C:\Program Files\Visual Micro\Visual Micro for Arduino\Micro Platforms\default\debuggers;C:\Users\kloostermancw1\Documents\Arduino\libraries;c:\program files\arduino\hardware\tools\avr\avr\include\;c:\program files\arduino\hardware\tools\avr\avr\include\avr\;c:\program files\arduino\hardware\tools\avr\avr\;c:\program files\arduino\hardware\tools\avr\lib\gcc\avr\4.3.2\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ForcedIncludeFiles>C:\Users\kloostermancw1\Documents\GitHub\gcc-quadrocopter\QuadFinal\Visual Micro\.QuadFinal.vsarduino.h;%(ForcedIncludeFiles)</ForcedIncludeFiles>
       <IgnoreStandardIncludePath>true</IgnoreStandardIncludePath>
       <PreprocessorDefinitions>__AVR_ATmega2560__;ARDUINO=105;ARDUINO_MAIN;__AVR__;__avr__;F_CPU=16000000L;__cplusplus;GCC_VERSION=40302;ARDUINO_ARCH_AVR;ARDUINO_AVR_MEGA2560;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
@@ -73,8 +73,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\Neil%27s backup\Neil%27s homework\design project\IMUVariance\IMUVariance - Copy\Accelerometer.cpp" />
-    <ClCompile Include="..\..\Neil%27s backup\Neil%27s homework\design project\IMUVariance\IMUVariance - Copy\Kalman.cpp" />
     <ClCompile Include="..\..\Neil%27s backup\Neil%27s homework\design project\IMUVariance\IMUVariance - Copy\Trig.cpp" />
     <ClCompile Include="..\libraries\Adafruit_ADXL345_U.cpp" />
     <ClCompile Include="..\libraries\Adafruit_BMP085_U.cpp" />
@@ -104,8 +102,6 @@
     <ClCompile Include="Trig.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\Neil%27s backup\Neil%27s homework\design project\IMUVariance\IMUVariance - Copy\Accelerometer.h" />
-    <ClInclude Include="..\..\Neil%27s backup\Neil%27s homework\design project\IMUVariance\IMUVariance - Copy\Adafruit_ADXL345_U.h" />
     <ClInclude Include="..\..\Neil%27s backup\Neil%27s homework\design project\IMUVariance\IMUVariance - Copy\Adafruit_BMP085_U.h" />
     <ClInclude Include="..\..\Neil%27s backup\Neil%27s homework\design project\IMUVariance\IMUVariance - Copy\Adafruit_Sensor.h" />
     <ClInclude Include="..\..\Neil%27s backup\Neil%27s homework\design project\IMUVariance\IMUVariance - Copy\Barometer.h" />
@@ -117,7 +113,6 @@
     <ClInclude Include="..\..\Neil%27s backup\Neil%27s homework\design project\IMUVariance\IMUVariance - Copy\I2C.h" />
     <ClInclude Include="..\..\Neil%27s backup\Neil%27s homework\design project\IMUVariance\IMUVariance - Copy\I2Cdev.h" />
     <ClInclude Include="..\..\Neil%27s backup\Neil%27s homework\design project\IMUVariance\IMUVariance - Copy\ITG3200.h" />
-    <ClInclude Include="..\..\Neil%27s backup\Neil%27s homework\design project\IMUVariance\IMUVariance - Copy\Kalman.h" />
     <ClInclude Include="..\..\Neil%27s backup\Neil%27s homework\design project\IMUVariance\IMUVariance - Copy\Trig.h" />
     <ClInclude Include="Accelerometer.h">
       <FileType>CppCode</FileType>
@@ -155,6 +150,7 @@
     <ClInclude Include="I2Cdev.h">
       <FileType>CppCode</FileType>
     </ClInclude>
+    <ClInclude Include="Kalman.h" />
     <ClInclude Include="Quad.h" />
     <ClInclude Include="Trig.h">
       <FileType>CppCode</FileType>

@@ -7,6 +7,7 @@
 #define MOTOR_TRIG 53
 #define OUTPIN 6
 #define TRIGPIN 53
+#define PWMax 110
 
 Quad::Quad(void)
 {
@@ -18,30 +19,40 @@ Quad::~Quad(void)
 {
 }
 
-int motorInitialize()
+int Quad::motorInitialize(void)
 {
-	pinMode(OUTPIN,OUTPUT);
-	pinMode(TRIGPIN,OUTPUT);
-	digitalWrite(TRIGPIN,LOW);
-	analogWrite(OUTPIN,0);
-	delay(3000);
-	analogWrite(OUTPIN,100);
-	delay(1000);
-	analogWrite(OUTPIN,0);
-	delay(200);
+	analogWrite(2,0);
+	analogWrite(3,0);
+	analogWrite(5,0);
+	analogWrite(6,0);
+	delay(2000);
+	analogWrite(2,PWMax);
+	analogWrite(3,PWMax);
+	analogWrite(5,PWMax);
+	analogWrite(6,PWMax);
+	delay(2000);
+	analogWrite(2,0);
+	analogWrite(3,0);
+	analogWrite(5,0);
+	analogWrite(6,0);
+	delay(2000);
 
 	return 0;
 }
 
-int motorSet(int dutyCycle)
+int Quad::motorSet(void)
 {
-	digitalWrite(TRIGPIN,HIGH);
-	analogWrite(OUTPIN,dutyCycle);
-	digitalWrite(TRIGPIN,LOW);
+  analogWrite(2,PWMax+25);
+  analogWrite(3,PWMax+25);
+  analogWrite(5,PWMax+25);
+  analogWrite(6,PWMax+25);
+  delay(2000);
+  analogWrite(2,0);
+  analogWrite(3,0);
+  analogWrite(5,0);
+  analogWrite(6,0);
+  delay(2000);
 
-	Serial.print("Duty cycle set to ");
-	Serial.print(dutyCycle);
-	Serial.print("\n");
 
 	return 0;
 }
@@ -51,7 +62,7 @@ int Quad::setup(void)
 	sensorMode = ALL;
 	i2c.initialize();
 	Serial.begin(9600);
-	Serial.print("IMUTester::setupTester called");
+//	Serial.print("IMUTester::setupTester called");
 	acc.setup();
 	gyro.setup();
 	bar.setup();
@@ -64,12 +75,9 @@ int Quad::setup(void)
 }
 
 int Quad::executeCycle(void)
-
 {
 
 	this->readSerialCommand();
-
-	int sensorData;
 
 	while (Serial2.available())
      {
@@ -78,27 +86,41 @@ int Quad::executeCycle(void)
 			break;
 	}
 
-	/*Serial.print("Accelerometer: \n");		
-	Serial.print(acc.readRawX());           Serial.print(" , ");
-	Serial.print(acc.readRawY());           Serial.print(" , ");
-	Serial.print(acc.readRawZ());           Serial.print("\n");
-	Serial.print("Gyroscope: \n");
-	Serial.print(gyro.readRawX());          Serial.print(" , ");
-	Serial.print(gyro.readRawY());          Serial.print(" , ");
-	Serial.print(gyro.readRawZ());          Serial.print("\n");
-	Serial.print("Compass: \n");
-	Serial.print(comp.getRawX());           Serial.print(" , ");
-	Serial.print(comp.getRawY());           Serial.print(" , ");
-	Serial.print(comp.getRawZ());			Serial.print("\n");*/
-	Serial.print("GPS: \n");
-	Serial.print(gps.readRawLat());			Serial.print(" , ");
-	Serial.print(gps.readRawLong());		Serial.print("\n");
+	getSensorVals();
+	getGPSval();
 
 	delay(10);
 	return 0;
 }
 
-void Quad::readSerialCommand() {
+int getSensorVals(void)
+{
+	//Accelerometer	
+	accX=	1024*acc.readRawX();
+	accY=	1024*acc.readRawY();
+	accZ=	1024*acc.readRawZ();
+	//Gyroscope
+	gyroX=	1024*gyro.readRawX();
+	gyroY=	1024*gyro.readRawY();
+	gyroZ=	1024*gyro.readRawZ();
+	//Compass
+	comX=	1024*comp.getRawX();
+	comY=	1024*comp.getRawY();
+	comZ=	1024*comp.getRawZ();
+}
+
+int getGPSval(void)
+{
+	latitude=	1024*gps.readRawLat();
+	longitude=	1024*gps.readRawLong();
+}
+
+//calculates sensor bias at startup
+int findSensorBias(void)
+{
+};
+
+void Quad::readSerialCommand(void) {
 	int serialData = Serial.read();
 
 	if (serialData != -1)

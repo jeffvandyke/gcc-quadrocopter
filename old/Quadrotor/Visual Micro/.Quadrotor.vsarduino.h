@@ -17,6 +17,9 @@
 #define __avr__
 #define F_CPU 16000000L
 #define __cplusplus
+#define GCC_VERSION 40302
+#define ARDUINO_ARCH_AVR
+#define ARDUINO_AVR_MEGA2560
 #define __inline__
 #define __asm__(x)
 #define __extension__
@@ -26,57 +29,69 @@
 #define __asm__ 
 #define __volatile__
 
-#define __builtin_va_list
+typedef void *__builtin_va_list;
 #define __builtin_va_start
 #define __builtin_va_end
-#define __DOXYGEN__
+//#define __DOXYGEN__
 #define __attribute__(x)
 #define NOINLINE __attribute__((noinline))
 #define prog_void
 #define PGM_VOID_P int
+
+#define NEW_H
             
 typedef unsigned char byte;
 extern "C" void __cxa_pure_virtual() {;}
-
-//
-//
-
-#include "C:\Program Files\Arduino\hardware\arduino\cores\arduino\arduino.h"
-#include "C:\Program Files\Arduino\hardware\arduino\variants\mega\pins_arduino.h" 
-#include "C:\Users\kloostermancw1\Documents\GitHub\gcc-quadrocopter\Quadrotor\Quadrotor.ino"
-#include "C:\Users\kloostermancw1\Documents\GitHub\gcc-quadrocopter\Quadrotor\ADXL345.cpp"
-#include "C:\Users\kloostermancw1\Documents\GitHub\gcc-quadrocopter\Quadrotor\ADXL345.h"
-#include "C:\Users\kloostermancw1\Documents\GitHub\gcc-quadrocopter\Quadrotor\AbstractIMUSensor.h"
-#include "C:\Users\kloostermancw1\Documents\GitHub\gcc-quadrocopter\Quadrotor\Bluetooth.cpp"
-#include "C:\Users\kloostermancw1\Documents\GitHub\gcc-quadrocopter\Quadrotor\Bluetooth.h"
-#include "C:\Users\kloostermancw1\Documents\GitHub\gcc-quadrocopter\Quadrotor\ControllerManager.cpp"
-#include "C:\Users\kloostermancw1\Documents\GitHub\gcc-quadrocopter\Quadrotor\ControllerManager.h"
-#include "C:\Users\kloostermancw1\Documents\GitHub\gcc-quadrocopter\Quadrotor\HMC5883L.cpp"
-#include "C:\Users\kloostermancw1\Documents\GitHub\gcc-quadrocopter\Quadrotor\HMC5883L.h"
-#include "C:\Users\kloostermancw1\Documents\GitHub\gcc-quadrocopter\Quadrotor\I2C.cpp"
-#include "C:\Users\kloostermancw1\Documents\GitHub\gcc-quadrocopter\Quadrotor\I2C.h"
-#include "C:\Users\kloostermancw1\Documents\GitHub\gcc-quadrocopter\Quadrotor\IMU.h"
-#include "C:\Users\kloostermancw1\Documents\GitHub\gcc-quadrocopter\Quadrotor\ITG3200.cpp"
-#include "C:\Users\kloostermancw1\Documents\GitHub\gcc-quadrocopter\Quadrotor\ITG3200.h"
-#include "C:\Users\kloostermancw1\Documents\GitHub\gcc-quadrocopter\Quadrotor\Motor.cpp"
-#include "C:\Users\kloostermancw1\Documents\GitHub\gcc-quadrocopter\Quadrotor\Motor.h"
-#include "C:\Users\kloostermancw1\Documents\GitHub\gcc-quadrocopter\Quadrotor\OrientationManager.cpp"
-#include "C:\Users\kloostermancw1\Documents\GitHub\gcc-quadrocopter\Quadrotor\OrientationManager.h"
-#include "C:\Users\kloostermancw1\Documents\GitHub\gcc-quadrocopter\Quadrotor\PIDController.cpp"
-#include "C:\Users\kloostermancw1\Documents\GitHub\gcc-quadrocopter\Quadrotor\PIDController.h"
-#include "C:\Users\kloostermancw1\Documents\GitHub\gcc-quadrocopter\Quadrotor\Ping.cpp"
-#include "C:\Users\kloostermancw1\Documents\GitHub\gcc-quadrocopter\Quadrotor\Ping.h"
-#include "C:\Users\kloostermancw1\Documents\GitHub\gcc-quadrocopter\Quadrotor\Quadrotor.cpp"
-#include "C:\Users\kloostermancw1\Documents\GitHub\gcc-quadrocopter\Quadrotor\Quadrotor.h"
-#include "C:\Users\kloostermancw1\Documents\GitHub\gcc-quadrocopter\Quadrotor\QuadrotorAPI.cpp"
-#include "C:\Users\kloostermancw1\Documents\GitHub\gcc-quadrocopter\Quadrotor\QuadrotorAPI.h"
-#include "C:\Users\kloostermancw1\Documents\GitHub\gcc-quadrocopter\Quadrotor\SparkFun9DOF.cpp"
-#include "C:\Users\kloostermancw1\Documents\GitHub\gcc-quadrocopter\Quadrotor\SparkFun9DOF.h"
-#include "C:\Users\kloostermancw1\Documents\GitHub\gcc-quadrocopter\Quadrotor\Test.cpp"
-#include "C:\Users\kloostermancw1\Documents\GitHub\gcc-quadrocopter\Quadrotor\Test.h"
-#include "C:\Users\kloostermancw1\Documents\GitHub\gcc-quadrocopter\Quadrotor\TestCompass.cpp"
-#include "C:\Users\kloostermancw1\Documents\GitHub\gcc-quadrocopter\Quadrotor\TestCompass.h"
-#include "C:\Users\kloostermancw1\Documents\GitHub\gcc-quadrocopter\Quadrotor\compassTest.cpp"
-#include "C:\Users\kloostermancw1\Documents\GitHub\gcc-quadrocopter\Quadrotor\compassTest.h"
-#include "C:\Users\kloostermancw1\Documents\GitHub\gcc-quadrocopter\Quadrotor\main.cpp"
+#include <arduino.h>
+#include <pins_arduino.h> 
+#undef F
+#define F(string_literal) ((const PROGMEM char *)(string_literal))
+#undef cli
+#define cli()
+#define pgm_read_byte(address_short)
+#define pgm_read_word(address_short)
+#define pgm_read_word2(address_short)
+#define digitalPinToPort(P)
+#define digitalPinToBitMask(P) 
+#define digitalPinToTimer(P)
+#define analogInPinToBit(P)
+#define portOutputRegister(P)
+#define portInputRegister(P)
+#define portModeRegister(P)
+#include <Quadrotor.ino>
+#include <ADXL345.cpp>
+#include <ADXL345.h>
+#include <AbstractIMUSensor.h>
+#include <Bluetooth.cpp>
+#include <Bluetooth.h>
+#include <ControllerManager.cpp>
+#include <ControllerManager.h>
+#include <HMC5883L.cpp>
+#include <HMC5883L.h>
+#include <I2C.cpp>
+#include <I2C.h>
+#include <IMU.h>
+#include <ITG3200.cpp>
+#include <ITG3200.h>
+#include <Motor.cpp>
+#include <Motor.h>
+#include <OrientationManager.cpp>
+#include <OrientationManager.h>
+#include <PIDController.cpp>
+#include <PIDController.h>
+#include <Ping.cpp>
+#include <Ping.h>
+#include <Quadrotor.cpp>
+#include <Quadrotor.h>
+#include <QuadrotorAPI.cpp>
+#include <QuadrotorAPI.h>
+#include <SparkFun9DOF.cpp>
+#include <SparkFun9DOF.h>
+#include <Test.cpp>
+#include <Test.h>
+#include <TestCompass.cpp>
+#include <TestCompass.h>
+#include <compassTest.cpp>
+#include <compassTest.h>
+#include <main.cpp>
 #endif
