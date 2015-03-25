@@ -2,8 +2,6 @@
 #define KALMAN_CPP
 #include "kalman.h"
 
-#define K_Pcoeff 10
-
 inline int i10mult(int a, int b) {
     return (((a)*(b))>>10);
 }
@@ -17,46 +15,6 @@ inline int i10mult3(int a, int b, int c) {
 }
 using namespace std;
 
-
-// initial H, P and O never change and remain the same
-// const int KalmanFilter::H_gx_Xb = 1;
-// const int KalmanFilter::H_gy_Yb = 1;
-// const int KalmanFilter::H_gz_Zb = 1;
-// 
-// const int KalmanFilter::H_Px_xp = 1;
-// const int KalmanFilter::H_Px_yp = 1;
-// const int KalmanFilter::H_Px_zp = 1;
-// 
-// const int KalmanFilter::H_Ox_Xa = 1;
-// const int KalmanFilter::H_Oy_Ya = 1;
-// const int KalmanFilter::H_Oz_Za = 1;
-
-// Process noise Q matrix
-// Position
-/*int*/ // KalmanFilter::Q_xpp = 64;
-/*int*/ // KalmanFilter::Q_xvv = 64;
-/*int*/ // KalmanFilter::Q_xaa = 64;
-        // 
-/*int*/ // KalmanFilter::Q_ypp = 64;
-/*int*/ // KalmanFilter::Q_yvv = 64;
-/*int*/ // KalmanFilter::Q_yaa = 64;
-        // 
-/*int*/ // KalmanFilter::Q_zpp = 64;
-/*int*/ // KalmanFilter::Q_zvv = 64;
-/*int*/ // KalmanFilter::Q_zaa = 64;
-        // 
-//Rotation
-/*int*/ // KalmanFilter::Q_Xaa = 64;
-/*int*/ // KalmanFilter::Q_Xrr = 64;
-/*int*/ // KalmanFilter::Q_Xbb = 64;
-        // 
-/*int*/ // KalmanFilter::Q_Yaa = 64;
-/*int*/ // KalmanFilter::Q_Yrr = 64;
-/*int*/ // KalmanFilter::Q_Ybb = 64;
-        // 
-/*int*/ // KalmanFilter::Q_Zaa = 64;
-/*int*/ // KalmanFilter::Q_Zrr = 64;
-/*int*/ // KalmanFilter::Q_Zbb = 64;
 
 
 
@@ -111,33 +69,17 @@ KalmanFilter::KalmanFilter() {
 }
 
 
-void KalmanFilter::initialize() {
-    // Process noise Q matrix
-    // Position
-    Q_xpp = 64;
-    Q_xvv = 64;
-    Q_xaa = 64;
+void KalmanFilter::initialize(int xBias, int yBias, int zBias) {
 
-    Q_ypp = 64;
-    Q_yvv = 64;
-    Q_yaa = 64;
+    x_Xb = xBias; x_Yb = yBias; x_Zb = zBias;
+    x_Xa = 0; x_Xr = 0;
+    x_Ya = 0; x_Yr = 0;
+    x_Za = 0; x_Zr = 0;
 
-    Q_zpp = 64;
-    Q_zvv = 64;
-    Q_zaa = 64;
+    x_xp = 0; x_xv = 0; x_xa = 0;
+    x_yp = 0; x_yv = 0; x_ya = 0;
+    x_zp = 0; x_zv = 0; x_za = 0;
 
-    //Rotation
-    Q_Xaa = 64;
-    Q_Xrr = 64;
-    Q_Xbb = 0;
-
-    Q_Yaa = 64;
-    Q_Yrr = 64;
-    Q_Ybb = 0;
-
-    Q_Zaa = 64;
-    Q_Zrr = 64;
-    Q_Zbb = 0;
 
     // Sensor error covariance - Diagonal Matrix
     // (from lab)
@@ -163,9 +105,9 @@ void KalmanFilter::assignSensorValues(
 	z_ax = ax * 1;
 	z_ay = ay * 1;
 	z_az = az * 1;
-	z_gx = gx * 1;
-	z_gy = gy * 1;
-	z_gz = gz * 1;
+	z_gx = (gx - x_Xb) * 1;
+	z_gy = (gy - x_Yb) * 1;
+	z_gz = (gz - x_Zb) * 1;
 
 	if (usingGPS)
 	{
@@ -174,9 +116,9 @@ void KalmanFilter::assignSensorValues(
 		z_Pz = Pz * 1;
 	}
 
-	z_Ox = (int)(atan2(z_ay, z_az) * 1024);
-	z_Oy = (int)(atan2(z_ax, z_az) * 1024);
-	z_Oz = (int)(atan2(Cx, Cy) * 1024);
+	z_Ox = (int)(trig.atan2(z_ay, z_az) * 1024);
+	z_Oy = (int)(trig.atan2(z_ax, z_az) * 1024);
+	z_Oz = (int)(trig.atan2(Cx, Cy) * 1024);
 
     // TODO: adjust H matrix for acceleration and gyroscope
 }
@@ -189,6 +131,35 @@ void KalmanFilter::predictAndUpdate()
     nTimesRan++;
     unsigned int currentTime = 0; // TODO: get current time 
     int dT = (int)(currentTime - previousTimeRan);
+
+    // Process noise Q matrix
+    const int aNoise = 50;
+    const int gNoise = 50;
+    // Position
+    Q_xpp = 64;
+    Q_xvv = 64;
+    Q_xaa = 64;
+
+    Q_ypp = 64;
+    Q_yvv = 64;
+    Q_yaa = 64;
+
+    Q_zpp = 64;
+    Q_zvv = 64;
+    Q_zaa = 64;
+
+    //Rotation
+    Q_Xaa = 64;
+    Q_Xrr = 64;
+    // Q_Xbb = 0;
+
+    Q_Yaa = 64;
+    Q_Yrr = 64;
+    // Q_Ybb = 0;
+
+    Q_Zaa = 64;
+    Q_Zrr = 64;
+    // Q_Zbb = 0;
     // expect time in ms
 
     // predict stage
@@ -218,9 +189,9 @@ void KalmanFilter::predictAndUpdate()
     int Pp_xpp, Pp_xpv, Pp_xpa, Pp_xvv, Pp_xva, Pp_xaa;
     int Pp_ypp, Pp_ypv, Pp_ypa, Pp_yvv, Pp_yva, Pp_yaa;
     int Pp_zpp, Pp_zpv, Pp_zpa, Pp_zvv, Pp_zva, Pp_zaa;
-    int Pp_Xaa, Pp_Xar, Pp_Xrr, Pp_Xbb;
-    int Pp_Yaa, Pp_Yar, Pp_Yrr, Pp_Ybb;
-    int Pp_Zaa, Pp_Zar, Pp_Zrr, Pp_Zbb;
+    int Pp_Xaa, Pp_Xar, Pp_Xrr; //  Pp_Xbb;
+    int Pp_Yaa, Pp_Yar, Pp_Yrr; //  Pp_Ybb;
+    int Pp_Zaa, Pp_Zar, Pp_Zrr; //  Pp_Zbb;
 
     predictStateCovarianceForPosition(
             Pp_xpp, Pp_xpv, Pp_xpa, Pp_xvv, Pp_xva, Pp_xaa,
@@ -235,38 +206,47 @@ void KalmanFilter::predictAndUpdate()
             P_zpp, P_zpv, P_zpa, P_zvv, P_zva, P_zaa,
             dT);
     predictStateCovarianceForRotation(
-            Pp_Xaa, Pp_Xar, Pp_Xrr, Pp_Xbb,
-            P_Xaa, P_Xar, P_Xrr, P_Xbb,
+            Pp_Xaa, Pp_Xar, Pp_Xrr, //Pp_Xbb,
+            P_Xaa, P_Xar, P_Xrr,// P_Xbb,
             dT);
     predictStateCovarianceForRotation(
-            Pp_Yaa, Pp_Yar, Pp_Yrr, Pp_Ybb,
-            P_Yaa, P_Yar, P_Yrr, P_Ybb,
+            Pp_Yaa, Pp_Yar, Pp_Yrr, //Pp_Ybb,
+            P_Yaa, P_Yar, P_Yrr, //P_Ybb,
             dT);
     predictStateCovarianceForRotation(
-            Pp_Zaa, Pp_Zar, Pp_Zrr, Pp_Zbb,
-            P_Zaa, P_Zar, P_Zrr, P_Zbb,
+            Pp_Zaa, Pp_Zar, Pp_Zrr, //Pp_Zbb,
+            P_Zaa, P_Zar, P_Zrr, //P_Zbb,
             dT);
 
     // degrade confidence by noise
     Pp_xpp += Q_xpp;
+    Pp_xpv += Q_xpv;
+    Pp_xpa += Q_xpa;
     Pp_xvv += Q_xvv;
+    Pp_xva += Q_xva;
     Pp_xaa += Q_xaa;
     Pp_ypp += Q_ypp;
+    Pp_ypv += Q_ypv;
+    Pp_ypa += Q_ypa;
     Pp_yvv += Q_yvv;
+    Pp_yva += Q_yva;
     Pp_yaa += Q_yaa;
     Pp_zpp += Q_zpp;
+    Pp_zpv += Q_zpv;
+    Pp_zpa += Q_zpa;
     Pp_zvv += Q_zvv;
+    Pp_zva += Q_zva;
     Pp_zaa += Q_zaa;
     // rotation
     Pp_Xaa += Q_Xaa;
     Pp_Xrr += Q_Xrr;
-    Pp_Xbb += Q_Xbb;
+    //Pp_Xbb += Q_Xbb;
     Pp_Yaa += Q_Yaa;
     Pp_Yrr += Q_Yrr;
-    Pp_Ybb += Q_Ybb;
+    //Pp_Ybb += Q_Ybb;
     Pp_Zaa += Q_Zaa;
     Pp_Zrr += Q_Zrr;
-    Pp_Zbb += Q_Zbb;
+    // Pp_Zbb += Q_Zbb;
 
     // UPDATE ==================================================================
     // Step 3: INNOVATION OR MEASUREMENT RESIDUAL ==============================
@@ -285,17 +265,17 @@ void KalmanFilter::predictAndUpdate()
         z_az;
     // rotations
     int y_gx = -z_gx +
-        xp_Xb +
+        // xp_Xb +
         i10mult(H_gx_Xr, xp_Xr) + 
         i10mult(H_gx_Yr, xp_Yr) +
         i10mult(H_gx_Zr, xp_Zr);
     int y_gy = -z_gy +
-        xp_Xb +
+        // xp_Xb +
         i10mult(H_gy_Xr, xp_Xr) + 
         i10mult(H_gy_Yr, xp_Yr) +
         i10mult(H_gy_Zr, xp_Zr);
     int y_gz = -z_gz +
-        xp_Zb +
+        // xp_Zb +
         i10mult(H_gz_Xr, xp_Xr) + 
         i10mult(H_gz_Yr, xp_Yr) +
         i10mult(H_gz_Zr, xp_Zr);
@@ -333,7 +313,7 @@ void KalmanFilter::predictAndUpdate()
     int S_gxx, S_gxy, S_gxz, S_gyy, S_gyz, S_gzz;
     innovationCovariance(S_gxx, S_gxy, S_gxz,
             S_gyy, S_gyz, S_gzz,
-            Pp_Xrr, Pp_Yrr, Pp_Zrr, Pp_Xbb, Pp_Ybb, Pp_Zbb,
+            Pp_Xrr, Pp_Yrr, Pp_Zrr, // Pp_Xbb, Pp_Ybb, Pp_Zbb,
             H_gx_Xr, H_gx_Yr, H_gx_Zr, 
             H_gy_Xr, H_gy_Yr, H_gy_Zr, 
             H_gz_Xr, H_gz_Yr, H_gz_Zr); 
@@ -410,15 +390,15 @@ void KalmanFilter::predictAndUpdate()
 
     // biases from gyroscope values - easy, bottom half of previous
     // maxima calculation
-    int K_Xb_gx = i10mult(ig1, Pp_Xbb);
-    int K_Xb_gy = i10mult(ig2, Pp_Xbb);
-    int K_Xb_gz = i10mult(ig3, Pp_Xbb);
-    int K_Yb_gx = i10mult(ig2, Pp_Ybb);
-    int K_Yb_gy = i10mult(ig4, Pp_Ybb);
-    int K_Yb_gz = i10mult(ig5, Pp_Ybb);
-    int K_Zb_gx = i10mult(ig3, Pp_Zbb);
-    int K_Zb_gy = i10mult(ig5, Pp_Zbb);
-    int K_Zb_gz = i10mult(ig6, Pp_Zbb);
+    // int K_Xb_gx = i10mult(ig1, Pp_Xbb);
+    // int K_Xb_gy = i10mult(ig2, Pp_Xbb);
+    // int K_Xb_gz = i10mult(ig3, Pp_Xbb);
+    // int K_Yb_gx = i10mult(ig2, Pp_Ybb);
+    // int K_Yb_gy = i10mult(ig4, Pp_Ybb);
+    // int K_Yb_gz = i10mult(ig5, Pp_Ybb);
+    // int K_Zb_gx = i10mult(ig3, Pp_Zbb);
+    // int K_Zb_gy = i10mult(ig5, Pp_Zbb);
+    // int K_Zb_gz = i10mult(ig6, Pp_Zbb);
 
     // GPS and Orientation-pseudo-sensors
 
@@ -489,18 +469,18 @@ void KalmanFilter::predictAndUpdate()
         + i10mult(K_Zr_gy , y_gy)
         + i10mult(K_Zr_gz , y_gz);
 
-    x_Xb = xp_Xb
-        + i10mult(K_Xb_gx , y_gx)
-        + i10mult(K_Xb_gy , y_gy)
-        + i10mult(K_Xb_gz , y_gz);
-    x_Yb = xp_Yb           
-        + i10mult(K_Yb_gx , y_gx)
-        + i10mult(K_Yb_gy , y_gy)
-        + i10mult(K_Yb_gz , y_gz);
-    x_Zb = xp_Zb           
-        + i10mult(K_Zb_gx , y_gx)
-        + i10mult(K_Zb_gy , y_gy)
-        + i10mult(K_Zb_gz , y_gz);
+    // x_Xb = xp_Xb
+    //     + i10mult(K_Xb_gx , y_gx)
+    //     + i10mult(K_Xb_gy , y_gy)
+    //     + i10mult(K_Xb_gz , y_gz);
+    // x_Yb = xp_Yb           
+    //     + i10mult(K_Yb_gx , y_gx)
+    //     + i10mult(K_Yb_gy , y_gy)
+    //     + i10mult(K_Yb_gz , y_gz);
+    // x_Zb = xp_Zb           
+    //     + i10mult(K_Zb_gx , y_gx)
+    //     + i10mult(K_Zb_gy , y_gy)
+    //     + i10mult(K_Zb_gz , y_gz);
 
     // GPS and Orientation's updates:
     x_xp = xp_xp + i10mult(K_xp_Px , y_Px);
@@ -564,9 +544,9 @@ void KalmanFilter::predictAndUpdate()
                 i10mult(K_Zr_gy, H_gy_Zr) +
                 i10mult(K_Zr_gz, H_gz_Zr) ));
 
-    P_Xbb = i10mult(Pp_Xbb, (1<<10) - K_Xb_gx);
-    P_Ybb = i10mult(Pp_Ybb, (1<<10) - K_Yb_gx);
-    P_Zbb = i10mult(Pp_Zbb, (1<<10) - K_Zb_gx);
+    // P_Xbb = i10mult(Pp_Xbb, (1<<10) - K_Xb_gx);
+    // P_Ybb = i10mult(Pp_Ybb, (1<<10) - K_Yb_gx);
+    // P_Zbb = i10mult(Pp_Zbb, (1<<10) - K_Zb_gx);
 
     P_xpv = Pp_xpv;
     P_xpa = Pp_xpa;
@@ -672,12 +652,12 @@ void predictStateCovarianceForPosition(
 }
 
 void predictStateCovarianceForRotation(
-		int& op1, int& op2, int& op3, int& op4,
-		int& p1, int& p2, int& p3, int& p4,
+		int& op1, int& op2, int& op3, // int& op4,
+		int& p1, int& p2, int& p3, // int& p4,
 		int& dT)
 {
 	// [[1,t,0],[0,1,0],[0,0,1]] * [[p1,p2,0],[p2,p3,0],[0,0,p4]] * [[1,0,0],[t,1,0],[0,0,1]]
-	op4 = p4;
+	// op4 = p4;
 	op3 = p3;
 	op2 = p2 + i10mult(p3, dT);
 	op1 = p1 + i10mult(op2 + p2, dT);
@@ -686,7 +666,7 @@ void predictStateCovarianceForRotation(
 
 void innovationCovariance(
         int& s1, int& s2, int& s3, int& s4, int& s5, int& s6,
-        int p1, int p2, int p3, int p4, int p5, int p6,
+        int p1, int p2, int p3,//  int p4, int p5, int p6,
         int h1, int h2, int h3,
         int h4, int h5, int h6,
         int h7, int h8, int h9)
@@ -703,12 +683,12 @@ void innovationCovariance(
      * [s3 s5 s6]
      */
 
-    s1 = p4+i10mult3(h3,h3,p3)+i10mult3(h2,h2,p2)+i10mult3(h1,h1,p1);
-    s2 =    i10mult3(h3,h6,p3)+i10mult3(h2,h5,p2)+i10mult3(h1,h4,p1);
-    s3 =    i10mult3(h3,h9,p3)+i10mult3(h2,h8,p2)+i10mult3(h1,h7,p1);
-    s4 = p5+i10mult3(h6,h6,p3)+i10mult3(h5,h5,p2)+i10mult3(h4,h4,p1);
-    s5 =    i10mult3(h6,h9,p3)+i10mult3(h5,h8,p2)+i10mult3(h4,h7,p1);
-    s6 = p6+i10mult3(h9,h9,p3)+i10mult3(h8,h8,p2)+i10mult3(h7,h7,p1);
+    s1 = /* p4+ */ i10mult3(h3,h3,p3)+i10mult3(h2,h2,p2)+i10mult3(h1,h1,p1);
+    s2 = /*     */ i10mult3(h3,h6,p3)+i10mult3(h2,h5,p2)+i10mult3(h1,h4,p1);
+    s3 = /*     */ i10mult3(h3,h9,p3)+i10mult3(h2,h8,p2)+i10mult3(h1,h7,p1);
+    s4 = /* p5+ */ i10mult3(h6,h6,p3)+i10mult3(h5,h5,p2)+i10mult3(h4,h4,p1);
+    s5 = /*     */ i10mult3(h6,h9,p3)+i10mult3(h5,h8,p2)+i10mult3(h4,h7,p1);
+    s6 = /* p6+ */ i10mult3(h9,h9,p3)+i10mult3(h8,h8,p2)+i10mult3(h7,h7,p1);
 }
 
 void kalmanGain3x3x3(
