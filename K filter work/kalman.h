@@ -75,9 +75,9 @@ class KalmanFilter {
 		int P_xpp, P_xpv, P_xpa, P_xvv, P_xva, P_xaa;
 		int P_ypp, P_ypv, P_ypa, P_yvv, P_yva, P_yaa;
 		int P_zpp, P_zpv, P_zpa, P_zvv, P_zva, P_zaa;
-		int P_Xaa, P_Xar, P_Xrr, P_Xbb;
-		int P_Yaa, P_Yar, P_Yrr, P_Ybb;
-		int P_Zaa, P_Zar, P_Zrr, P_Zbb;
+		int P_Xaa, P_Xar, P_Xrr/*, P_Xbb*/;
+		int P_Yaa, P_Yar, P_Yrr/*, P_Ybb*/;
+		int P_Zaa, P_Zar, P_Zrr/*, P_Zbb*/;
 
 		// sensor values
 		// a: accelerometer
@@ -108,7 +108,6 @@ class KalmanFilter {
 		int H_ax_xa, H_ax_ya, H_ax_za;
 		int H_ay_xa, H_ay_ya, H_ay_za;
 		int H_az_xa, H_az_ya, H_az_za;
-
 
 		int H_gx_Xr, H_gx_Yr, H_gx_Zr;
 		int H_gy_Xr, H_gy_Yr, H_gy_Zr;

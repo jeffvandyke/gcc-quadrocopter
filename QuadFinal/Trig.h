@@ -18,7 +18,7 @@
 #define Trig_h
 
 //Arduino libraries:
-#include "Arduino.h"
+// #include "Arduino.h"
 #include <bitset>
 
 class Trig {
@@ -34,7 +34,7 @@ class Trig {
 	private:
 		int floatToBitShiftInt(float num);
 		float BitShiftIntToFloat(int num);
-};rad
+};
 
 //Create class to use:
 extern Trig Trig;
