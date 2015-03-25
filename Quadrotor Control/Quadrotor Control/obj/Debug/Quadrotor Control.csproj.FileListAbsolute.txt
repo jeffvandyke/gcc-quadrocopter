@@ -1,0 +1,26 @@
+C:\Users\SPANGLERAR1\Documents\Visual Studio 2012\Projects\gcc-quadrocopter\Quadrotor Control\Quadrotor Control\bin\Debug\Quadrotor Control.exe.config
+C:\Users\SPANGLERAR1\Documents\Visual Studio 2012\Projects\gcc-quadrocopter\Quadrotor Control\Quadrotor Control\obj\Debug\Quadrotor Control.csprojResolveAssemblyReference.cache
+C:\Users\SPANGLERAR1\Documents\Visual Studio 2012\Projects\gcc-quadrocopter\Quadrotor Control\Quadrotor Control\obj\Debug\Quadrotor_Control.Form1.resources
+C:\Users\SPANGLERAR1\Documents\Visual Studio 2012\Projects\gcc-quadrocopter\Quadrotor Control\Quadrotor Control\obj\Debug\Quadrotor_Control.Properties.Resources.resources
+C:\Users\SPANGLERAR1\Documents\Visual Studio 2012\Projects\gcc-quadrocopter\Quadrotor Control\Quadrotor Control\obj\Debug\Quadrotor Control.csproj.GenerateResource.Cache
+C:\Users\SPANGLERAR1\Documents\Visual Studio 2012\Projects\gcc-quadrocopter\Quadrotor Control\Quadrotor Control\bin\Debug\Quadrotor Control.exe
+C:\Users\SPANGLERAR1\Documents\Visual Studio 2012\Projects\gcc-quadrocopter\Quadrotor Control\Quadrotor Control\bin\Debug\Quadrotor Control.pdb
+C:\Users\SPANGLERAR1\Documents\Visual Studio 2012\Projects\gcc-quadrocopter\Quadrotor Control\Quadrotor Control\obj\Debug\Quadrotor Control.exe
+C:\Users\SPANGLERAR1\Documents\Visual Studio 2012\Projects\gcc-quadrocopter\Quadrotor Control\Quadrotor Control\obj\Debug\Quadrotor Control.pdb
+C:\Users\SPANGLERAR1\Documents\Visual Studio 2012\Projects\gcc-quadrocopter\Quadrotor Control\Quadrotor Control\bin\Debug\Quadrotor Control.exe.manifest
+C:\Users\SPANGLERAR1\Documents\Visual Studio 2012\Projects\gcc-quadrocopter\Quadrotor Control\Quadrotor Control\bin\Debug\Quadrotor Control.application
+C:\Users\SPANGLERAR1\Documents\Visual Studio 2012\Projects\gcc-quadrocopter\Quadrotor Control\Quadrotor Control\obj\Debug\Quadrotor Control.exe.manifest
+C:\Users\SPANGLERAR1\Documents\Visual Studio 2012\Projects\gcc-quadrocopter\Quadrotor Control\Quadrotor Control\obj\Debug\Quadrotor Control.application
+C:\Users\OusleyJD1\Documents\GitHub\gcc-quadrocopter\Quadrotor Control\Quadrotor Control\bin\Debug\Quadrotor Control.exe.config
+C:\Users\OusleyJD1\Documents\GitHub\gcc-quadrocopter\Quadrotor Control\Quadrotor Control\obj\Debug\Quadrotor Control.pdb
+C:\Users\OusleyJD1\Documents\GitHub\gcc-quadrocopter\Quadrotor Control\Quadrotor Control\bin\Debug\Quadrotor Control.exe.manifest
+C:\Users\OusleyJD1\Documents\GitHub\gcc-quadrocopter\Quadrotor Control\Quadrotor Control\bin\Debug\Quadrotor Control.application
+C:\Users\OusleyJD1\Documents\GitHub\gcc-quadrocopter\Quadrotor Control\Quadrotor Control\bin\Debug\Quadrotor Control.exe
+C:\Users\OusleyJD1\Documents\GitHub\gcc-quadrocopter\Quadrotor Control\Quadrotor Control\bin\Debug\Quadrotor Control.pdb
+C:\Users\OusleyJD1\Documents\GitHub\gcc-quadrocopter\Quadrotor Control\Quadrotor Control\obj\Debug\Quadrotor Control.csprojResolveAssemblyReference.cache
+C:\Users\OusleyJD1\Documents\GitHub\gcc-quadrocopter\Quadrotor Control\Quadrotor Control\obj\Debug\Quadrotor_Control.Form1.resources
+C:\Users\OusleyJD1\Documents\GitHub\gcc-quadrocopter\Quadrotor Control\Quadrotor Control\obj\Debug\Quadrotor_Control.Properties.Resources.resources
+C:\Users\OusleyJD1\Documents\GitHub\gcc-quadrocopter\Quadrotor Control\Quadrotor Control\obj\Debug\Quadrotor Control.csproj.GenerateResource.Cache
+C:\Users\OusleyJD1\Documents\GitHub\gcc-quadrocopter\Quadrotor Control\Quadrotor Control\obj\Debug\Quadrotor Control.exe.manifest
+C:\Users\OusleyJD1\Documents\GitHub\gcc-quadrocopter\Quadrotor Control\Quadrotor Control\obj\Debug\Quadrotor Control.application
+C:\Users\OusleyJD1\Documents\GitHub\gcc-quadrocopter\Quadrotor Control\Quadrotor Control\obj\Debug\Quadrotor Control.exe
