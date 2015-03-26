@@ -1,0 +1,143 @@
+﻿Build started 3/25/2015 10:53:12 PM.
+     1>Project "C:\Users\kloostermancw1\Documents\GitHub\gcc-quadrocopter\kalmanTester\kalmanTester\kalmanTester.vcxproj" on node 2 (Build target(s)).
+     1>InitializeBuildStatus:
+         Touching "Debug\kalmanTester.unsuccessfulbuild".
+       ClCompile:
+         C:\Program Files\Microsoft Visual Studio 11.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc110.pdb" /Gd /TP /analyze- /errorReport:prompt Trig.cpp kalman.cpp main.cpp
+         main.cpp
+     1>c:\users\kloostermancw1\documents\github\gcc-quadrocopter\kalmantester\kalmantester\trig.h(15): error C2146: syntax error : missing ';' before identifier 'trig'
+     1>c:\users\kloostermancw1\documents\github\gcc-quadrocopter\kalmantester\kalmantester\trig.h(15): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+     1>c:\users\kloostermancw1\documents\github\gcc-quadrocopter\kalmantester\kalmantester\kalman.h(6): error C2236: unexpected token 'struct'. Did you forget a ';'?
+     1>c:\users\kloostermancw1\documents\github\gcc-quadrocopter\kalmantester\kalmantester\kalman.h(6): error C2143: syntax error : missing ';' before '{'
+     1>c:\users\kloostermancw1\documents\github\gcc-quadrocopter\kalmantester\kalmantester\kalman.h(6): error C2447: '{' : missing function header (old-style formal list?)
+     1>c:\users\kloostermancw1\documents\github\gcc-quadrocopter\kalmantester\kalmantester\kalman.h(31): error C2146: syntax error : missing ';' before identifier 'getQuadState'
+     1>c:\users\kloostermancw1\documents\github\gcc-quadrocopter\kalmantester\kalmantester\kalman.h(31): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+     1>c:\users\kloostermancw1\documents\github\gcc-quadrocopter\kalmantester\kalmantester\kalman.h(31): warning C4183: 'getQuadState': missing return type; assumed to be a member function returning 'int'
+         kalman.cpp
+     1>c:\users\kloostermancw1\documents\github\gcc-quadrocopter\kalmantester\kalmantester\trig.h(15): error C2146: syntax error : missing ';' before identifier 'trig'
+     1>c:\users\kloostermancw1\documents\github\gcc-quadrocopter\kalmantester\kalmantester\trig.h(15): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+     1>c:\users\kloostermancw1\documents\github\gcc-quadrocopter\kalmantester\kalmantester\kalman.h(6): error C2236: unexpected token 'struct'. Did you forget a ';'?
+     1>c:\users\kloostermancw1\documents\github\gcc-quadrocopter\kalmantester\kalmantester\kalman.h(6): error C2143: syntax error : missing ';' before '{'
+     1>c:\users\kloostermancw1\documents\github\gcc-quadrocopter\kalmantester\kalmantester\kalman.h(6): error C2447: '{' : missing function header (old-style formal list?)
+     1>c:\users\kloostermancw1\documents\github\gcc-quadrocopter\kalmantester\kalmantester\kalman.h(31): error C2146: syntax error : missing ';' before identifier 'getQuadState'
+     1>c:\users\kloostermancw1\documents\github\gcc-quadrocopter\kalmantester\kalmantester\kalman.h(31): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+     1>c:\users\kloostermancw1\documents\github\gcc-quadrocopter\kalmantester\kalmantester\kalman.h(31): warning C4183: 'getQuadState': missing return type; assumed to be a member function returning 'int'
+     1>c:\users\kloostermancw1\documents\github\gcc-quadrocopter\kalmantester\kalmantester\kalman.cpp(119): error C2228: left of '.atan2' must have class/struct/union
+                 type is 'int'
+     1>c:\users\kloostermancw1\documents\github\gcc-quadrocopter\kalmantester\kalmantester\kalman.cpp(120): error C2228: left of '.atan2' must have class/struct/union
+                 type is 'int'
+     1>c:\users\kloostermancw1\documents\github\gcc-quadrocopter\kalmantester\kalmantester\kalman.cpp(121): error C2228: left of '.atan2' must have class/struct/union
+                 type is 'int'
+     1>c:\users\kloostermancw1\documents\github\gcc-quadrocopter\kalmantester\kalmantester\kalman.cpp(211): error C2660: 'predictStateCovarianceForRotation' : function does not take 7 arguments
+     1>c:\users\kloostermancw1\documents\github\gcc-quadrocopter\kalmantester\kalmantester\kalman.cpp(215): error C2660: 'predictStateCovarianceForRotation' : function does not take 7 arguments
+     1>c:\users\kloostermancw1\documents\github\gcc-quadrocopter\kalmantester\kalmantester\kalman.cpp(219): error C2660: 'predictStateCovarianceForRotation' : function does not take 7 arguments
+     1>c:\users\kloostermancw1\documents\github\gcc-quadrocopter\kalmantester\kalmantester\kalman.cpp(223): error C2065: 'Q_xpv' : undeclared identifier
+     1>c:\users\kloostermancw1\documents\github\gcc-quadrocopter\kalmantester\kalmantester\kalman.cpp(224): error C2065: 'Q_xpa' : undeclared identifier
+     1>c:\users\kloostermancw1\documents\github\gcc-quadrocopter\kalmantester\kalmantester\kalman.cpp(226): error C2065: 'Q_xva' : undeclared identifier
+     1>c:\users\kloostermancw1\documents\github\gcc-quadrocopter\kalmantester\kalmantester\kalman.cpp(229): error C2065: 'Q_ypv' : undeclared identifier
+     1>c:\users\kloostermancw1\documents\github\gcc-quadrocopter\kalmantester\kalmantester\kalman.cpp(230): error C2065: 'Q_ypa' : undeclared identifier
+     1>c:\users\kloostermancw1\documents\github\gcc-quadrocopter\kalmantester\kalmantester\kalman.cpp(232): error C2065: 'Q_yva' : undeclared identifier
+     1>c:\users\kloostermancw1\documents\github\gcc-quadrocopter\kalmantester\kalmantester\kalman.cpp(235): error C2065: 'Q_zpv' : undeclared identifier
+     1>c:\users\kloostermancw1\documents\github\gcc-quadrocopter\kalmantester\kalmantester\kalman.cpp(236): error C2065: 'Q_zpa' : undeclared identifier
+     1>c:\users\kloostermancw1\documents\github\gcc-quadrocopter\kalmantester\kalmantester\kalman.cpp(238): error C2065: 'Q_zva' : undeclared identifier
+     1>c:\users\kloostermancw1\documents\github\gcc-quadrocopter\kalmantester\kalmantester\kalman.cpp(319): error C2660: 'innovationCovariance' : function does not take 18 arguments
+     1>c:\users\kloostermancw1\documents\github\gcc-quadrocopter\kalmantester\kalmantester\kalman.cpp(422): error C2143: syntax error : missing ';' before ','
+     1>c:\users\kloostermancw1\documents\github\gcc-quadrocopter\kalmantester\kalmantester\kalman.cpp(490): error C2065: 'K_Xa_Ox' : undeclared identifier
+     1>c:\users\kloostermancw1\documents\github\gcc-quadrocopter\kalmantester\kalmantester\kalman.cpp(528): error C2065: 'K_Xa_Ox' : undeclared identifier
+     1>c:\users\kloostermancw1\documents\github\gcc-quadrocopter\kalmantester\kalmantester\kalman.cpp(571): error C2146: syntax error : missing ';' before identifier 'getQuadState'
+     1>c:\users\kloostermancw1\documents\github\gcc-quadrocopter\kalmantester\kalmantester\kalman.cpp(571): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+     1>c:\users\kloostermancw1\documents\github\gcc-quadrocopter\kalmantester\kalmantester\kalman.cpp(572): error C2146: syntax error : missing ';' before identifier 'state'
+     1>c:\users\kloostermancw1\documents\github\gcc-quadrocopter\kalmantester\kalmantester\kalman.cpp(572): error C2065: 'state' : undeclared identifier
+     1>c:\users\kloostermancw1\documents\github\gcc-quadrocopter\kalmantester\kalmantester\kalman.cpp(573): error C2065: 'state' : undeclared identifier
+     1>c:\users\kloostermancw1\documents\github\gcc-quadrocopter\kalmantester\kalmantester\kalman.cpp(573): error C2228: left of '.xPosition' must have class/struct/union
+                 type is ''unknown-type''
+     1>c:\users\kloostermancw1\documents\github\gcc-quadrocopter\kalmantester\kalmantester\kalman.cpp(573): error C2065: 'x_xp' : undeclared identifier
+     1>c:\users\kloostermancw1\documents\github\gcc-quadrocopter\kalmantester\kalmantester\kalman.cpp(574): error C2065: 'state' : undeclared identifier
+     1>c:\users\kloostermancw1\documents\github\gcc-quadrocopter\kalmantester\kalmantester\kalman.cpp(574): error C2228: left of '.yPosition' must have class/struct/union
+                 type is ''unknown-type''
+     1>c:\users\kloostermancw1\documents\github\gcc-quadrocopter\kalmantester\kalmantester\kalman.cpp(574): error C2065: 'x_yp' : undeclared identifier
+     1>c:\users\kloostermancw1\documents\github\gcc-quadrocopter\kalmantester\kalmantester\kalman.cpp(575): error C2065: 'state' : undeclared identifier
+     1>c:\users\kloostermancw1\documents\github\gcc-quadrocopter\kalmantester\kalmantester\kalman.cpp(575): error C2228: left of '.zPosition' must have class/struct/union
+                 type is ''unknown-type''
+     1>c:\users\kloostermancw1\documents\github\gcc-quadrocopter\kalmantester\kalmantester\kalman.cpp(575): error C2065: 'x_zp' : undeclared identifier
+     1>c:\users\kloostermancw1\documents\github\gcc-quadrocopter\kalmantester\kalmantester\kalman.cpp(576): error C2065: 'state' : undeclared identifier
+     1>c:\users\kloostermancw1\documents\github\gcc-quadrocopter\kalmantester\kalmantester\kalman.cpp(576): error C2228: left of '.xVelocity' must have class/struct/union
+                 type is ''unknown-type''
+     1>c:\users\kloostermancw1\documents\github\gcc-quadrocopter\kalmantester\kalmantester\kalman.cpp(576): error C2065: 'x_xv' : undeclared identifier
+     1>c:\users\kloostermancw1\documents\github\gcc-quadrocopter\kalmantester\kalmantester\kalman.cpp(577): error C2065: 'state' : undeclared identifier
+     1>c:\users\kloostermancw1\documents\github\gcc-quadrocopter\kalmantester\kalmantester\kalman.cpp(577): error C2228: left of '.yVelocity' must have class/struct/union
+                 type is ''unknown-type''
+     1>c:\users\kloostermancw1\documents\github\gcc-quadrocopter\kalmantester\kalmantester\kalman.cpp(577): error C2065: 'x_yv' : undeclared identifier
+     1>c:\users\kloostermancw1\documents\github\gcc-quadrocopter\kalmantester\kalmantester\kalman.cpp(578): error C2065: 'state' : undeclared identifier
+     1>c:\users\kloostermancw1\documents\github\gcc-quadrocopter\kalmantester\kalmantester\kalman.cpp(578): error C2228: left of '.zVelocity' must have class/struct/union
+                 type is ''unknown-type''
+     1>c:\users\kloostermancw1\documents\github\gcc-quadrocopter\kalmantester\kalmantester\kalman.cpp(578): error C2065: 'x_zv' : undeclared identifier
+     1>c:\users\kloostermancw1\documents\github\gcc-quadrocopter\kalmantester\kalmantester\kalman.cpp(579): error C2065: 'state' : undeclared identifier
+     1>c:\users\kloostermancw1\documents\github\gcc-quadrocopter\kalmantester\kalmantester\kalman.cpp(579): error C2228: left of '.xAcceleration' must have class/struct/union
+                 type is ''unknown-type''
+     1>c:\users\kloostermancw1\documents\github\gcc-quadrocopter\kalmantester\kalmantester\kalman.cpp(579): error C2065: 'x_xa' : undeclared identifier
+     1>c:\users\kloostermancw1\documents\github\gcc-quadrocopter\kalmantester\kalmantester\kalman.cpp(580): error C2065: 'state' : undeclared identifier
+     1>c:\users\kloostermancw1\documents\github\gcc-quadrocopter\kalmantester\kalmantester\kalman.cpp(580): error C2228: left of '.yAcceleration' must have class/struct/union
+                 type is ''unknown-type''
+     1>c:\users\kloostermancw1\documents\github\gcc-quadrocopter\kalmantester\kalmantester\kalman.cpp(580): error C2065: 'x_ya' : undeclared identifier
+     1>c:\users\kloostermancw1\documents\github\gcc-quadrocopter\kalmantester\kalmantester\kalman.cpp(581): error C2065: 'state' : undeclared identifier
+     1>c:\users\kloostermancw1\documents\github\gcc-quadrocopter\kalmantester\kalmantester\kalman.cpp(581): error C2228: left of '.zAcceleration' must have class/struct/union
+                 type is ''unknown-type''
+     1>c:\users\kloostermancw1\documents\github\gcc-quadrocopter\kalmantester\kalmantester\kalman.cpp(581): error C2065: 'x_za' : undeclared identifier
+     1>c:\users\kloostermancw1\documents\github\gcc-quadrocopter\kalmantester\kalmantester\kalman.cpp(582): error C2065: 'state' : undeclared identifier
+     1>c:\users\kloostermancw1\documents\github\gcc-quadrocopter\kalmantester\kalmantester\kalman.cpp(582): error C2228: left of '.xAngle' must have class/struct/union
+                 type is ''unknown-type''
+     1>c:\users\kloostermancw1\documents\github\gcc-quadrocopter\kalmantester\kalmantester\kalman.cpp(582): error C2065: 'x_Xa' : undeclared identifier
+     1>c:\users\kloostermancw1\documents\github\gcc-quadrocopter\kalmantester\kalmantester\kalman.cpp(583): error C2065: 'state' : undeclared identifier
+     1>c:\users\kloostermancw1\documents\github\gcc-quadrocopter\kalmantester\kalmantester\kalman.cpp(583): error C2228: left of '.yAngle' must have class/struct/union
+                 type is ''unknown-type''
+     1>c:\users\kloostermancw1\documents\github\gcc-quadrocopter\kalmantester\kalmantester\kalman.cpp(583): error C2065: 'x_Ya' : undeclared identifier
+     1>c:\users\kloostermancw1\documents\github\gcc-quadrocopter\kalmantester\kalmantester\kalman.cpp(584): error C2065: 'state' : undeclared identifier
+     1>c:\users\kloostermancw1\documents\github\gcc-quadrocopter\kalmantester\kalmantester\kalman.cpp(584): error C2228: left of '.zAngle' must have class/struct/union
+                 type is ''unknown-type''
+     1>c:\users\kloostermancw1\documents\github\gcc-quadrocopter\kalmantester\kalmantester\kalman.cpp(584): error C2065: 'x_Za' : undeclared identifier
+     1>c:\users\kloostermancw1\documents\github\gcc-quadrocopter\kalmantester\kalmantester\kalman.cpp(585): error C2065: 'state' : undeclared identifier
+     1>c:\users\kloostermancw1\documents\github\gcc-quadrocopter\kalmantester\kalmantester\kalman.cpp(585): error C2228: left of '.xRotation' must have class/struct/union
+                 type is ''unknown-type''
+     1>c:\users\kloostermancw1\documents\github\gcc-quadrocopter\kalmantester\kalmantester\kalman.cpp(585): error C2065: 'x_Xr' : undeclared identifier
+     1>c:\users\kloostermancw1\documents\github\gcc-quadrocopter\kalmantester\kalmantester\kalman.cpp(586): error C2065: 'state' : undeclared identifier
+     1>c:\users\kloostermancw1\documents\github\gcc-quadrocopter\kalmantester\kalmantester\kalman.cpp(586): error C2228: left of '.yRotation' must have class/struct/union
+                 type is ''unknown-type''
+     1>c:\users\kloostermancw1\documents\github\gcc-quadrocopter\kalmantester\kalmantester\kalman.cpp(586): error C2065: 'x_Yr' : undeclared identifier
+     1>c:\users\kloostermancw1\documents\github\gcc-quadrocopter\kalmantester\kalmantester\kalman.cpp(587): error C2065: 'state' : undeclared identifier
+     1>c:\users\kloostermancw1\documents\github\gcc-quadrocopter\kalmantester\kalmantester\kalman.cpp(587): error C2228: left of '.zRotation' must have class/struct/union
+                 type is ''unknown-type''
+     1>c:\users\kloostermancw1\documents\github\gcc-quadrocopter\kalmantester\kalmantester\kalman.cpp(587): error C2065: 'x_Zr' : undeclared identifier
+     1>c:\users\kloostermancw1\documents\github\gcc-quadrocopter\kalmantester\kalmantester\kalman.cpp(588): error C2065: 'state' : undeclared identifier
+         Trig.cpp
+     1>c:\users\kloostermancw1\documents\github\gcc-quadrocopter\kalmantester\kalmantester\trig.h(15): error C2146: syntax error : missing ';' before identifier 'trig'
+     1>c:\users\kloostermancw1\documents\github\gcc-quadrocopter\kalmantester\kalmantester\trig.h(15): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+     1>c:\users\kloostermancw1\documents\github\gcc-quadrocopter\kalmantester\kalmantester\trig.cpp(18): error C2628: 'Trig' followed by 'float' is illegal (did you forget a ';'?)
+     1>c:\users\kloostermancw1\documents\github\gcc-quadrocopter\kalmantester\kalmantester\trig.cpp(18): error C2065: 'PI' : undeclared identifier
+     1>c:\users\kloostermancw1\documents\github\gcc-quadrocopter\kalmantester\kalmantester\trig.cpp(32): warning C4305: 'initializing' : truncation from 'double' to 'const float'
+     1>c:\users\kloostermancw1\documents\github\gcc-quadrocopter\kalmantester\kalmantester\trig.cpp(33): warning C4305: 'initializing' : truncation from 'double' to 'const float'
+     1>c:\users\kloostermancw1\documents\github\gcc-quadrocopter\kalmantester\kalmantester\trig.cpp(34): warning C4305: 'initializing' : truncation from 'double' to 'const float'
+     1>c:\users\kloostermancw1\documents\github\gcc-quadrocopter\kalmantester\kalmantester\trig.cpp(35): warning C4305: 'initializing' : truncation from 'double' to 'const float'
+     1>c:\users\kloostermancw1\documents\github\gcc-quadrocopter\kalmantester\kalmantester\trig.cpp(36): warning C4305: 'initializing' : truncation from 'double' to 'const float'
+     1>c:\users\kloostermancw1\documents\github\gcc-quadrocopter\kalmantester\kalmantester\trig.cpp(37): warning C4305: 'initializing' : truncation from 'double' to 'const float'
+     1>c:\users\kloostermancw1\documents\github\gcc-quadrocopter\kalmantester\kalmantester\trig.cpp(38): warning C4305: 'initializing' : truncation from 'double' to 'const float'
+     1>c:\users\kloostermancw1\documents\github\gcc-quadrocopter\kalmantester\kalmantester\trig.cpp(39): warning C4305: 'initializing' : truncation from 'double' to 'const float'
+     1>c:\users\kloostermancw1\documents\github\gcc-quadrocopter\kalmantester\kalmantester\trig.cpp(40): warning C4305: 'initializing' : truncation from 'double' to 'const float'
+     1>c:\users\kloostermancw1\documents\github\gcc-quadrocopter\kalmantester\kalmantester\trig.cpp(41): warning C4305: 'initializing' : truncation from 'double' to 'const float'
+     1>c:\users\kloostermancw1\documents\github\gcc-quadrocopter\kalmantester\kalmantester\trig.cpp(42): warning C4305: 'initializing' : truncation from 'double' to 'const float'
+     1>c:\users\kloostermancw1\documents\github\gcc-quadrocopter\kalmantester\kalmantester\trig.cpp(43): warning C4305: 'initializing' : truncation from 'double' to 'const float'
+     1>c:\users\kloostermancw1\documents\github\gcc-quadrocopter\kalmantester\kalmantester\trig.cpp(44): warning C4305: 'initializing' : truncation from 'double' to 'const float'
+     1>c:\users\kloostermancw1\documents\github\gcc-quadrocopter\kalmantester\kalmantester\trig.cpp(45): warning C4305: 'initializing' : truncation from 'double' to 'const float'
+     1>c:\users\kloostermancw1\documents\github\gcc-quadrocopter\kalmantester\kalmantester\trig.cpp(94): warning C4305: '-=' : truncation from 'double' to 'float'
+     1>c:\users\kloostermancw1\documents\github\gcc-quadrocopter\kalmantester\kalmantester\trig.cpp(97): warning C4244: 'argument' : conversion from 'double' to 'float', possible loss of data
+     1>c:\users\kloostermancw1\documents\github\gcc-quadrocopter\kalmantester\kalmantester\trig.cpp(150): warning C4244: 'return' : conversion from 'float' to 'int', possible loss of data
+     1>c:\users\kloostermancw1\documents\github\gcc-quadrocopter\kalmantester\kalmantester\trig.cpp(198): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
+     1>c:\users\kloostermancw1\documents\github\gcc-quadrocopter\kalmantester\kalmantester\trig.cpp(202): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
+     1>c:\users\kloostermancw1\documents\github\gcc-quadrocopter\kalmantester\kalmantester\trig.cpp(206): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
+     1>c:\users\kloostermancw1\documents\github\gcc-quadrocopter\kalmantester\kalmantester\trig.cpp(211): warning C4244: '=' : conversion from 'double' to 'float', possible loss of data
+         Generating Code...
+     1>Done Building Project "C:\Users\kloostermancw1\Documents\GitHub\gcc-quadrocopter\kalmanTester\kalmanTester\kalmanTester.vcxproj" (Build target(s)) -- FAILED.
+
+Build FAILED.
+
+Time Elapsed 00:00:03.79

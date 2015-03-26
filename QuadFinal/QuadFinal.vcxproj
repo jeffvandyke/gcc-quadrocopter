@@ -73,7 +73,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\Neil%27s backup\Neil%27s homework\design project\IMUVariance\IMUVariance - Copy\Trig.cpp" />
     <ClCompile Include="..\libraries\Adafruit_ADXL345_U.cpp" />
     <ClCompile Include="..\libraries\Adafruit_BMP085_U.cpp" />
     <ClCompile Include="..\libraries\Adafruit_Sensor.cpp" />
@@ -102,7 +101,6 @@
     <ClCompile Include="Trig.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\Neil%27s backup\Neil%27s homework\design project\IMUVariance\IMUVariance - Copy\Adafruit_BMP085_U.h" />
     <ClInclude Include="..\..\Neil%27s backup\Neil%27s homework\design project\IMUVariance\IMUVariance - Copy\Adafruit_Sensor.h" />
     <ClInclude Include="..\..\Neil%27s backup\Neil%27s homework\design project\IMUVariance\IMUVariance - Copy\Barometer.h" />
     <ClInclude Include="..\..\Neil%27s backup\Neil%27s homework\design project\IMUVariance\IMUVariance - Copy\Bluetooth.h" />

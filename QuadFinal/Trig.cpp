@@ -248,4 +248,4 @@ float BitShiftIntToFloat(int num){
 };
 
 //Initialize Trig object:
-Trig Trig;
+Trig trig;

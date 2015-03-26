@@ -15,9 +15,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\Neil%27s backup\Neil%27s homework\design project\IMUVariance\IMUVariance - Copy\Trig.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\libraries\Adafruit_ADXL345_U.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -92,9 +89,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\Neil%27s backup\Neil%27s homework\design project\IMUVariance\IMUVariance - Copy\Adafruit_BMP085_U.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Neil%27s backup\Neil%27s homework\design project\IMUVariance\IMUVariance - Copy\Adafruit_Sensor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
