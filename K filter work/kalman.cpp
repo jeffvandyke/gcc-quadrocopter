@@ -1,7 +1,6 @@
 #ifndef KALMAN_CPP
 #define KALMAN_CPP
 #include "kalman.h"
-
 inline int i10mult(int a, int b) {
     return (((a)*(b))>>10);
 }
@@ -15,6 +14,7 @@ inline int i10mult3(int a, int b, int c) {
 }
 using namespace std;
 
+const int gravity = 10035; // 9.8 * 1024
 
 
 
@@ -102,12 +102,14 @@ void KalmanFilter::assignSensorValues(
 
 	usingGPS = useGPS;
 
-	z_ax = ax * 1;
-	z_ay = ay * 1;
-	z_az = az * 1;
-	z_gx = (gx - x_Xb) * 1;
-	z_gy = (gy - x_Yb) * 1;
-	z_gz = (gz - x_Zb) * 1;
+    // adjust with scaling factor of 0.038307
+	z_ax = (ax * 642685) >> 14;
+	z_ay = (ay * 642685) >> 14;
+	z_az = (az * 642685) >> 14;
+    // adjust gyroscope by 0.038307
+	z_gx = ((gx - x_Xb) * 1167107) >> 14;
+	z_gy = ((gy - x_Yb) * 1167107) >> 14;
+	z_gz = ((gz - x_Zb) * 1167107) >> 14;
 
 	if (usingGPS)
 	{
@@ -121,6 +123,40 @@ void KalmanFilter::assignSensorValues(
 	z_Oz = (int)(trig.atan2(Cx, Cy) * 1024);
 
     // TODO: adjust H matrix for acceleration and gyroscope
+
+    int cx = trig.cos(x_Xa);
+    int cy = trig.cos(x_Ya);
+    int cz = trig.cos(x_Za);
+    int sx = trig.sin(x_Xa);
+    int sy = trig.sin(x_Ya);
+    int sz = trig.sin(x_Za);
+
+    H_gx_Xr = H_ax_xa = i10mult( cy , cz );
+    H_gy_Yr = H_ay_ya = i10mult( cz , cx );
+    H_gz_Zr = H_az_za = i10mult( cx , cy );
+          
+    H_gx_Yr = H_ax_ya = i10mult( sz , cx );
+    H_gy_Xr = H_ay_xa = i10mult(-sz , cy );
+          
+    H_gx_Zr = H_ax_za = i10mult(-sy , cx );
+    H_gy_Zr = H_ay_za = i10mult( sx , cy );
+          
+    H_gz_Xr = H_az_xa = i10mult( sy , cz );
+    H_gz_Yr = H_az_ya = i10mult(-sx , cz );
+                             
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
 }
 
 
@@ -253,15 +289,15 @@ void KalmanFilter::predictAndUpdate()
 
     int y_ax = i10mult(H_ax_xa, xp_xa) + 
         i10mult(H_ax_ya, xp_ya) + 
-        i10mult(H_ax_za, xp_za) -
+        i10mult(H_ax_za, xp_za - gravity) -
         z_ax;
     int y_ay = i10mult(H_ay_xa, xp_xa) + 
         i10mult(H_ay_ya, xp_ya) + 
-        i10mult(H_ay_za, xp_za) -
+        i10mult(H_ay_za, xp_za - gravity) -
         z_ay;
     int y_az = i10mult(H_az_xa, xp_xa) + 
         i10mult(H_az_ya, xp_ya) + 
-        i10mult(H_az_za, xp_za) -
+        i10mult(H_az_za, xp_za - gravity) -
         z_az;
     // rotations
     int y_gx = -z_gx +
