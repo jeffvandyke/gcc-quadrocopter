@@ -12,7 +12,7 @@
  This is the main header file.
 ==============================================================
 */
-Trig trig;
+
 //Include Guard:
 #ifndef Trig_h
 #define Trig_h
@@ -25,19 +25,16 @@ class Trig {
   public:
 		Trig();
 		int radToMicro(float rad);
-		int radToDeg(float rad);
 		int floatToInt(float input);
 		int sin(int deg);
 		int cos(int deg);
 		float acos(float num);
 		float atan2(float opp, float adj);
 		int atan2(int opp, int adj);
+		int radToDeg(float rad);
 	private:
 		int floatToBitShiftInt(float num);
-		float bitShiftIntToFloat(int num);
-}
+		float BitShiftIntToFloat(int num);
+};
 
-//Create class to use:
-
-
-#endif //#ifndef Trig_h
+#endif 

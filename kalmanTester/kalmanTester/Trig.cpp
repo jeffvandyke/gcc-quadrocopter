@@ -15,17 +15,18 @@
 
 #include "Trig.h"
 
-const float PIby2 = PI / 2;
-
 #define MAX_UINT  65535
 #define MIN_INT -32768
 #define MAX_INT  32767
-#define PI		 3.14159265
 
 #define DEC1 10
 #define DEC2 100
 #define DEC3 1000
 #define DEC4 10000
+
+#define PI 3.14159265
+
+const float PIby2 = PI / 2;
 
 //Sin Lookup table
 const float SIN_TABLE[181]={
@@ -51,7 +52,7 @@ const float SIN_TABLE[181]={
     - 0.9 to 0.99 is done in steps of 0.0008 rads. (0.01/127)
     - 0.99 to 1 is done in steps of 0.0002 rads. (0.01/64)	
 */
-const int ACOS_TABLE[278] = {
+const byte ACOS_TABLE[278] = {
   255, 254, 252, 251, 250, 249, 247, 246, 245, 243, 242, 241, 240, 238, 237, 236, 234, 233, 232, 231, 229, 228, 227, 225, 224, 223,
   221, 220, 219, 217, 216, 215, 214, 212, 211, 210, 208, 207, 206, 204, 203, 201, 200, 199, 197, 196, 195, 193, 192, 190, 189, 188,
   186, 185, 183, 182, 181, 179, 178, 176, 175, 173, 172, 170, 169, 167, 166, 164, 163, 161, 160, 158, 157, 155, 154, 152, 150, 149,
@@ -94,13 +95,21 @@ int Trig::radToDeg(float rad) {
     rad -= PI;
   }
   
-  return 240 - floatToBitShiftInt(57.2958 * rad);
+  return 240 - this->floatToBitShiftInt(57.2958 * rad);
 }
 
 int Trig::floatToInt(float input) {
   //Rounding a number avoiding truncation:
   return (int)(input + 0.5);
 }
+
+int floatToBitShiftInt(float num) {
+	return (int)(num*1024);
+};
+
+float BitShiftIntToFloat(int num){
+	return (float)(num/1024);
+};
 
 //============================================================
 //  _____     _         
@@ -177,7 +186,7 @@ int Trig::cos(int deg) {
     result = SIN_TABLE[(deg - 276480) / 512];
     
   }
-  return (int)(result*1024);
+  return result;
 }
 
 
@@ -195,15 +204,15 @@ float Trig::acos(float num) {
   
   if((num >= 0) && (num < 0.9)) {
     //num between 0 and 0.9.
-    rads = (float)ACOS_TABLE[floatToInt(num * DEC4 / 79)] * 0.00616;
+    rads = (float)ACOS_TABLE[this->floatToInt(num * DEC4 / 79)] * 0.00616;
     
   } else if ((num >= 0.9) && (num < 0.99)) {
     //num between 0.9 and 0.99.
-    rads = (float)ACOS_TABLE[floatToInt((num * DEC4 - 9000) / 8) + 114] * 0.00616;
+    rads = (float)ACOS_TABLE[this->floatToInt((num * DEC4 - 9000) / 8) + 114] * 0.00616;
     
   } else if ((num >= 0.99) && (num <= 1)) {
     //num between 0.99 and 1.0.
-    rads = (float)ACOS_TABLE[floatToInt((num * DEC4 - 9900) / 2) + 227] * 0.00616;
+    rads = (float)ACOS_TABLE[this->floatToInt((num * DEC4 - 9900) / 2) + 227] * 0.00616;
   }
 
   //Account for the negative sign if required.
@@ -216,7 +225,7 @@ float Trig::acos(float num) {
 
 float Trig::atan2(float opp, float adj) {
   float hypt = sqrt(adj * adj + opp * opp);
-  float rad = acos(adj / hypt);
+  float rad = this->acos(adj / hypt);
   
   if(opp < 0) {
     rad = -rad;
@@ -227,11 +236,11 @@ float Trig::atan2(float opp, float adj) {
 
 int Trig::atan2(int opp, int adj) {
 	float adjf, oppf;
-	adjf=bitShiftIntToFloat(adj);
-	oppf=bitShiftIntToFloat(opp);
+	adjf=this->BitShiftIntToFloat(adj);
+	oppf=this->BitShiftIntToFloat(opp);
 
 	float hypt = sqrt(adjf * adjf + oppf * oppf);
-	float rad = acos(adjf / hypt);
+	float rad = this->acos(adjf / hypt);
   
 	if(opp < 0) {
 		rad = -rad;
@@ -240,10 +249,4 @@ int Trig::atan2(int opp, int adj) {
   return radToDeg(rad);
 }
 
-int Trig::floatToBitShiftInt(float num) {
-	return (int)(num*1024);
-};
-
-float Trig::bitShiftIntToFloat(int num){
-	return (float)(num/1024);
-};
+//Initialize Trig object:

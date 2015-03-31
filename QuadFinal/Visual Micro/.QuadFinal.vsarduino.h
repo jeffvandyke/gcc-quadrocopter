@@ -5,21 +5,26 @@
 	        all non-arduino files created by visual micro and all visual studio project or solution files can be freely deleted and are not required to compile a sketch (do not delete your own code!).
 	        note: debugger breakpoints are stored in '.sln' or '.asln' files, knowledge of last uploaded breakpoints is stored in the upload.vmps.xml file. Both files are required to continue a previous debug session without needing to compile and upload again
 	
-	Hardware: Arduino Mega 2560 or Mega ADK, Platform=avr, Package=arduino
+	Hardware: Arduino Due (Programming Port), Platform=sam, Package=arduino
 */
 
 #ifndef _VSARDUINO_H_
 #define _VSARDUINO_H_
-#define __AVR_ATmega2560__
-#define ARDUINO 105
+#define __SAM3X8E__
+#define USB_VID 0x2341
+#define USB_PID 0x003e
+#define USBCON
+#define USB_MANUFACTURER "\"Unknown\""
+#define USB_PRODUCT "\"Arduino Due\""
+#define ARDUINO 161
 #define ARDUINO_MAIN
-#define __AVR__
-#define __avr__
-#define F_CPU 16000000L
+#define printf iprintf
+#define __SAM__
+#define __sam__
+#define F_CPU 84000000L
 #define __cplusplus
-#define GCC_VERSION 40302
-#define ARDUINO_ARCH_AVR
-#define ARDUINO_AVR_MEGA2560
+#define ARDUINO_ARCH_SAM
+#define ARDUINO_SAM_DUE
 #define __inline__
 #define __asm__(x)
 #define __extension__
@@ -29,21 +34,25 @@
 #define __asm__ 
 #define __volatile__
 
-typedef void *__builtin_va_list;
-#define __builtin_va_start
-#define __builtin_va_end
-//#define __DOXYGEN__
-#define __attribute__(x)
-#define NOINLINE __attribute__((noinline))
+#define __ICCARM__
+#define __ASM
+#define __INLINE
+#define __GNUC__ 0
+#define __ICCARM__
+#define __ARMCC_VERSION 400678
+#define __attribute__(noinline)
+
 #define prog_void
 #define PGM_VOID_P int
-
-#define NEW_H
             
 typedef unsigned char byte;
 extern "C" void __cxa_pure_virtual() {;}
+
+
+
 #include <arduino.h>
 #include <pins_arduino.h> 
+#include <variant.h> 
 #undef F
 #define F(string_literal) ((const PROGMEM char *)(string_literal))
 #undef cli
@@ -86,6 +95,8 @@ extern "C" void __cxa_pure_virtual() {;}
 #include <ITG3200.cpp>
 #include <Kalman.cpp>
 #include <Kalman.h>
+#include <PIDcontrol.cpp>
+#include <PIDcontrol.h>
 #include <Quad.cpp>
 #include <Quad.h>
 #include <Trig.cpp>

@@ -31,12 +31,10 @@ class Trig {
 		float acos(float num);
 		float atan2(float opp, float adj);
 		int atan2(int opp, int adj);
+		int radToDeg(float rad);
 	private:
 		int floatToBitShiftInt(float num);
 		float BitShiftIntToFloat(int num);
 };
 
-//Create class to use:
-extern Trig Trig;
-
-#endif //#ifndef Trig_h
+#endif 
