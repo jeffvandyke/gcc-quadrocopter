@@ -12,10 +12,10 @@
  This is the main header file.
 ==============================================================
 */
-Trig trig;
 //Include Guard:
 #ifndef Trig_h
 #define Trig_h
+#include <cmath>
 
 //Arduino libraries:
 // #include "Arduino.h"
@@ -35,9 +35,10 @@ class Trig {
 	private:
 		int floatToBitShiftInt(float num);
 		float bitShiftIntToFloat(int num);
-}
+};
 
 //Create class to use:
 
+extern Trig trig;
 
 #endif //#ifndef Trig_h

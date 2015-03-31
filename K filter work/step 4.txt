@@ -1,0 +1,74 @@
+// intermediates
+Ht_SiP1 = i10m( H_az_xa , Si_axz ) + i10m( H_ay_xa , Si_axy ) + i10m( H_ax_xa , Si_axx );
+Ht_SiP2 = i10m( H_az_xa , Si_ayz ) + i10m( H_ay_xa , Si_ayy ) + i10m( H_ax_xa , Si_axy );
+Ht_SiP3 = i10m( H_az_xa , Si_azz ) + i10m( H_ay_xa , Si_ayz ) + i10m( H_ax_xa , Si_axz );
+
+Ht_SiP5 = i10m( H_az_ya , Si_ayz ) + i10m( H_ay_ya , Si_ayy ) + i10m( H_ax_ya , Si_axy );
+Ht_SiP4 = i10m( H_az_ya , Si_axz ) + i10m( H_ay_ya , Si_axy ) + i10m( H_ax_ya , Si_axx );
+Ht_SiP6 = i10m( H_az_ya , Si_azz ) + i10m( H_ay_ya , Si_ayz ) + i10m( H_ax_ya , Si_axz );
+
+Ht_SiP7 = i10m( H_az_za , Si_axz ) + i10m( H_ay_za , Si_axy ) + i10m( H_ax_za , Si_axx );
+Ht_SiP8 = i10m( H_az_za , Si_ayz ) + i10m( H_ay_za , Si_ayy ) + i10m( H_ax_za , Si_axy );
+Ht_SiP9 = i10m( H_az_za , Si_azz ) + i10m( H_ay_za , Si_ayz ) + i10m( H_ax_za , Si_axz );
+
+// actual kalman gains
+int K_xp_ax = i10m( P_xpa , Ht_SiP1 );
+int K_xp_ay = i10m( P_xpa , Ht_SiP2 );
+int K_xp_az = i10m( P_xpa , Ht_SiP3 );
+
+int K_yp_ax = i10m( P_ypa , Ht_SiP4 );
+int K_yp_ay = i10m( P_ypa , Ht_SiP5 );
+int K_yp_az = i10m( P_ypa , Ht_SiP6 );
+
+int K_zp_ax = i10m( P_zpa , Ht_SiP7 );
+int K_zp_ay = i10m( P_zpa , Ht_SiP8 );
+int K_zp_az = i10m( P_zpa , Ht_SiP9 );
+
+
+int K_xv_ax = i10m( P_xva , Ht_SiP1 );
+int K_xv_ay = i10m( P_xva , Ht_SiP2 );
+int K_xv_az = i10m( P_xva , Ht_SiP3 );
+
+int K_yv_ax = i10m( P_yva , Ht_SiP4 );
+int K_yv_ay = i10m( P_yva , Ht_SiP5 );
+int K_yv_az = i10m( P_yva , Ht_SiP6 );
+
+int K_zv_ax = i10m( P_zva , Ht_SiP7 );
+int K_zv_ay = i10m( P_zva , Ht_SiP8 );
+int K_zv_az = i10m( P_zva , Ht_SiP9 );
+
+
+int K_xa_ax = i10m( P_xaa , Ht_SiP1 );
+int K_xa_ay = i10m( P_xaa , Ht_SiP2 );
+int K_xa_az = i10m( P_xaa , Ht_SiP3 );
+
+int K_ya_ax = i10m( P_yaa , Ht_SiP4 );
+int K_ya_ay = i10m( P_yaa , Ht_SiP5 );
+int K_ya_az = i10m( P_yaa , Ht_SiP6 );
+
+int K_za_ax = i10m( P_zaa , Ht_SiP7 );
+int K_za_ay = i10m( P_zaa , Ht_SiP8 );
+int K_za_az = i10m( P_zaa , Ht_SiP9 );
+
+
+int K_xp_Px = i10m( P_xpp , S_Pxx );
+int K_yp_Py = i10m( P_ypp , S_Pyy );
+int K_zp_Pz = i10m( P_zpp , S_Pzz );
+int K_xv_Px = i10m( P_xpv , S_Pxx );
+int K_yv_Py = i10m( P_ypv , S_Pyy );
+int K_zv_Pz = i10m( P_zpv , S_Pzz );
+int K_xa_Px = i10m( P_xpa , S_Pxx );
+int K_ya_Py = i10m( P_ypa , S_Pyy );
+int K_za_Pz = i10m( P_zpa , S_Pzz );
+
+
+
+[K_xp_Px,0,0,K_xp_ax,K_xp_ay,K_xp_az],
+[0,K_yp_Py,0,K_yp_ax,K_yp_ay,K_yp_az],
+[0,0,K_xp_Pz,K_zp_ax,K_zp_ay,K_zp_az],
+[K_xv_Px,0,0,K_xv_ax,K_xv_ay,K_xv_az],
+[0,K_xv_Py,0,K_yv_ax,K_yv_ay,K_yv_az],
+[0,0,K_xv_Pz,K_zv_ax,K_zv_ay,K_zv_az],
+[K_xa_Px,0,0,K_xa_ax,K_xa_ay,K_xa_az],
+[0,K_xa_Py,0,K_ya_ax,K_ya_ay,K_ya_az],
+[0,0,K_xa_Pz,K_za_ax,K_za_ay,K_za_az],

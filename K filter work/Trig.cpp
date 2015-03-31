@@ -14,8 +14,8 @@
 */
 
 #include "Trig.h"
+Trig trig;
 
-const float PIby2 = PI / 2;
 
 #define MAX_UINT  65535
 #define MIN_INT -32768
@@ -26,6 +26,8 @@ const float PIby2 = PI / 2;
 #define DEC2 100
 #define DEC3 1000
 #define DEC4 10000
+
+const float PIby2 = PI / 2;
 
 //Sin Lookup table
 const float SIN_TABLE[181]={

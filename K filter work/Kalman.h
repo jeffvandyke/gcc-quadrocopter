@@ -1,7 +1,6 @@
 #ifndef KALMAN_H
 #define KALMAN_H
 #include "Trig.h"
-#include <math.h>
 
 struct quadState_t {
     int xPosition, yPosition, zPosition;
@@ -10,14 +9,14 @@ struct quadState_t {
 
     int xAngle, yAngle, zAngle;
     int xRotation, yRotation, zRotation;
-}
+};
 
 
 class KalmanFilter {
 	public:
 		KalmanFilter();
 
-		void initialize();
+		void initialize(int, int, int);
 
 		void assignSensorValues(
 				int, int, int,	// acceleration
@@ -41,13 +40,13 @@ class KalmanFilter {
 		// trust the sensors.
 		//
 		// Position
-		int Q_xpp, Q_xvv, Q_xaa;
-		int Q_ypp, Q_yvv, Q_yaa;
-		int Q_zpp, Q_zvv, Q_zaa;
+		int Q_xpp, Q_xpv, Q_xpa, Q_xvv, Q_xva, Q_xaa;
+		int Q_ypp, Q_ypv, Q_ypa, Q_yvv, Q_yva, Q_yaa;
+		int Q_zpp, Q_zpv, Q_zpa, Q_zvv, Q_zva, Q_zaa;
 		// Rotation
-		int Q_Xaa, Q_Xrr, Q_Xbb;
-		int Q_Yaa, Q_Yrr, Q_Ybb;
-		int Q_Zaa, Q_Zrr, Q_Zbb;
+		int Q_Xaa, Q_Xar, Q_Xrr, Q_Xbb;
+		int Q_Yaa, Q_Yar, Q_Yrr, Q_Ybb;
+		int Q_Zaa, Q_Zar, Q_Zrr, Q_Zbb;
 
 		// Sensor error covariance - Diagonal Matrix
 		// (from lab)
