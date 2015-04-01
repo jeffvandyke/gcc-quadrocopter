@@ -12,33 +12,31 @@
  This is the main header file.
 ==============================================================
 */
+
 //Include Guard:
 #ifndef Trig_h
 #define Trig_h
-#include <cmath>
 
 //Arduino libraries:
-// #include "Arduino.h"
-#include <bitset>
+//#include "Arduino.h"
+//#include <bitset>
+#include <cmath>
+using namespace std;
 
 class Trig {
   public:
 		Trig();
 		int radToMicro(float rad);
-		int radToDeg(float rad);
 		int floatToInt(float input);
 		int sin(int deg);
 		int cos(int deg);
 		float acos(float num);
 		float atan2(float opp, float adj);
 		int atan2(int opp, int adj);
+		int radToDeg(float rad);
 	private:
 		int floatToBitShiftInt(float num);
-		float bitShiftIntToFloat(int num);
+		float BitShiftIntToFloat(int num);
 };
 
-//Create class to use:
-
-extern Trig trig;
-
-#endif //#ifndef Trig_h
+#endif 

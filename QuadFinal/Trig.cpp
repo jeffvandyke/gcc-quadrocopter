@@ -52,7 +52,7 @@ const float SIN_TABLE[181]={
     - 0.9 to 0.99 is done in steps of 0.0008 rads. (0.01/127)
     - 0.99 to 1 is done in steps of 0.0002 rads. (0.01/64)	
 */
-const byte ACOS_TABLE[278] = {
+const float ACOS_TABLE[278] = {
   255, 254, 252, 251, 250, 249, 247, 246, 245, 243, 242, 241, 240, 238, 237, 236, 234, 233, 232, 231, 229, 228, 227, 225, 224, 223,
   221, 220, 219, 217, 216, 215, 214, 212, 211, 210, 208, 207, 206, 204, 203, 201, 200, 199, 197, 196, 195, 193, 192, 190, 189, 188,
   186, 185, 183, 182, 181, 179, 178, 176, 175, 173, 172, 170, 169, 167, 166, 164, 163, 161, 160, 158, 157, 155, 154, 152, 150, 149,
@@ -77,6 +77,19 @@ Trig::Trig() {
   //Nothing to setup here!
 }
 
+int Trig::floatToInt(float input) {
+  //Rounding a number avoiding truncation:
+  return (int)(input + 0.5);
+}
+
+int Trig::floatToBitShiftInt(float num) {
+	return (int)(num*1024);
+}
+
+float Trig::BitShiftIntToFloat(int num){
+	return (float)(num/1024);
+}
+
 int Trig::radToDeg(float rad) {
   //600 - 180 degree
   //2400 - 0 degree
@@ -95,21 +108,8 @@ int Trig::radToDeg(float rad) {
     rad -= PI;
   }
   
-  return 240 - this->floatToBitShiftInt(57.2958 * rad);
+  return this->floatToBitShiftInt(57.2958 * rad);
 }
-
-int Trig::floatToInt(float input) {
-  //Rounding a number avoiding truncation:
-  return (int)(input + 0.5);
-}
-
-int floatToBitShiftInt(float num) {
-	return (int)(num*1024);
-};
-
-float BitShiftIntToFloat(int num){
-	return (float)(num/1024);
-};
 
 //============================================================
 //  _____     _         
@@ -141,7 +141,7 @@ int Trig::sin(int deg) {
   
   if((deg >= 0) && (deg <= 92160)) {
     //0 and 90 degrees.
-    result = SIN_TABLE[deg / 5];
+    result = SIN_TABLE[deg / 512];
     
   } else if((deg > 92160) && (deg <= 184320)) {
     //90 and 180 degrees.
@@ -156,7 +156,7 @@ int Trig::sin(int deg) {
     result = -SIN_TABLE[(368640 - deg) / 512];
   
   }
-  return sign * result;
+  return sign * result * 1024;
 }
 
 int Trig::cos(int deg) {
@@ -186,7 +186,7 @@ int Trig::cos(int deg) {
     result = SIN_TABLE[(deg - 276480) / 512];
     
   }
-  return result;
+  return result * 1024;
 }
 
 

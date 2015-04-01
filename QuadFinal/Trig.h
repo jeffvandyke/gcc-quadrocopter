@@ -18,8 +18,10 @@
 #define Trig_h
 
 //Arduino libraries:
-// #include "Arduino.h"
-#include <bitset>
+//#include "Arduino.h"
+//#include <bitset>
+#include <cmath>
+using namespace std;
 
 class Trig {
   public:
