@@ -57,35 +57,43 @@ void kalmanGain3x3x3(
         int i1, int i2, int i3, int i4, int i5, int i6);
 
 
-void invert3x3(int&, int&, int&, int&, int&, int&, int&, int&, int&,
-        int, int, int, int, int, int, int, int, int);
+// void invert3x3(int&, int&, int&, int&, int&, int&, int&, int&, int&,
+//         int, int, int, int, int, int, int, int, int);
 void invertSymmetric3x3(int& o1, int& o2, int& o3, int& o4, int& o5, int& o6,
         int i1, int i2, int i3, int i4, int i5, int i6);
 
 
 
-KalmanFilter::KalmanFilter() {
-
+KalmanFilter::KalmanFilter(ofstream& out) {
+    fout = &out;
 }
 
 
 void KalmanFilter::initialize(int xBias, int yBias, int zBias) {
 
     x_Xb = xBias; x_Yb = yBias; x_Zb = zBias;
-    x_Xa = 0; x_Xr = 0;
-    x_Ya = 0; x_Yr = 0;
-    x_Za = 0; x_Zr = 0;
 
     x_xp = 0; x_xv = 0; x_xa = 0;
     x_yp = 0; x_yv = 0; x_ya = 0;
     x_zp = 0; x_zv = 0; x_za = 0;
+
+    x_Xa = 0; x_Xr = 0;
+    x_Ya = 0; x_Yr = 0;
+    x_Za = 0; x_Zr = 0;
+
+    P_xpp = 0; P_xpv = 0; P_xpa = 0; P_xvv = 0; P_xva = 0; P_xaa = 0;
+    P_ypp = 0; P_ypv = 0; P_ypa = 0; P_yvv = 0; P_yva = 0; P_yaa = 0;
+    P_zpp = 0; P_zpv = 0; P_zpa = 0; P_zvv = 0; P_zva = 0; P_zaa = 0;
+    P_Xaa = 0; P_Xar = 0; P_Xrr = 0;
+    P_Yaa = 0; P_Yar = 0; P_Yrr = 0;
+    P_Zaa = 0; P_Zar = 0; P_Zrr = 0;
 
 
     // Sensor error covariance - Diagonal Matrix
     // (from lab)
     R_ax = 75; R_ay = 75; R_az = 75;
     // 0.000349 r/s^2
-    R_gx = 1; R_gy = 1; R_gz = 1;
+    R_gx = 10; R_gy = 10; R_gz = 10;
     R_Px = 5000; R_Py = 5000; R_Pz = 5000;
     // large enough to promote steady state correctness without going overboard
     R_Ox = 6000; R_Oy = 6000; R_Oz = 6000;
@@ -96,7 +104,6 @@ void KalmanFilter::assignSensorValues(
 		int gx, int gy, int gz,
 		int Cx, int Cy,  // cz not used
 		int Px, int Py, int Pz,
-		// int Vx, int Vy, int Vz,
 		bool useGPS)
 {
 
@@ -110,6 +117,10 @@ void KalmanFilter::assignSensorValues(
 	z_gx = ((gx - x_Xb) * 1167107) >> 14;
 	z_gy = ((gy - x_Yb) * 1167107) >> 14;
 	z_gz = ((gz - x_Zb) * 1167107) >> 14;
+
+    log(z_ax);
+    log(z_ay);
+    log(z_az);
 
 	if (usingGPS)
 	{
@@ -146,19 +157,6 @@ void KalmanFilter::assignSensorValues(
 
     H_gz_Xr = H_az_xa = i10m( sy , cz );
     H_gz_Yr = H_az_ya = i10m(-sx , cz );
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 }
 
@@ -621,6 +619,26 @@ quadState_t KalmanFilter::getQuadState() {
     return state;
 }
 
+quadState_t KalmanFilter::getCovariance() {
+    quadState_t cov;
+    cov.xPosition = P_xpp;
+    cov.yPosition = P_ypp;
+    cov.zPosition = P_zpp;
+    cov.xVelocity = P_xvv;
+    cov.yVelocity = P_yvv;
+    cov.zVelocity = P_zvv;
+    cov.xAcceleration = P_xaa;
+    cov.yAcceleration = P_yaa;
+    cov.zAcceleration = P_zaa;
+    cov.xAngle = P_Xaa;
+    cov.yAngle = P_Yaa;
+    cov.zAngle = P_Zaa;
+    cov.xRotation = P_Xrr;
+    cov.yRotation = P_Yrr;
+    cov.zRotation = P_Zrr;
+    return cov;
+}
+
 
 void predictStateEstimateForPosition(
 		int& xp_p, int& xp_v, int& xp_a,
@@ -757,33 +775,33 @@ void kalmanGain3x3x3(
 
 
 
-void invert3x3(int& o_0_0, int& o_0_1, int& o_0_2,
-        int& o_1_0, int& o_1_1, int& o_1_2,
-        int& o_2_0, int& o_2_1, int& o_2_2,
-        int a_0_0, int a_0_1, int a_0_2,
-        int a_1_0, int a_1_1, int a_1_2,
-        int a_2_0, int a_2_1, int a_2_2)
-{
-    int determinant =
-        + i10m(a_0_0 ,( i10m(a_1_1 , a_2_2) - i10m(a_2_1 , a_1_2 )))
-        - i10m(a_0_1 ,( i10m(a_1_0 , a_2_2) - i10m(a_1_2 , a_2_0 )))
-        + i10m(a_0_2 ,( i10m(a_1_0 , a_2_1) - i10m(a_1_1 , a_2_0 )));
-    int invdet = (1<<20)/determinant;
-    int r_0_0 = i10m( (i10m(a_1_1,a_2_2) - i10m(a_2_1,a_1_2)),invdet);
-    int r_1_0 = i10m(-(i10m(a_0_1,a_2_2) - i10m(a_0_2,a_2_1)),invdet);
-    int r_2_0 = i10m( (i10m(a_0_1,a_1_2) - i10m(a_0_2,a_1_1)),invdet);
-    int r_0_1 = i10m(-(i10m(a_1_0,a_2_2) - i10m(a_1_2,a_2_0)),invdet);
-    int r_1_1 = i10m( (i10m(a_0_0,a_2_2) - i10m(a_0_2,a_2_0)),invdet);
-    int r_2_1 = i10m(-(i10m(a_0_0,a_1_2) - i10m(a_1_0,a_0_2)),invdet);
-    int r_0_2 = i10m( (i10m(a_1_0,a_2_1) - i10m(a_2_0,a_1_1)),invdet);
-    int r_1_2 = i10m(-(i10m(a_0_0,a_2_1) - i10m(a_2_0,a_0_1)),invdet);
-    int r_2_2 = i10m( (i10m(a_0_0,a_1_1) - i10m(a_1_0,a_0_1)),invdet);
-
-	// transposed inverse calculated, store actual inverse
-	o_0_0 = r_0_0; o_1_0 = r_0_1; o_2_0 = r_0_2;
-	o_0_1 = r_1_0; o_1_1 = r_1_1; o_2_1 = r_1_2;
-	o_0_2 = r_2_0; o_1_2 = r_2_1; o_2_2 = r_2_2;
-}
+// void invert3x3(int& o_0_0, int& o_0_1, int& o_0_2,
+//         int& o_1_0, int& o_1_1, int& o_1_2,
+//         int& o_2_0, int& o_2_1, int& o_2_2,
+//         int a_0_0, int a_0_1, int a_0_2,
+//         int a_1_0, int a_1_1, int a_1_2,
+//         int a_2_0, int a_2_1, int a_2_2)
+// {
+//     int determinant =
+//         + (a_0_0 * ( (a_1_1 * a_2_2) - (a_2_1 * a_1_2 )))
+//         - (a_0_1 * ( (a_1_0 * a_2_2) - (a_1_2 * a_2_0 )))
+//         + (a_0_2 * ( (a_1_0 * a_2_1) - (a_1_1 * a_2_0 )));
+//     int invdet = (1<<30)/determinant;
+//     int r_0_0 = i10m( (i10m(a_1_1,a_2_2) - i10m(a_2_1,a_1_2)),invdet);
+//     int r_1_0 = i10m(-(i10m(a_0_1,a_2_2) - i10m(a_0_2,a_2_1)),invdet);
+//     int r_2_0 = i10m( (i10m(a_0_1,a_1_2) - i10m(a_0_2,a_1_1)),invdet);
+//     int r_0_1 = i10m(-(i10m(a_1_0,a_2_2) - i10m(a_1_2,a_2_0)),invdet);
+//     int r_1_1 = i10m( (i10m(a_0_0,a_2_2) - i10m(a_0_2,a_2_0)),invdet);
+//     int r_2_1 = i10m(-(i10m(a_0_0,a_1_2) - i10m(a_1_0,a_0_2)),invdet);
+//     int r_0_2 = i10m( (i10m(a_1_0,a_2_1) - i10m(a_2_0,a_1_1)),invdet);
+//     int r_1_2 = i10m(-(i10m(a_0_0,a_2_1) - i10m(a_2_0,a_0_1)),invdet);
+//     int r_2_2 = i10m( (i10m(a_0_0,a_1_1) - i10m(a_1_0,a_0_1)),invdet);
+// 
+// 	// transposed inverse calculated, store actual inverse
+// 	o_0_0 = r_0_0; o_1_0 = r_0_1; o_2_0 = r_0_2;
+// 	o_0_1 = r_1_0; o_1_1 = r_1_1; o_2_1 = r_1_2;
+// 	o_0_2 = r_2_0; o_1_2 = r_2_1; o_2_2 = r_2_2;
+// }
 
 void invertSymmetric3x3(int& o1, int& o2, int& o3, int& o4, int& o5, int& o6,
         int i1, int i2, int i3, int i4, int i5, int i6)
@@ -791,16 +809,16 @@ void invertSymmetric3x3(int& o1, int& o2, int& o3, int& o4, int& o5, int& o6,
     // to check: wolfram alpha:
     //  invert([[s1,s2,s3],[s2,s4,s5],[s3,s5,s6]])
     int determinant =
-        - i10m3(i1,i4,i6) + i10m3(i1,i5,i5)
-        + i10m3(i2,i2,i6) - 2 * i10m3(i2,i3,i5)
-        + i10m3(i3,i3,i4);
-    int invdet = (1<<20) / determinant;
+        - (i1 * i4 * i6) + (i1 * i5 * i5)
+        + (i2 * i2 * i6) - 2 * (i2 * i3 * i5)
+        + (i3 * i3 * i4);
+    int invdet = ((1<<30) / determinant );
 
-    o1 = i10m(i10m(i5,i5) - i10m(i4,i6), invdet);
-    o2 = i10m(i10m(i2,i6) - i10m(i3,i5), invdet);
-    o3 = i10m(i10m(i3,i4) - i10m(i2,i5), invdet);
-    o4 = i10m(i10m(i3,i3) - i10m(i1,i6), invdet);
-    o5 = i10m(i10m(i1,i5) - i10m(i2,i3), invdet);
-    o6 = i10m(i10m(i2,i2) - i10m(i1,i4), invdet);
+    o1 = (i10m(i5,i5) - i10m(i4,i6)) * invdet;
+    o2 = (i10m(i2,i6) - i10m(i3,i5)) * invdet;
+    o3 = (i10m(i3,i4) - i10m(i2,i5)) * invdet;
+    o4 = (i10m(i3,i3) - i10m(i1,i6)) * invdet;
+    o5 = (i10m(i1,i5) - i10m(i2,i3)) * invdet;
+    o6 = (i10m(i2,i2) - i10m(i1,i4)) * invdet;
 }
 #endif

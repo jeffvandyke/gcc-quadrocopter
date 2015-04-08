@@ -1,6 +1,8 @@
 #ifndef KALMAN_H
 #define KALMAN_H
 #include "Trig.h"
+#include <iostream>
+#include <fstream>
 
 struct quadState_t {
     int xPosition, yPosition, zPosition;
@@ -11,10 +13,25 @@ struct quadState_t {
     int xRotation, yRotation, zRotation;
 };
 
+// struct quadStateCovariance_t {
+//     int xPosition, yPosition, zPosition;
+//     int xVelocity, yVelocity, zVelocity;
+//     int xAcceleration, yAcceleration, zAcceleration;
+//
+//     int xAngle, yAngle, zAngle;
+//     int xRotation, yRotation, zRotation;
+// };
+
 
 class KalmanFilter {
 	public:
-		KalmanFilter();
+		KalmanFilter(ofstream& out);
+        ofstream* fout;
+
+        void log(int number) {
+            // assuming predict is called before writing to fout
+            *fout << number << ',';
+        }
 
 		void initialize(int, int, int);
 
@@ -28,6 +45,7 @@ class KalmanFilter {
 
 		void predictAndUpdate();
         quadState_t getQuadState();
+        quadState_t getCovariance();
 	private:
 		// repeated functions over variaus dimensions
 
@@ -35,7 +53,7 @@ class KalmanFilter {
 		// Constant Matrixes
 		//
 		// Process Noise - variance associated with each state variable
-		// from a global point of view - the higher these values, the 
+		// from a global point of view - the higher these values, the
 		// less we should trust the estimate, and the more we should
 		// trust the sensors.
 		//
@@ -55,7 +73,7 @@ class KalmanFilter {
 		// 0.000349 r/s^2
 		int R_Px, R_Py, R_Pz;
 		int R_Ox, R_Oy, R_Oz;
- 
+
 
 		// state variables
 

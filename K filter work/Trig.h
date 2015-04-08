@@ -39,4 +39,5 @@ class Trig {
 		float BitShiftIntToFloat(int num);
 };
 
+extern Trig trig;
 #endif 

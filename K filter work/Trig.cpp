@@ -5,15 +5,16 @@
  Original Code (C) 2012-2013 Oscar Liang
  Ported September 2014 with permission from original author
  Licensed under the MIT licence.
- 
+
  This is a library to quickly do common trigonometry functions
  on Arduinos/other microprocessors.
- 
+
  This file is the main code file.
 ==============================================================
 */
 
 #include "Trig.h"
+Trig trig;
 
 #define MAX_UINT  65535
 #define MIN_INT -32768
@@ -50,7 +51,7 @@ const float SIN_TABLE[181]={
   acos lookup table is split into three parts, which has a higher accuracy nearer acos(1).
     - 0 to 0.9 is done in steps of 0.0079 rads. (1/127)
     - 0.9 to 0.99 is done in steps of 0.0008 rads. (0.01/127)
-    - 0.99 to 1 is done in steps of 0.0002 rads. (0.01/64)	
+    - 0.99 to 1 is done in steps of 0.0002 rads. (0.01/64)
 */
 const float ACOS_TABLE[278] = {
   255, 254, 252, 251, 250, 249, 247, 246, 245, 243, 242, 241, 240, 238, 237, 236, 234, 233, 232, 231, 229, 228, 227, 225, 224, 223,
@@ -66,12 +67,12 @@ const float ACOS_TABLE[278] = {
 };
 
 //============================================================
-//  _   _ _   _ _ _ _   _             
-// | | | | |_(_) (_) |_(_) ___  ___ _ 
+//  _   _ _   _ _ _ _   _
+// | | | | |_(_) (_) |_(_) ___  ___ _
 // | | | | __| | | | __| |/ _ \/ __(_)
-// | |_| | |_| | | | |_| |  __/\__ \_ 
+// | |_| | |_| | | | |_| |  __/\__ \_
 //  \___/ \__|_|_|_|\__|_|\___||___(_)
-// 
+//
 
 Trig::Trig() {
   //Nothing to setup here!
@@ -93,32 +94,32 @@ float Trig::BitShiftIntToFloat(int num){
 int Trig::radToDeg(float rad) {
   //600 - 180 degree
   //2400 - 0 degree
-  
+
   //y = ax + b
   //x = 0: y = a*0 + b = 2400, so b = 2400
   //x = pi (180'): y = a*pi + 2400 = 600, so a = -1800/pi
   //therefore y = 2400 - 1800/pi*x
-  
+
   //Make sure rad isn't negative:
   if(rad < 0) {
     rad = -rad;
   }
-  
+
   while(rad > PI) {
     rad -= PI;
   }
-  
+
   return this->floatToBitShiftInt(57.2958 * rad);
 }
 
 //============================================================
-//  _____     _         
-// |_   _| __(_) __ _ _ 
+//  _____     _
+// |_   _| __(_) __ _ _
 //   | || '__| |/ _` (_)
-//   | || |  | | (_| |_ 
+//   | || |  | | (_| |_
 //   |_||_|  |_|\__, (_)
-//              |___/   
-// 
+//              |___/
+//
 
 //The functions for sin and cos use lookup table to determine the sin or cos value of the input angle.
 //Input for these functions are scaled up 10 times. e.g. -450 = -45.0 deg
@@ -129,87 +130,87 @@ int Trig::radToDeg(float rad) {
 int Trig::sin(int deg) {
   float result = 0;
   int sign = 1;
-  
+
   if (deg < 0) {
     deg = -deg;
     sign = -1;
   }
-  
+
   while(deg >= 368640) {
     deg =- 368640;
   }
-  
+
   if((deg >= 0) && (deg <= 92160)) {
     //0 and 90 degrees.
     result = SIN_TABLE[deg / 512];
-    
+
   } else if((deg > 92160) && (deg <= 184320)) {
     //90 and 180 degrees.
     result = SIN_TABLE[(184320 - deg) / 512];
-    
+
   } else if((deg > 184320) && (deg <= 276480)) {
     //180 and 270 degrees.
     result = -SIN_TABLE[(deg - 184320) / 512];
-    
+
   } else if((deg > 276480) && (deg <= 368640)) {
     //270 and 360 degrees.
     result = -SIN_TABLE[(368640 - deg) / 512];
-  
+
   }
   return sign * result * 1024;
 }
 
 int Trig::cos(int deg) {
-  float result = 0;           
+  float result = 0;
   if (deg < 0) {
     deg = -deg;
   }
-  
+
   while(deg >= 368640) {
     deg =- 368640;
   }
-  
+
   if((deg >= 0) && (deg <= 368640)) {
     //0 and 90 degrees.
     result = SIN_TABLE[(900 - deg) / 512];
-  
+
   } else if((deg > 92160) && (deg <= 184320)) {
     //90 and 180 degrees.
     result = -SIN_TABLE[(deg - 92160) / 512];
-  
+
   } else if((deg > 184320) && (deg <= 276480)) {
     //180 and 270 degrees.
     result = -SIN_TABLE[(2700 - deg) / 512];
-  
+
   } else if((deg >= 276480) && (deg <= 368640)) {
     //270 and 360 degrees.
     result = SIN_TABLE[(deg - 276480) / 512];
-    
+
   }
   return result * 1024;
 }
 
 
-//The acos function uses a lookup table for corresponding output. 
+//The acos function uses a lookup table for corresponding output.
 //Output data are stored as byte values (0 - 255), they are scaled down to float number (0.0 - 1.0) for output.
 float Trig::acos(float num) {
   float rads = 0;
   bool negative = false;
-  
+
   //Get sign of input
   if(num < 0) {
     negative = true;
     num = -num;
   }
-  
+
   if((num >= 0) && (num < 0.9)) {
     //num between 0 and 0.9.
     rads = (float)ACOS_TABLE[this->floatToInt(num * DEC4 / 79)] * 0.00616;
-    
+
   } else if ((num >= 0.9) && (num < 0.99)) {
     //num between 0.9 and 0.99.
     rads = (float)ACOS_TABLE[this->floatToInt((num * DEC4 - 9000) / 8) + 114] * 0.00616;
-    
+
   } else if ((num >= 0.99) && (num <= 1)) {
     //num between 0.99 and 1.0.
     rads = (float)ACOS_TABLE[this->floatToInt((num * DEC4 - 9900) / 2) + 227] * 0.00616;
@@ -219,18 +220,18 @@ float Trig::acos(float num) {
   if(negative) {
     rads = PI - rads;
   }
-  
+
   return rads;
 }
 
 float Trig::atan2(float opp, float adj) {
   float hypt = sqrt(adj * adj + opp * opp);
   float rad = this->acos(adj / hypt);
-  
+
   if(opp < 0) {
     rad = -rad;
   }
-  
+
   return rad;
 }
 
@@ -241,12 +242,12 @@ int Trig::atan2(int opp, int adj) {
 
 	float hypt = sqrt(adjf * adjf + oppf * oppf);
 	float rad = this->acos(adjf / hypt);
-  
+
 	if(opp < 0) {
 		rad = -rad;
 	}
-  
+
   return radToDeg(rad);
 }
 
-//Initialize Trig object:
+
