@@ -28,10 +28,8 @@ class KalmanFilter {
 		KalmanFilter(ofstream& out);
         ofstream* fout;
 
-        void log(int number) {
-            // assuming predict is called before writing to fout
-            *fout << number << ',';
-        }
+        void log(int number) { *fout << number << ','; }
+        void logr() { *fout << endl; }
 
 		void initialize(int, int, int);
 
@@ -49,7 +47,44 @@ class KalmanFilter {
 	private:
 		// repeated functions over variaus dimensions
 
-		bool usingGPS;
+        void predictStateEstimateForPosition(
+                int& xp_p, int& xp_v, int& xp_a,
+                int& x_p, int& x_v, int& x_a,
+                int& dT);
+        void predictStateEstimateForRotation(
+                int& xp_a, int& xp_r, int& xp_b,
+                int& x_a, int& x_r, int& x_b,
+                int& dT);
+        void predictStateCovarianceForPosition(
+                int& op1, int& op2, int& op3, int& op4, int& op5, int& op6,
+                int& p1, int& p2, int& p3, int& p4, int& p5, int& p6,
+                int& dT);
+        void predictStateCovarianceForRotation(
+                int& op1, int& op2, int& op3, // int& op4,
+                int& p1, int& p2, int& p3, // int& p4,
+                int& dT);
+        void innovationCovariance(
+                int& s1, int& s2, int& s3, int& s4, int& s5, int& s6,
+                int p1, int p2, int p3, // int p4, int p5, int p6,
+                int h1, int h2, int h3,
+                int h4, int h5, int h6,
+                int h7, int h8, int h9);
+        void kalmanGain3x3x3(
+                int& k1, int& k2, int& k3,
+                int& k4, int& k5, int& k6,
+                int& k7, int& k8, int& k9,
+                int p1, int p2, int p3,
+                int h1, int h2, int h3,
+                int h4, int h5, int h6,
+                int h7, int h8, int h9,
+                int i1, int i2, int i3, int i4, int i5, int i6);
+
+
+        void invertSymmetric3x3(
+                int& o1, int& o2, int& o3, int& o4, int& o5, int& o6,
+                int i1, int i2, int i3, int i4, int i5, int i6);
+
+        bool usingGPS;
 		// Constant Matrixes
 		//
 		// Process Noise - variance associated with each state variable

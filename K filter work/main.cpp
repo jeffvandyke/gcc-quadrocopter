@@ -36,10 +36,9 @@ int main()
     kalman.initialize(-15, 2, 1);
 
 	int i, j, k, vals[9];
-	for(i=0;i<10000;i++){
+	for(i=0;i<3110;i++){
 		for(j=0;j<8;j++){
 			datFile >> vals[j];
-            cout << vals[j];
 		}
 			kalman.assignSensorValues(
 				vals[0], vals[1], vals[2],	// acceleration
@@ -50,7 +49,7 @@ int main()
             results = kalman.getQuadState();
             covariance = kalman.getCovariance();
             // separator
-            outFile << " ,";
+            outFile << endl;
             outputStateToStream(outFile, results);
             outputStateToStream(outFile, covariance);
 	}
