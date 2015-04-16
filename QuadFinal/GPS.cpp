@@ -448,3 +448,6 @@ int GPS::readRawLong()
 const float GPS::GPS_INVALID_F_ANGLE = 1000.0;
 const float GPS::GPS_INVALID_F_ALTITUDE = 1000000.0;
 const float GPS::GPS_INVALID_F_SPEED = -1.0;
+
+
+

@@ -34,3 +34,6 @@ int Compass::getRawZ(void)
 {
 	return comp.getHeadingZ();
 }
+
+
+

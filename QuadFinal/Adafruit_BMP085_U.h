@@ -23,7 +23,7 @@
  #include "WProgram.h"
 #endif
 
-#include <Adafruit_Sensor.h>
+#include "Adafruit_Sensor.h"
 
 #ifdef __AVR_ATtiny85__
  #include "TinyWireM.h"
@@ -120,3 +120,4 @@ class Adafruit_BMP085_Unified : public Adafruit_Sensor
 };
 
 #endif
+

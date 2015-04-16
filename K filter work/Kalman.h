@@ -1,10 +1,13 @@
 #ifndef KALMAN_H
 #define KALMAN_H
-#include "Trig.h"
-#include <cmath>
+#include "math.h"
+#define DEBUGK 0
+#if DEBUGK
+
 #include <iostream>
 #include <fstream>
 #include <string>
+#endif
 
 struct quadState_t {
     float xPosition, yPosition, zPosition;
@@ -29,6 +32,8 @@ using namespace std;
 
 class KalmanFilter {
 	public:
+        KalmanFilter();
+#if DEBUGK
 		KalmanFilter(ofstream& out);
         ofstream* fout;
 
@@ -37,6 +42,7 @@ class KalmanFilter {
         void log() { *fout << '\t'; }
         void log(string text) {*fout << text << '\t';}
         void logh(string text) {*fout << text << '\n';}
+#endif
 
 		void initialize(float, float, float);
 

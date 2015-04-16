@@ -104,3 +104,6 @@ int PIDController::PID(int currentValue, int dTerm)
 	//int pTerm + kI * integralTermSum - dTerm;
 	return kP * error + kI * integralTermSum - kD * dTerm;
 }
+
+
+

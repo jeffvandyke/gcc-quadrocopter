@@ -2,7 +2,6 @@
 #define KALMAN_CPP
 #include "Kalman.h"
 
-#define DEBUG 1
 
 
 const float aProcessNoise = 1;
@@ -33,11 +32,14 @@ const float gravity = 8.9639096;
 // Intermediate functions - used at several points in the kalman filter's
 // predict and update process
 
+KalmanFilter::KalmanFilter() {
+}
 
-
+#if DEBUGK
 KalmanFilter::KalmanFilter(ofstream& out) {
     fout = &out;
 }
+#endif
 
 
 void KalmanFilter::initialize(float xBias, float yBias, float zBias) {
@@ -142,7 +144,7 @@ void KalmanFilter::assignSensorValues(
 
 
 
-#if DEBUG
+#if DEBUGK
 
     logh("z_ax\tz_ay\tz_az\tz_gx\tz_gy\tz_gz\t"
             "z_Px\tz_Py\tz_Pz\tz_Ox\tz_Oy\tz_Oz");
@@ -273,7 +275,7 @@ void KalmanFilter::predictAndUpdate()
     // Pp_Zbb += Q_Zbb;
 
 
-#if DEBUG
+#if DEBUGK
     log("~ H_a ~"); log("_xa"); log("_ya"); log("_za");
     logh("\tPp_xpp\tPp_xpv\tPp_xpa\tPp_xvv\tPp_xva\tPp_xaa");
     log("    xa_"); log(H_ax_xa); log(H_ax_ya); log(H_ax_za); log();
@@ -343,7 +345,7 @@ void KalmanFilter::predictAndUpdate()
     float y_Oz = z_Oz - xp_Za;
 
 
-#if DEBUG
+#if DEBUGK
     logh("y_ax\ty_ay\ty_az\ty_gx\ty_gy\ty_gz\t"
             "y_Px\ty_Py\ty_Pz\ty_Ox\ty_Oy\ty_Oz");
     log(y_ax); log(y_ay); log(y_az);
@@ -396,7 +398,7 @@ void KalmanFilter::predictAndUpdate()
     float S_Oyy = Pp_Yaa + R_Oy;
     float S_Ozz = Pp_Zaa + R_Oz;
 
-#if DEBUG
+#if DEBUGK
     logh("S_axx\t S_axy\t S_axz\t S_ayy\t S_ayz\t S_azz\t\t"
             "S_Pxx\tS_Pyy\tS_Pzz");
     log(S_axx);

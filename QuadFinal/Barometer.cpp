@@ -36,3 +36,6 @@ int Barometer::readRawAltitude(void)
 	//Serial.println(altitude);
 	return static_cast<int>(altitude);
 }
+
+
+

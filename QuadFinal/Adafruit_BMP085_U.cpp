@@ -477,3 +477,4 @@ void Adafruit_BMP085_Unified::getEvent(sensors_event_t *event)
   getPressure(&pressure_kPa);
   event->pressure = pressure_kPa / 100.0F;
 }
+

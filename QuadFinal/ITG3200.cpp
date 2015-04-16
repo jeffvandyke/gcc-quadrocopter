@@ -519,3 +519,6 @@ uint8_t ITG3200::getClockSource() {
 void ITG3200::setClockSource(uint8_t source) {
     I2Cdev::writeBits(devAddr, ITG3200_RA_PWR_MGM, ITG3200_PWR_CLK_SEL_BIT, ITG3200_PWR_CLK_SEL_LENGTH, source);
 }
+
+
+
