@@ -1,0 +1,53 @@
+/* [wxMaxima batch file version 1] [ DO NOT EDIT BY HAND! ]*/
+/* [ Created with wxMaxima version 13.04.2 ] */
+
+/* [wxMaxima: input   start ] */
+H : matrix(
+[1,0,0,0,0,0],
+[0,1,0,0,0,0],
+[0,0,1,0,0,0],
+[0,0,0,H_gx_Xr, H_gx_Yr, H_gx_Zr],
+[0,0,0,H_gy_Xr, H_gy_Yr, H_gy_Zr],
+[0,0,0,H_gz_Xr, H_gz_Yr, H_gz_Zr]);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+Si: matrix(
+[Si_Oxx,0,0,0,0,0],
+[0,Si_Oyy,0,0,0,0],
+[0,0,Si_Ozz,0,0,0],
+[0,0,0,Si_gxx,Si_gxy,Si_gxz],
+[0,0,0,Si_gxy,Si_gyy,Si_gyz],
+[0,0,0,Si_gxz,Si_gyz,Si_gzz]);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+P: matrix(
+[P_Xaa,0,0,P_Xar,0,0],
+[0,P_Yaa,0,0,P_Yar,0],
+[0,0,P_Zaa,0,0,P_Zar],
+[P_Xar,0,0,P_Xrr,0,0],
+[0,P_Yar,0,0,P_Yrr,0],
+[0,0,P_Zar,0,0,P_Zrr]);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+K : P . transpose(H) . Si;
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+K : matrix(
+[K_Xa_Ox,0,0,K_Xa_gx,K_Xa_gy,K_Xa_gz],
+[0,K_Ya_Oy,0,K_Ya_gx,K_Ya_gy,K_Ya_gz],
+[0,0,K_Za_Oz,K_Za_gx,K_Za_gy,K_Za_gz],
+[K_Xr_Ox,0,0,K_Xr_gx,K_Xr_gy,K_Xr_gz],
+[0,K_Yr_Oy,0,K_Yr_gx,K_Yr_gy,K_Yr_gz],
+[0,0,K_Zr_Oz,K_Zr_gx,K_Zr_gy,K_Zr_gz]);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+(ident(6) - K . H) . P;
+/* [wxMaxima: input   end   ] */
+
+/* Maxima can't load/batch files which end with a comment! */
+"Created with wxMaxima"$
