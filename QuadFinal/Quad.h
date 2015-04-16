@@ -1,11 +1,11 @@
 #pragma once
-#include <I2C.h>
+#include "I2C.h"
 #include "Accelerometer.h"
 #include "Gyroscope.h"
 #include "Barometer.h"
 #include "Compass.h"
 #include "GPS.h"
-#include "Trig.h"
+//#include "Trig.h"
 #include "Kalman.h"
 //#include <HardwareSerial.h>
 

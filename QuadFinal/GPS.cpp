@@ -422,19 +422,14 @@ float GPS::f_speed_kmph()
 }
 
 //Added by Cornelius Kloosterman
-long GPS::readRawLat()
+int GPS::readRawLat()
 {
-	return _latitude;
+	return (int) _latitude;
 }
 
-long GPS::readRawLong()
+int GPS::readRawLong()
 {
-	return _longitude;
-}
-
-long GPS::readRawAlt()
-{
-	return _longitude;
+	return (int) _longitude;
 }
 
 //void GPSsetup()

@@ -39,7 +39,7 @@ RETURN_CODE I2C::readDataFromRegister(byte slaveAddress, byte regAddress, int nu
    bytesRead = 0;
    while ( Wire.available() )
    {
-      // make sure we don't OVERFLOW__ the buffer
+      // make sure we don't overflow the buffer
       if (bytesRead >= numBytesRequested ) break;
 
       // read the byte and store in the buffer

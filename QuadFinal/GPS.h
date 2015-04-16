@@ -75,9 +75,9 @@ public:
   // horizontal dilution of precision in 100ths
   inline unsigned long hdop() { return _hdop; }
 
-  long readRawLat();
-  long readRawLong();
-  long readRawAlt();
+  int readRawLat();
+
+  int readRawLong();
 
   void f_get_position(float *latitude, float *longitude, unsigned long *fix_age = 0);
   void crack_datetime(int *year, byte *month, byte *day, 

@@ -1,0 +1,67 @@
+#include <Wire.h>
+//#include "PIDControl.h"
+
+#define MOTOR_OUT 6
+#define MOTOR_TRIG 53
+#define OUTPIN 6
+#define TRIGPIN 53
+#define PWMIN 115
+
+#define MAX_MOTOR_SPEED 128
+#define MAX_ANGULAR_DEFLECTION 20
+#define MIN_ANGULAR_DEFLECTION -20
+#define MAX_ALTITUDE_CORRECTION 100
+
+#define MOTOR1 2
+#define MOTOR2 3
+#define MOTOR3 5
+#define MOTOR4 6
+
+int i=0;
+
+void setup()
+{
+	motorInitialize();
+}
+
+void loop()
+{
+	i++;
+	motorSet(MOTOR2, i*10);
+	delay(2000);
+}
+
+int motorInitialize(void)
+{
+	analogWrite(2,0);
+	analogWrite(3,0);
+	analogWrite(5,0);
+	analogWrite(6,0);
+	delay(2000);
+	analogWrite(2,PWMIN);
+	analogWrite(3,PWMIN);
+	analogWrite(5,PWMIN);
+	analogWrite(6,PWMIN);
+	delay(2000);
+	analogWrite(2,0);
+	analogWrite(3,0);
+	analogWrite(5,0);
+	analogWrite(6,0);
+	delay(2000);
+
+	return 0;
+}
+
+int motorSet(int motor, int speed)
+{
+	speed	=	floor(1.28 * speed) + PWMIN;
+
+	analogWrite(motor, speed);
+
+//	delay(2000);
+	analogWrite(motor, 0);
+//	delay(2000);
+
+
+	return 0;
+}

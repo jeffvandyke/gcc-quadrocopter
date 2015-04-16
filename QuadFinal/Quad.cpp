@@ -1,13 +1,13 @@
 #include "Quad.h"
 #include <Wire.h>
-#include <I2C.h>
+#include "I2C.h"
 #include "Bluetooth.h"
 
 #define MOTOR_OUT 6
 #define MOTOR_TRIG 53
 #define OUTPIN 6
 #define TRIGPIN 53
-#define PWMax 110
+#define PWMIN 110
 
 #define MAX_MOTOR_SPEED 128
 #define MAX_ANGULAR_DEFLECTION 20
@@ -53,7 +53,7 @@ int Quad::motorInitialize(void)
 
 int Quad::motorSet(int motor, int speed)
 {
-	speed	=	floor(1.28 * value) + PWMax;
+	speed	=	floor(1.28 * value) + PWMIN;
 
 	analogWrite(motor, speed);
 
