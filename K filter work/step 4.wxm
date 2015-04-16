@@ -1,5 +1,5 @@
 /* [wxMaxima batch file version 1] [ DO NOT EDIT BY HAND! ]*/
-/* [ Created with wxMaxima version 13.04.2 ] */
+/* [ Created with wxMaxima version 14.12.1 ] */
 
 /* [wxMaxima: input   start ] */
 matrix([h1,h2,h3,h4],[h5,h6,h7,h8],[h9,h10,h11,h12]) . (matrix([p1,p2,p3,p4],[p5,p6,p7,p8],[p9,p10,p11,p12],[p13,p14,p15,p16]) . ;
@@ -26,16 +26,18 @@ transpose(h);
 /* [wxMaxima: input   end   ] */
 
 /* [wxMaxima: input   start ] */
-hmatrix : matrix([h1,h2,h3,1,0,0],[h4,h5,h6,0,1,0],[h7,h8,h9,0,0,1]);
+hmatrix : matrix([h1,h2,h3],[h4,h5,h6],[h7,h8,h9]);
 /* [wxMaxima: input   end   ] */
 
 /* [wxMaxima: input   start ] */
-pmatrix : matrix([p1,0,0,0,0,0],[0,p2,0,0,0,0],[0,0,p3,0,0,0],[0,0,0,p4,0,0],[0,0,0,0,p5,0],[0,0,0,0,0,p6]);
+pmatrix : matrix([p1,0,0],[0,p2,0],[0,0,p3]); /*,[0,0,0,p4,0,0],[0,0,0,0,p5,0],[0,0,0,0,0,p6]);*/;
 /* [wxMaxima: input   end   ] */
 
 /* [wxMaxima: input   start ] */
-hmatrix . pmatrix . transpose(hmatrix);
+hmatrix . transpose(hmatrix);
 /* [wxMaxima: input   end   ] */
+
+
 
 /* [wxMaxima: input   start ] */
 hmatrix : matrix([h1,h2,h3],[h4,h5,h6],[h7,h8,h9]);
@@ -68,7 +70,6 @@ matrix([p1,0,0],[0,p2,0],[0,0,p3]) . matrix([h1,h2,h3],[h4,h5,h6],[h7,h8,h9]) . 
 /* [wxMaxima: input   start ] */
 matrix([p1,0,0,0,0,0],[0,p2,0,0,0,0],[0,0,p3,0,0,0],[0,0,0,p4,0,0],[0,0,0,0,p5,0],[0,0,0,0,0,p6]) . matrix([h1,h2,h3],[h4,h5,h6],[h7,h8,h9],[1,0,0],[0,1,0],[0,0,1]) . matrix([i1,i2,i3],[i2,i4,i5],[i3,i5,i6]);
 /* [wxMaxima: input   end   ] */
-
 
 /* Maxima can't load/batch files which end with a comment! */
 "Created with wxMaxima"$
