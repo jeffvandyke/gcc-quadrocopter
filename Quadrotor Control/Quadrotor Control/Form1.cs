@@ -109,6 +109,19 @@ namespace Quadrotor_Control
           //chart1.Hide();
       }
 
+       public void PrintSensors()
+       {
+
+           foreach (Sensor s in sensors)
+           {
+           }
+
+           foreach(IEnumerator<string> en in ls)
+           {
+               
+           }
+       }
+
       private void DataReceivedHandler(object sender, SerialDataReceivedEventArgs e)
       {
           SerialPort sp = (SerialPort)sender;
@@ -116,22 +129,30 @@ namespace Quadrotor_Control
           //int[] data;
           try
           {
-              /*char first = (char)sp.ReadByte();
-              if (first == '$')
-              {
-                  int size = sp.ReadByte();
-                  int command = sp.ReadByte();
 
-                  return;
-              }*/
+              //string message = sp.ReadLine();
+              //DataReceived(message);
 
-              string message = sp.ReadLine();
-              DataReceived(message);
+              ParseReceivedData(sp);
           }
           catch (Exception)
           {
  
           }         
+      }
+
+       private void ParseReceivedData(SerialPort serial)
+      {
+          serial.DataBits = 16;
+          
+           int command = serial.ReadByte();
+           
+           foreach (Sensor s in sensors)
+           {
+               List<int> argList = new List<int>(3);
+               for (int i=0; i<s.axisNum; i++) argList.Add(serial.ReadByte());
+               s.UpdateStateVariables(argList);
+           }
       }
 
       // This delegate enables asynchronous calls for setting 

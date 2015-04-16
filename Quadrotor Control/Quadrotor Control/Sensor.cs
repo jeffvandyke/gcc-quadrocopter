@@ -10,7 +10,8 @@ namespace Quadrotor_Control
 {
     public class Sensor: Variable
     {
-        private string[] axisNames = {"x-axis", "y-axis", "z-axis"}; 
+        private string[] axisNames = {"x-axis", "y-axis", "z-axis"};
+        public int axisNum;
 
         public List<int> Data;
 
@@ -25,6 +26,7 @@ namespace Quadrotor_Control
         {
 
             Data = new List<int>();
+            axisNum = varNum;
             for (int i = 0; i < varNum; i++)
             {
                 Data.Add(0);
@@ -57,10 +59,21 @@ namespace Quadrotor_Control
             UpdateDisplay();
         }
 
+        public void UpdateStateVariables(List<int> newValues)
+        {
+            for (int i=0; i<axisNum; i++)
+            {
+                UpdateStateVariable(i, newValues[i]);
+            }
+            Data = newValues;
+
+            UpdateDisplay();
+        }
+
         public void UpdateStateVariable(int key, int x)
         {
             Data[key] = x;
-           //`dataCollection[key].AddY(x);
+            dataCollection[key].Points.AddY(x);
         }
 
         public void UpdateDisplay()
@@ -76,6 +89,11 @@ namespace Quadrotor_Control
 
             if (text.Length == 0) Output.Text = errorText;
             else Output.Text = text.Substring(2);*/
+        }
+
+        public SensorEnumerator getEnumerator()
+        {
+            return new SensorEnumerator(dataCollection);
         }
 
         public void WriteToFile()

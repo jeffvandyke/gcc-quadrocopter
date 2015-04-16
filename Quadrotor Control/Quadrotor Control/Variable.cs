@@ -7,7 +7,7 @@ using System.Windows.Forms.DataVisualization.Charting;
 
 namespace Quadrotor_Control
 {
-    class Variable
+    public class Variable
     {
         protected string name;
         public char type { get; private set; }

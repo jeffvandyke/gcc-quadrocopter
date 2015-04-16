@@ -1,0 +1,41 @@
+﻿Build started 4/16/2015 2:09:06 PM.
+     1>Project "C:\Users\ousleyjd1\Documents\GitHub\gcc-quadrocopter\gcc-quadrocopter\SensorLatency\QuadFinal.vcxproj" on node 2 (Build target(s)).
+     1>C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V120\Microsoft.CppBuild.targets(942,5): warning MSB8027: Two or more files with the name of Bluetooth.cpp will produce outputs to the same location. This can lead to an incorrect build result.  The files involved are ..\libraries\QuadBluetooth\Bluetooth.cpp, Bluetooth.cpp.
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /I"C:\Program Files (x86)\Arduino\hardware\arduino\sam\cores\arduino" /I"C:\Program Files (x86)\Arduino\hardware\arduino\sam\variants\arduino_due_x" /I"C:\Users\ousleyjd1\Documents\GitHub\gcc-quadrocopter\gcc-quadrocopter\SensorLatency" /IC:\Users\ousleyjd1\Documents\Arduino\libraries\TinyGPS /IC:\Users\ousleyjd1\Documents\Arduino\libraries\TinyGPS\utility /I"C:\Program Files (x86)\Arduino\hardware\arduino\sam\libraries\Wire" /I"C:\Program Files (x86)\Arduino\hardware\arduino\sam\libraries\Wire\utility" /I"C:\Program Files (x86)\Arduino\libraries\SensorStuff" /I"C:\Program Files (x86)\Arduino\libraries\SensorStuff\utility" /I"C:\Program Files (x86)\Arduino\libraries" /I"C:\Program Files (x86)\Arduino\hardware\arduino\sam\libraries" /I"C:\Program Files (x86)\Visual Micro\Visual Micro for Arduino\Micro Platforms\default\debuggers" /IC:\Users\ousleyjd1\Documents\Arduino\libraries /I"C:\Program Files (x86)\Arduino\hardware\arduino\sam\system\CMSIS\Device\ATMEL\\" /I"C:\Program Files (x86)\Arduino\hardware\arduino\sam\system\libsam" /I"C:\Program Files (x86)\Arduino\hardware\arduino\sam\system\libsam\include" /I"C:\Program Files (x86)\Arduino\hardware\arduino\sam\system\CMSIS\CMSIS\Include\\" /I"C:\Program Files (x86)\Arduino\hardware\arduino\sam\system\CMSIS\CMSIS\Include\\" /I"C:\Program Files (x86)\Arduino\hardware\arduino\sam\system\CMSIS\Device\ATMEL\\" /I"C:\Program Files (x86)\Arduino\hardware\arduino\sam\system\libsam" /I"C:\Program Files (x86)\Arduino\hardware\arduino\sam\system\libsam\include" /I"C:\Program Files (x86)\Arduino/hardware/tools/g++_arm_none_eabi\arm-none-eabi\include" /I"C:\Program Files (x86)\Arduino/hardware/tools/g++_arm_none_eabi\arm_none_eabi\include\\" /I"C:\Program Files (x86)\Arduino/hardware/tools/g++_arm_none_eabi\lib\gcc\arm-none-eabi\4.4.1\include" /I"C:\Program Files (x86)\Arduino/hardware/tools/g++_arm_none_eabi\lib\gcc\arm-none-eabi\4.4.1\include\\" /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D __AVR_ATmega2560__ /D ARDUINO=105 /D ARDUINO_MAIN /D __AVR__ /D __avr__ /D F_CPU=16000000L /D __cplusplus /D GCC_VERSION=40302 /D ARDUINO_ARCH_AVR /D ARDUINO_AVR_MEGA2560 /D _MBCS /X /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /FI"C:\Users\kloostermancw1\Documents\GitHub\gcc-quadrocopter\QuadFinal\Visual Micro\.QuadFinal.vsarduino.h" /analyze- /errorReport:prompt ..\libraries\BMP085.cpp ..\libraries\QuadBluetooth\Bluetooth.cpp Accelerometer.cpp Bluetooth.cpp Compass.cpp GPS.cpp Gyroscope.cpp Kalman.cpp Quad.cpp Trig.cpp
+         Trig.cpp
+     1>c1xx : warning C4117: macro name '__cplusplus' is reserved, '#define' ignored
+     1>c:\users\ousleyjd1\documents\github\gcc-quadrocopter\gcc-quadrocopter\sensorlatency\trig.cpp : fatal error C1083: Cannot open include file: 'C:\Users\kloostermancw1\Documents\GitHub\gcc-quadrocopter\QuadFinal\Visual Micro\.QuadFinal.vsarduino.h': No such file or directory
+         Quad.cpp
+     1>c1xx : warning C4117: macro name '__cplusplus' is reserved, '#define' ignored
+     1>c:\users\ousleyjd1\documents\github\gcc-quadrocopter\gcc-quadrocopter\sensorlatency\quad.cpp : fatal error C1083: Cannot open include file: 'C:\Users\kloostermancw1\Documents\GitHub\gcc-quadrocopter\QuadFinal\Visual Micro\.QuadFinal.vsarduino.h': No such file or directory
+         Kalman.cpp
+     1>c1xx : warning C4117: macro name '__cplusplus' is reserved, '#define' ignored
+     1>c:\users\ousleyjd1\documents\github\gcc-quadrocopter\gcc-quadrocopter\sensorlatency\kalman.cpp : fatal error C1083: Cannot open include file: 'C:\Users\kloostermancw1\Documents\GitHub\gcc-quadrocopter\QuadFinal\Visual Micro\.QuadFinal.vsarduino.h': No such file or directory
+         Gyroscope.cpp
+     1>c1xx : warning C4117: macro name '__cplusplus' is reserved, '#define' ignored
+     1>c:\users\ousleyjd1\documents\github\gcc-quadrocopter\gcc-quadrocopter\sensorlatency\gyroscope.cpp : fatal error C1083: Cannot open include file: 'C:\Users\kloostermancw1\Documents\GitHub\gcc-quadrocopter\QuadFinal\Visual Micro\.QuadFinal.vsarduino.h': No such file or directory
+         GPS.cpp
+     1>c1xx : warning C4117: macro name '__cplusplus' is reserved, '#define' ignored
+     1>c:\users\ousleyjd1\documents\github\gcc-quadrocopter\gcc-quadrocopter\sensorlatency\gps.cpp : fatal error C1083: Cannot open include file: 'C:\Users\kloostermancw1\Documents\GitHub\gcc-quadrocopter\QuadFinal\Visual Micro\.QuadFinal.vsarduino.h': No such file or directory
+         Compass.cpp
+     1>c1xx : warning C4117: macro name '__cplusplus' is reserved, '#define' ignored
+     1>c:\users\ousleyjd1\documents\github\gcc-quadrocopter\gcc-quadrocopter\sensorlatency\compass.cpp : fatal error C1083: Cannot open include file: 'C:\Users\kloostermancw1\Documents\GitHub\gcc-quadrocopter\QuadFinal\Visual Micro\.QuadFinal.vsarduino.h': No such file or directory
+         Bluetooth.cpp
+     1>c1xx : warning C4117: macro name '__cplusplus' is reserved, '#define' ignored
+     1>c:\users\ousleyjd1\documents\github\gcc-quadrocopter\gcc-quadrocopter\sensorlatency\bluetooth.cpp : fatal error C1083: Cannot open include file: 'C:\Users\kloostermancw1\Documents\GitHub\gcc-quadrocopter\QuadFinal\Visual Micro\.QuadFinal.vsarduino.h': No such file or directory
+         Accelerometer.cpp
+     1>c1xx : warning C4117: macro name '__cplusplus' is reserved, '#define' ignored
+     1>c:\users\ousleyjd1\documents\github\gcc-quadrocopter\gcc-quadrocopter\sensorlatency\accelerometer.cpp : fatal error C1083: Cannot open include file: 'C:\Users\kloostermancw1\Documents\GitHub\gcc-quadrocopter\QuadFinal\Visual Micro\.QuadFinal.vsarduino.h': No such file or directory
+         Bluetooth.cpp
+     1>c1xx : warning C4117: macro name '__cplusplus' is reserved, '#define' ignored
+     1>c1xx : fatal error C1083: Cannot open source file: '..\libraries\QuadBluetooth\Bluetooth.cpp': No such file or directory
+         BMP085.cpp
+     1>c1xx : warning C4117: macro name '__cplusplus' is reserved, '#define' ignored
+     1>c1xx : fatal error C1083: Cannot open source file: '..\libraries\BMP085.cpp': No such file or directory
+         Generating Code...
+     1>Done Building Project "C:\Users\ousleyjd1\Documents\GitHub\gcc-quadrocopter\gcc-quadrocopter\SensorLatency\QuadFinal.vcxproj" (Build target(s)) -- FAILED.
+
+Build FAILED.
+
+Time Elapsed 00:00:01.46
