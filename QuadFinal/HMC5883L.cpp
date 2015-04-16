@@ -170,7 +170,7 @@ void HMC5883L::setMeasurementBias(uint8_t bias) {
 /** Get magnetic field gain value.
  * The table below shows nominal gain settings. Use the "Gain" column to convert
  * counts to Gauss. Choose a lower gain value (higher GN#) when total field
- * strength causes overflow in one of the data output registers (saturation).
+ * strength causes OVERFLOW__ in one of the data output registers (saturation).
  * The data output range for all settings is 0xF800-0x07FF (-2048 - 2047).
  *
  * Value | Field Range | Gain (LSB/Gauss)
@@ -257,8 +257,8 @@ void HMC5883L::setMode(uint8_t newMode) {
 // DATA* registers
 
 /** Get 3-axis heading measurements.
- * In the event the ADC reading overflows or underflows for the given channel,
- * or if there is a math overflow during the bias measurement, this data
+ * In the event the ADC reading OVERFLOW__s or underflows for the given channel,
+ * or if there is a math OVERFLOW__ during the bias measurement, this data
  * register will contain the value -4096. This register value will clear when
  * after the next valid measurement is made. Note that this method automatically
  * clears the appropriate bit in the MODE register if Single mode is active.

@@ -18,7 +18,6 @@ public:
 
 	I2C i2c;
 	//int dataBuffer[1000];
-	SensorMode sensorMode;
 
 	Accelerometer acc;
 	Gyroscope gyro;
@@ -28,6 +27,13 @@ public:
 	Kalman Filter;
 	Trig trig;
 
+    PIDController xPosition(), yPosition, zPosition;
+    PIDController xVelocity, yVelocity, zVelocity;
+    PIDController xAcceleration, yAcceleration, zAcceleration;
+
+    PIDController xAngle, yAngle, zAngle;
+    PIDController xRotation, yRotation, zRotation;
+
 	int executeCycle(void);
 	int setup(void);
 	int motorInitialize(void);
@@ -35,12 +41,33 @@ public:
 	int getSensorVals(void);
 	int getGPSval(void);
 	int findSensorBias(void);
+	int adjustMotors(void);
 
+	int waitFor();
 
-	//bitshifted ints to be passed to the Kalman filter
-	int compX, compY, compZ, gyroX, gyroY, gyroZ, accX, accY, accZ, latitude, longitude;
+	//ints to be passed to the Kalman filter
+	int compX, compY, compZ, 
+		gyroX, gyroY, gyroZ, 
+		accX, accY, accZ, 
+		GPSlat, GPSlong, GPSalt;
+	bool readGPS;
+
+	//Correction factors
+	int xPosCorrect, yPosCorrect, zPosCorrect,
+		xAngCorrect, yAngCorrect, zAngCorrect;
+
+	//Biases calculated at startup
+	int gyroXBias, gyroYBias, gyroZBias,
+		gpsLatBias, gpsLongBias, gpsAltBias;
+
+	//
+
 	quadState_T quadState;
 	int dutyCycle1, dutyCycle2, dutyCycle3, dutyCycle4;
+		m1speed, m2speed, m3speed, m4speed;
+	//loopTime stores the time since the waitFor function was run.
+	//controlTime stores the time since th
+	int loopTime;
 
 	void readSerialCommand(void);
 };

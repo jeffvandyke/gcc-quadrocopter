@@ -1,17 +1,16 @@
 /*
 ==============================================================
- Trig Library
+PIDcontrol Library
 ==============================================================
  Original Code (C) 2015 Cornelius Kloosterman
 
- This is a library to calculateadjustments to the motors
+ This is a class to calculateadjustments to the motors
  
  This is the header file.
 ==============================================================
 */
 
 #include "Kalman.h"
-using namespace std;
 
 #ifndef PID_h
 #define PID_h
@@ -19,18 +18,22 @@ using namespace std;
 class PIDController
 {
 public:
-   PIDController();
+   PIDController(int p, int i, int d);
    ~PIDController();
-   void move(quadState_t deltaPos)
-   quadState_t PIDUpdate(quadState_t newVal);
+   void move(int deltaPos);
+   void setSetPoint(int newPoint);
+
+   	int PD(int currentValue);
+	int PI(int currentValue);
+	int PID(int currentValue);
+	int PID(int currentValue, int dTerm);
 private:
-	quadState_t setPoint;
-	quadState_t correctionFactor;
-	int kI, kD, kP;
-	int deltaTime;
-	int PD(int value);
-	int PI(int value, int* integralSumTerm);
-	int PID(int value, int* integralSumTerm);
+	int setPoint;
+	int integralSumTerm;
+	int lastValue;
+	int kp, kd, ki;
+	int deltaTime, previousMillis;
+	int dTerm, error;
 }
 
 #endif

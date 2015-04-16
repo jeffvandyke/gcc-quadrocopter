@@ -1,0 +1,139 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{381178FA-2D15-4D7C-B402-16E1C9605409}</ProjectGuid>
+    <RootNamespace>IMUVariance</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v110</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v110</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup />
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>C:\Program Files\Arduino\hardware\arduino\cores\arduino;C:\Program Files\Arduino\hardware\arduino\variants\mega;C:\Program Files\Arduino\libraries\Wire;C:\Program Files\Arduino\libraries\Wire\utility;C:\Program Files\Arduino\libraries;C:\Program Files\Arduino\hardware\arduino\libraries;C:\Program Files\Visual Micro\Visual Micro for Arduino\Micro Platforms\default\debuggers;C:\Users\kloostermancw1\Documents\Arduino\libraries;c:\program files\arduino\hardware\tools\avr\avr\include\;c:\program files\arduino\hardware\tools\avr\avr\include\avr\;c:\program files\arduino\hardware\tools\avr\avr\;c:\program files\arduino\hardware\tools\avr\lib\gcc\avr\4.3.2\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ForcedIncludeFiles>C:\Users\kloostermancw1\Documents\Neil%27s backup\Neil%27s homework\design project\IMUVariance - Copy\IMUVariance - Copy\Visual Micro\.IMUVariance - Copy.vsarduino.h;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <IgnoreStandardIncludePath>true</IgnoreStandardIncludePath>
+      <PreprocessorDefinitions>__AVR_ATmega2560__;ARDUINO=105;ARDUINO_MAIN;__AVR__;__avr__;F_CPU=16000000L;__cplusplus;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <None Include="IMUVariance.ino">
+      <FileType>CppCode</FileType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\..\..\Neil%27s backup\Neil%27s homework\design project\IMUVariance - Copy\IMUVariance - Copy\Adafruit_ADXL345_U.h">
+      <FileType>CppCode</FileType>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Neil%27s backup\Neil%27s homework\design project\IMUVariance - Copy\IMUVariance - Copy\Adafruit_BMP085_U.h">
+      <FileType>CppCode</FileType>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Neil%27s backup\Neil%27s homework\design project\IMUVariance - Copy\IMUVariance - Copy\Adafruit_Sensor.h">
+      <FileType>CppCode</FileType>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Neil%27s backup\Neil%27s homework\design project\IMUVariance - Copy\IMUVariance - Copy\Bluetooth.h">
+      <FileType>CppCode</FileType>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Neil%27s backup\Neil%27s homework\design project\IMUVariance - Copy\IMUVariance - Copy\Compass.h">
+      <FileType>CppCode</FileType>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Neil%27s backup\Neil%27s homework\design project\IMUVariance - Copy\IMUVariance - Copy\GPS.h">
+      <FileType>CppCode</FileType>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Neil%27s backup\Neil%27s homework\design project\IMUVariance - Copy\IMUVariance - Copy\HMC5883L.h">
+      <FileType>CppCode</FileType>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Neil%27s backup\Neil%27s homework\design project\IMUVariance - Copy\IMUVariance - Copy\I2C.h">
+      <FileType>CppCode</FileType>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Neil%27s backup\Neil%27s homework\design project\IMUVariance - Copy\IMUVariance - Copy\I2Cdev.h">
+      <FileType>CppCode</FileType>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Neil%27s backup\Neil%27s homework\design project\IMUVariance - Copy\IMUVariance - Copy\ITG3200.h">
+      <FileType>CppCode</FileType>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Neil%27s backup\Neil%27s homework\design project\IMUVariance - Copy\IMUVariance - Copy\Trig.h" />
+    <ClInclude Include="..\..\..\..\..\Neil%27s backup\Neil%27s homework\design project\IMUVariance - Copy\IMUVariance - Copy\Visual Micro\.IMUVariance - Copy.vsarduino.h" />
+    <ClInclude Include="Accelerometer.h" />
+    <ClInclude Include="Barometer.h" />
+    <ClInclude Include="Gyroscope.h" />
+    <ClInclude Include="IMUTester.h" />
+    <ClInclude Include="Visual Micro\.IMUVariance.vsarduino.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\..\..\Neil%27s backup\Neil%27s homework\design project\IMUVariance - Copy\IMUVariance - Copy\Adafruit_ADXL345_U.cpp" />
+    <ClCompile Include="..\..\..\..\..\Neil%27s backup\Neil%27s homework\design project\IMUVariance - Copy\IMUVariance - Copy\Adafruit_BMP085_U.cpp" />
+    <ClCompile Include="..\..\..\..\..\Neil%27s backup\Neil%27s homework\design project\IMUVariance - Copy\IMUVariance - Copy\Adafruit_Sensor.cpp" />
+    <ClCompile Include="..\..\..\..\..\Neil%27s backup\Neil%27s homework\design project\IMUVariance - Copy\IMUVariance - Copy\Bluetooth.cpp" />
+    <ClCompile Include="..\..\..\..\..\Neil%27s backup\Neil%27s homework\design project\IMUVariance - Copy\IMUVariance - Copy\Compass.cpp" />
+    <ClCompile Include="..\..\..\..\..\Neil%27s backup\Neil%27s homework\design project\IMUVariance - Copy\IMUVariance - Copy\GPS.cpp" />
+    <ClCompile Include="..\..\..\..\..\Neil%27s backup\Neil%27s homework\design project\IMUVariance - Copy\IMUVariance - Copy\HMC5883L.cpp" />
+    <ClCompile Include="..\..\..\..\..\Neil%27s backup\Neil%27s homework\design project\IMUVariance - Copy\IMUVariance - Copy\I2C.cpp" />
+    <ClCompile Include="..\..\..\..\..\Neil%27s backup\Neil%27s homework\design project\IMUVariance - Copy\IMUVariance - Copy\I2Cdev.cpp" />
+    <ClCompile Include="..\..\..\..\..\Neil%27s backup\Neil%27s homework\design project\IMUVariance - Copy\IMUVariance - Copy\ITG3200.cpp" />
+    <ClCompile Include="..\..\..\..\..\Neil%27s backup\Neil%27s homework\design project\IMUVariance - Copy\IMUVariance - Copy\Trig.cpp" />
+    <ClCompile Include="Accelerometer.cpp" />
+    <ClCompile Include="Barometer.cpp" />
+    <ClCompile Include="Gyroscope.cpp" />
+    <ClCompile Include="IMUTester.cpp" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+  <ProjectExtensions>
+    <VisualStudio>
+      <UserProperties arduino.upload.port="COM8" />
+    </VisualStudio>
+  </ProjectExtensions>
+</Project>
