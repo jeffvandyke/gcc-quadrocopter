@@ -1,7 +1,9 @@
 #ifndef KALMAN_H
 #define KALMAN_H
 #include "math.h"
+
 #define DEBUGK 0
+
 #if DEBUGK
 
 #include <iostream>

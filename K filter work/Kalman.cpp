@@ -86,7 +86,9 @@ void KalmanFilter::assignSensorValues(
 {
 
 
+#if DEBUGK
     logh("===================================================================");
+#endif
 
     usingGPS = useGPS;
 
@@ -102,12 +104,16 @@ void KalmanFilter::assignSensorValues(
 
     if (usingGPS)
     {
+#if DEBUGK
         log("using gps");
+#endif
         z_Px = Px * 1.f;
         z_Py = Py * 1.f;
         z_Pz = Pz * 1.f;
     } else {
+#if DEBUGK
         log("not using gps");
+#endif
     }
 
 
@@ -124,9 +130,11 @@ void KalmanFilter::assignSensorValues(
     z_Oy = i10m( dropY , cz ) + i10m ( dropX ,-sz );
     z_Oz = (float)(atan2(Cy, Cx)) * 180 / 3.14159;
 
+#if DEBUGK
     log("test for sin...\n");
     log("dropx"); log(dropX); log("dropy"); log(dropY);
     logr();
+#endif
 
     H_gx_Xr = H_ax_xa = i10m( cy , cz );
     H_gy_Yr = H_ay_ya = i10m( cz , cx );
@@ -687,6 +695,7 @@ void KalmanFilter::predictAndUpdate()
     P_Zrr = i10m( ( -i10m( H_gz_Zr , K_Zr_gz ) - i10m( H_gy_Zr , K_Zr_gy ) - i10m( H_gx_Zr , K_Zr_gx ) +1 ) , Pp_Zrr) - i10m( K_Zr_Oz , Pp_Zar );
 
 
+#if DEBUGK
     logh("P_xpp\t P_xpv\t P_xpa\t P_xvv\t P_xva\t P_xaa\t \t P_Xaa\t P_Xar\t P_Xrr");
 
     log(P_xpp); log(P_xpv); log(P_xpa); log(P_xvv); log(P_xva); log(P_xaa);
@@ -700,7 +709,7 @@ void KalmanFilter::predictAndUpdate()
     log(P_zpp); log(P_zpv); log(P_zpa); log(P_zvv); log(P_zva); log(P_zaa);
     log("- Z -"); log(P_Zaa); log(P_Zar); log(P_Zrr);
     logr();
-
+#endif
 
 
 } // END OF FILTER =============================================================
