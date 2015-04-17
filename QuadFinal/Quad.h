@@ -7,7 +7,9 @@
 #include "GPS.h"
 //#include "Trig.h"
 #include "Kalman.h"
+#include "PIDcontrol.h"
 //#include <HardwareSerial.h>
+
 
 class Quad
 {
@@ -24,20 +26,16 @@ public:
 	Barometer bar;
 	Compass comp;
 	GPS gps;
-	Kalman Filter;
-	Trig trig;
+	KalmanFilter Filter;
 
-    PIDController xPosition(), yPosition, zPosition;
-    PIDController xVelocity, yVelocity, zVelocity;
-    PIDController xAcceleration, yAcceleration, zAcceleration;
+    PIDController xPosition, yPosition, zPosition;
 
     PIDController xAngle, yAngle, zAngle;
-    PIDController xRotation, yRotation, zRotation;
 
 	int executeCycle(void);
 	int setup(void);
 	int motorInitialize(void);
-	int motorSet(void);
+	int motorSet(int motor, int speed);
 	int getSensorVals(void);
 	int getGPSval(void);
 	int findSensorBias(void);
@@ -62,14 +60,14 @@ public:
 
 	//
 
-	quadState_T quadState;
-	int dutyCycle1, dutyCycle2, dutyCycle3, dutyCycle4;
+	quadState_t quadState;
+	int dutyCycle1, dutyCycle2, dutyCycle3, dutyCycle4,
 		m1speed, m2speed, m3speed, m4speed;
 	//loopTime stores the time since the waitFor function was run.
 	//controlTime stores the time since th
 	int loopTime;
 
-	void readSerialCommand(void);
+	//void readSerialCommand(void);
 };
 
 

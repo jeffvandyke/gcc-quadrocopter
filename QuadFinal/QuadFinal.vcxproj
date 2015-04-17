@@ -44,10 +44,10 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>C:\Program Files\arduino-1.6.1\arduino-1.6.1\hardware\arduino\avr\cores\arduino;C:\Program Files\arduino-1.6.1\arduino-1.6.1\hardware\arduino\avr\variants\ethernet;C:\Users\kloostermancw1\Documents\GitHub\gcc-quadrocopter\QuadFinal;C:\Program Files\arduino-1.6.1\arduino-1.6.1\hardware\arduino\avr\libraries\Wire;C:\Program Files\arduino-1.6.1\arduino-1.6.1\hardware\arduino\avr\libraries\Wire\utility;C:\Program Files\arduino-1.6.1\arduino-1.6.1\libraries;C:\Program Files\arduino-1.6.1\arduino-1.6.1\hardware\arduino\avr\libraries;C:\Program Files\Arduino\Micro Platforms\default\debuggers;C:\Users\kloostermancw1\Documents\Arduino\libraries;c:\program files\arduino-1.6.1\arduino-1.6.1\hardware\tools\avr\avr\include\;c:\program files\arduino-1.6.1\arduino-1.6.1\hardware\tools\avr\avr\include\avr\;c:\program files\arduino-1.6.1\arduino-1.6.1\hardware\tools\avr\avr\;c:\program files\arduino-1.6.1\arduino-1.6.1\hardware\tools\avr\lib\gcc\avr\4.8.1\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Program Files\arduino-1.6.1\arduino-1.6.1\hardware\arduino\sam\cores\arduino;C:\Program Files\arduino-1.6.1\arduino-1.6.1\hardware\arduino\sam\variants\arduino_due_x;C:\Users\kloostermancw1\Documents\GitHub\gcc-quadrocopter\QuadFinal;C:\Program Files\arduino-1.6.1\arduino-1.6.1\hardware\arduino\sam\libraries\Wire;C:\Program Files\arduino-1.6.1\arduino-1.6.1\hardware\arduino\sam\libraries\Wire\utility;C:\Program Files\arduino-1.6.1\arduino-1.6.1\libraries;C:\Program Files\arduino-1.6.1\arduino-1.6.1\hardware\arduino\sam\libraries;C:\Program Files\Arduino\Micro Platforms\default\debuggers;C:\Users\kloostermancw1\Documents\Arduino\libraries;C:\Program Files\arduino-1.6.1\arduino-1.6.1\hardware\arduino\sam\system\CMSIS\Device\ATMEL\;C:\Program Files\arduino-1.6.1\arduino-1.6.1\hardware\arduino\sam\system\libsam;C:\Program Files\arduino-1.6.1\arduino-1.6.1\hardware\arduino\sam\system\libsam\include;C:\Program Files\arduino-1.6.1\arduino-1.6.1\hardware\arduino\sam\system\CMSIS\CMSIS\Include\;C:\Program Files\arduino-1.6.1\arduino-1.6.1\hardware\arduino\sam\system\CMSIS\CMSIS\Include\;C:\Program Files\arduino-1.6.1\arduino-1.6.1\hardware\arduino\sam\system\CMSIS\Device\ATMEL\;C:\Program Files\arduino-1.6.1\arduino-1.6.1\hardware\arduino\sam\system\libsam;C:\Program Files\arduino-1.6.1\arduino-1.6.1\hardware\arduino\sam\system\libsam\include;C:\Program Files\arduino-1.6.1\arduino-1.6.1/hardware/tools/g++_arm_none_eabi\arm-none-eabi\include;C:\Program Files\arduino-1.6.1\arduino-1.6.1/hardware/tools/g++_arm_none_eabi\arm_none_eabi\include\;C:\Program Files\arduino-1.6.1\arduino-1.6.1/hardware/tools/g++_arm_none_eabi\lib\gcc\arm-none-eabi\4.4.1\include;C:\Program Files\arduino-1.6.1\arduino-1.6.1/hardware/tools/g++_arm_none_eabi\lib\gcc\arm-none-eabi\4.4.1\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <ForcedIncludeFiles>C:\Users\kloostermancw1\Documents\GitHub\gcc-quadrocopter\QuadFinal\Visual Micro\.QuadFinal.vsarduino.h;%(ForcedIncludeFiles)</ForcedIncludeFiles>
       <IgnoreStandardIncludePath>true</IgnoreStandardIncludePath>
-      <PreprocessorDefinitions>__AVR_ATmega328p__;__AVR_ATmega328P__;ARDUINO=161;ARDUINO_MAIN;__AVR__;__avr__;F_CPU=16000000L;__cplusplus;GCC_VERSION=40801;ARDUINO_ARCH_AVR;ARDUINO_AVR_ETHERNET;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>__SAM3X8E__;USB_VID=0x2341;USB_PID=0x003e;USBCON;USB_MANUFACTURER="Unknown";USB_PRODUCT="Arduino Due";ARDUINO=161;ARDUINO_MAIN;printf=iprintf;__SAM__;__sam__;F_CPU=84000000L;__cplusplus;ARDUINO_ARCH_SAM;ARDUINO_SAM_DUE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -107,6 +107,9 @@
       <FileType>CppCode</FileType>
     </ClInclude>
     <ClInclude Include="I2Cdev.h">
+      <FileType>CppCode</FileType>
+    </ClInclude>
+    <ClInclude Include="ITG3200.h">
       <FileType>CppCode</FileType>
     </ClInclude>
     <ClInclude Include="Kalman.h">

@@ -19,10 +19,44 @@
 #define MOTOR3 5
 #define MOTOR4 6
 
+//The carefully tuned values for all of our PID control loops.
+#define X_POS_KP 0
+#define X_POS_KI 0
+#define X_POS_KD 0
+
+#define Y_POS_KP 0
+#define Y_POS_KI 0
+#define Y_POS_KD 0
+
+#define Z_POS_KP 0
+#define Z_POS_KI 0
+#define Z_POS_KD 0
+
+#define X_ANG_KP 0
+#define X_ANG_KI 0
+#define X_ANG_KD 0
+
+#define Y_ANG_KP 0
+#define Y_ANG_KI 0
+#define Y_ANG_KD 0
+
+#define Z_ANG_KP 0
+#define Z_ANG_KI 0
+#define Z_ANG_KD 0
+
 Quad::Quad(void)
 {
 	i2c = I2C();
 	loopTime=millis();
+
+	xPosition.changeGain(X_POS_KP, X_POS_KI, X_POS_KD);
+	yPosition.changeGain(Y_POS_KP, Y_POS_KI, Y_POS_KD);
+	zPosition.changeGain(Z_POS_KP, Z_POS_KI, Z_POS_KD);
+
+	xAngle.changeGain(X_ANG_KP, X_ANG_KI, X_ANG_KD);
+	yAngle.changeGain(Y_ANG_KP, Y_ANG_KI, Y_ANG_KD);
+	zAngle.changeGain(Z_ANG_KP, Z_ANG_KI, Z_ANG_KD);
+
 	return;
 }
 
@@ -37,10 +71,10 @@ int Quad::motorInitialize(void)
 	analogWrite(5,0);
 	analogWrite(6,0);
 	delay(2000);
-	analogWrite(2,PWMax);
-	analogWrite(3,PWMax);
-	analogWrite(5,PWMax);
-	analogWrite(6,PWMax);
+	analogWrite(2,PWMIN);
+	analogWrite(3,PWMIN);
+	analogWrite(5,PWMIN);
+	analogWrite(6,PWMIN);
 	delay(2000);
 	analogWrite(2,0);
 	analogWrite(3,0);
@@ -53,7 +87,7 @@ int Quad::motorInitialize(void)
 
 int Quad::motorSet(int motor, int speed)
 {
-	speed	=	floor(1.28 * value) + PWMIN;
+	speed	=	floor(1.28 * speed) + PWMIN;
 
 	analogWrite(motor, speed);
 
@@ -67,7 +101,6 @@ int Quad::motorSet(int motor, int speed)
 
 int Quad::setup(void)
 {
-	sensorMode = ALL;
 	i2c.initialize();
 	Serial.begin(9600);
 	acc.setup();
@@ -87,12 +120,12 @@ int Quad::setup(void)
 int Quad::executeCycle(void)
 {
 
-	this->readSerialCommand();
+//	this->readSerialCommand();
 
-	this->getSensorVals();
+	getSensorVals();
 	readGPS = getGPSval();
 
-	void Filter.assignSensorValues(
+	Filter.assignSensorValues(
 		accX, accY, accZ,	// acceleration
 		gyroX, gyroY, gyroZ,	// gyroscope
 		compX, compY, 	// Compass
@@ -153,13 +186,13 @@ int Quad::getSensorVals(void)
 	gyroY=	gyro.readRawY()-gyroYBias;
 	gyroZ=	gyro.readRawZ()-gyroZBias;
 	//Compass
-	comX=	comp.getRawX();
-	comY=	comp.getRawY();
-	comZ=	comp.getRawZ();
+	compX=	comp.getRawX();
+	compY=	comp.getRawY();
+	compZ=	comp.getRawZ();
 }
 
 //updates the internal GPS values
-bool Quad::getGPSval(void)
+int Quad::getGPSval(void)
 {
 	//waits until a full signal is read from the gps
 	while (Serial2.available())
@@ -171,7 +204,7 @@ bool Quad::getGPSval(void)
 
 	//since there is no way to tell how stale the value that the GPS holds is, this function merely checks to see if
 	//its a new value or not
-	if gps.readRawLat == GPSlat;
+	if (gps.readRawLat() == GPSlat)
 		return false;
 
 	GPSlat	=	gps.readRawLat()-gpsLatBias;
@@ -194,6 +227,7 @@ int Quad::findSensorBias(void)
 
 	for(int i;i<8;i++)
 	{
+		int k;
 		//waits until new value comes from GPS object
 		do
 		{
@@ -203,7 +237,7 @@ int Quad::findSensorBias(void)
 				if(gps.encode(c))
 					break;
 			}
-		}while(gpsLatSample[i-1] != gps.readRawLat && i != 0);
+		}while(gpsLatSample[i-1] != gps.readRawLat() && i != 0);
 
 		//Samples gyro and GPS whenever its relevant
 		gpsLatSample[i]		=	gps.readRawLat();
@@ -214,25 +248,25 @@ int Quad::findSensorBias(void)
 		gyroYSample[i]		=	gyro.readRawY();
 		gyroZSample[i]		=	gyro.readRawZ();
 	}
-
+		int k;
 	//take average of gps and gyro samples to determine bias
-		for( k = 0; k < 8; k++ ) { gpsLatBias += gpsLatSample[k]; }
-		gpsLatBias = gpsLatBias / 8;
+	for( k = 0; k < 8; k++ ) { gpsLatBias += gpsLatSample[k]; }
+	gpsLatBias = gpsLatBias / 8;
 
-		for( k = 0; k < 8; k++ ) { gpsLongBias += gpsLongSample[k]; }
-		gpsLongBias = gpsLongBias / 8;
+	for( k = 0; k < 8; k++ ) { gpsLongBias += gpsLongSample[k]; }
+	gpsLongBias = gpsLongBias / 8;
 
-		for( k = 0; k < 8; k++ ) { gpsAltBias += gpsAltSample[k]; }
-		gpsAltBias = gpsAltBias / 8;
+	for( k = 0; k < 8; k++ ) { gpsAltBias += gpsAltSample[k]; }
+	gpsAltBias = gpsAltBias / 8;
 
-		for( k = 0; k < 8; k++ ) { gyroXBias += gyroXSample[k]; }
-		gyroXBias = gyroXBias / 8;
+	for( k = 0; k < 8; k++ ) { gyroXBias += gyroXSample[k]; }
+	gyroXBias = gyroXBias / 8;
 
-		for( k = 0; k < 8; k++ ) { gyroYBias += gyroYSample[k]; }
-		gyroYBias = gyroYBias / 8;
+	for( k = 0; k < 8; k++ ) { gyroYBias += gyroYSample[k]; }
+	gyroYBias = gyroYBias / 8;
 
-		for( k = 0; k < 8; k++ ) { gyroZBias += gyroZSample[k]; }
-		gyroZBias = gyroZBias / 8;
+	for( k = 0; k < 8; k++ ) { gyroZBias += gyroZSample[k]; }
+	gyroZBias = gyroZBias / 8;
 }
 
 int Quad::adjustMotors(void)
@@ -245,14 +279,14 @@ int Quad::adjustMotors(void)
 	m4speed += yAngCorrect;
 
 	//adjust for altitude
-	m1speed += altitudeCorrection;
-	m2speed += altitudeCorrection;
-	m3speed += altitudeCorrection;
-	m4speed += altitudeCorrection;
+	m1speed += zPosCorrect;
+	m2speed += zPosCorrect;
+	m3speed += zPosCorrect;
+	m4speed += zPosCorrect;
 
 	// adjust for yaw
-	m1speed -= yawCorrection;
-	m3speed -= yawCorrection;
+	m1speed -= zAngCorrect;
+	m3speed -= zAngCorrect;
 
 	m2speed += zAngCorrect;
 	m4speed += zAngCorrect;
@@ -274,61 +308,61 @@ int Quad::adjustMotors(void)
 
 int Quad::waitFor()
 {
-	delay(10 - (millis()-loopTime))
+	delay(10 - (millis()-loopTime));
 }
 
-void Quad::readSerialCommand(void) {
-	int serialData = Serial.read();
-
-	if (serialData != -1)
-		// clear some space
-			Serial.print("\n\n\n");
-
-	switch (serialData)
-	{
-	case (int)'1':
-		motorSet(100);
-		break;
-	case (int)'2':
-		motorSet(120);
-		break;
-	case (int)'3':
-		motorSet(130);
-		break;
-	case (int)'4':
-		motorSet(140);
-		break;
-	case (int)'5':
-		motorSet(150);
-		break;
-	case (int)'6':
-		motorSet(160);
-		break;
-	case (int)'7':
-		motorSet(170);
-		break;
-	case (int)'8':
-		motorSet(180);
-		break;
-	case (int)'9':
-		motorSet(190);
-		break;
-	case (int)'10':
-		motorSet(200);
-		break;
-	case (int)'11':
-		motorSet(210);
-		break;
-	case (int)'12':
-		motorSet(220);
-		break;
-	case -1:
-		break;
-	default:
-		Serial.print("unknown command: ");
-		Serial.println((char)serialData);
-	}
-}
+//void Quad::readSerialCommand(void) {
+//	int serialData = Serial.read();
+//
+//	if (serialData != -1)
+//		// clear some space
+//			Serial.print("\n\n\n");
+//
+//	switch (serialData)
+//	{
+//	case (int)'1':
+//		motorSet(100);
+//		break;
+//	case (int)'2':
+//		motorSet(120);
+//		break;
+//	case (int)'3':
+//		motorSet(130);
+//		break;
+//	case (int)'4':
+//		motorSet(140);
+//		break;
+//	case (int)'5':
+//		motorSet(150);
+//		break;
+//	case (int)'6':
+//		motorSet(160);
+//		break;
+//	case (int)'7':
+//		motorSet(170);
+//		break;
+//	case (int)'8':
+//		motorSet(180);
+//		break;
+//	case (int)'9':
+//		motorSet(190);
+//		break;
+//	case (int)'10':
+//		motorSet(200);
+//		break;
+//	case (int)'11':
+//		motorSet(210);
+//		break;
+//	case (int)'12':
+//		motorSet(220);
+//		break;
+//	case -1:
+//		break;
+//	default:
+//		Serial.print("unknown command: ");
+//		Serial.println((char)serialData);
+//	}
+//}
 
 
 
