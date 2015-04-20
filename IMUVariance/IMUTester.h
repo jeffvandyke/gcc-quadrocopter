@@ -32,14 +32,14 @@ public:
 	
 
 	Adafruit_ADXL345_Unified accel;
+	ITG3200 gyro;
 
 
 	I2C i2c;
-	int dataBuffer[1000][8];
 	SensorMode sensorMode;
 
 //	Accelerometer acc;
-	Gyroscope gyro;
+//	Gyroscope gyro;
 	Barometer bar;
 	Compass comp;
 	GPS gps;
@@ -47,12 +47,37 @@ public:
 	long newLong,newLat;
 	unsigned long fix_age;
 	unsigned long date, time, oldTime;
-	unsigned long finish;
 
-	char dataToSend[120];
+	unsigned long finish;
+	unsigned long stopTime;
+
+	int cycles;
+	unsigned long sumCollectionTime;
+	unsigned long sensorCollectionStart;
+
 
 	int executeCycle(void);
 	int setupTester(void);
+
+	bool reportGyro;
+	bool reportGyroAll;
+	bool reportAccel;
+	bool reportComp;
+	bool reportGPS;
+
+	//void initialize(int);
+
+	void printGPS(void);
+	int timeGyro(void);
+	int timeGyroAll(void);
+	int timeAccel(void);
+	int timeComp(void);
+
+	void serialPrint(String s);
+	void serialPrint(int i);
+	void serialPrintln(String s);
+	void serialPrintln(int i);
+
 private:
 	
 	void readSerialCommand(void);
