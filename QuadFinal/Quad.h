@@ -4,6 +4,7 @@
 #include "Gyroscope.h"
 #include "Barometer.h"
 #include "Compass.h"
+#include "Bluetooth.h"
 #include "GPS.h"
 //#include "Trig.h"
 #include "Kalman.h"
@@ -21,11 +22,13 @@ public:
 	I2C i2c;
 	//int dataBuffer[1000];
 
+	Bluetooth blue;
+
 	Accelerometer acc;
 	Gyroscope gyro;
-	Barometer bar;
+//	Barometer bar;
 	Compass comp;
-	GPS gps;
+//	GPS gps;
 	KalmanFilter Filter;
 
     PIDController xPosition, yPosition, zPosition;
@@ -37,8 +40,8 @@ public:
 	int motorInitialize(void);
 	int motorSet(int motor, int speed);
 	int getSensorVals(void);
-	int getGPSval(void);
-	int findSensorBias(void);
+//	int getGPSval(void);
+//	int findSensorBias(void);
 	int adjustMotors(void);
 
 	int waitFor();

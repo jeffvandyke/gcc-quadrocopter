@@ -12,7 +12,7 @@ PIDController::PIDController()
 }
 
 //starts the setpoint at bias
-void PIDController::changeGain(int p, int i, int d)
+void PIDController::changeGain(float p, float i, float d)
 {
 	kP=p;
 	kD=d;
@@ -28,12 +28,12 @@ void PIDController::move(int deltaPos)
   	setPoint+=deltaPos; 
 }
 
-void PIDController::setSetPoint(int newPoint)
+void PIDController::setSetPoint(float newPoint)
 {
 	setPoint=newPoint;
 }
 
-int PIDController::PID(int currentValue)
+float PIDController::PID(float currentValue)
 {
 	// basis for this code was found at http://brettbeauregard.com/blog/2011/04/improving-the-beginners-pid-introduction/
 	//Same as last year's code
@@ -58,7 +58,7 @@ int PIDController::PID(int currentValue)
 	return kP * error + kI * integralSumTerm - dTerm;
 }
 
-int PIDController::PID(int currentValue, int dTerm)
+float PIDController::PID(float currentValue, float dTerm)
 {
 	// basis for this code was found at http://brettbeauregard.com/blog/2011/04/improving-the-beginners-pid-introduction/
 	//Same as last year's code
