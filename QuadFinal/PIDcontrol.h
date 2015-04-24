@@ -9,7 +9,7 @@ PIDcontrol Library
  This is the header file.
 ==============================================================
 */
-
+#include <Arduino.h>
 #include "Kalman.h"
 
 #ifndef PID_h
@@ -18,22 +18,21 @@ PIDcontrol Library
 class PIDController
 {
 public:
-   PIDController(int p, int i, int d);
-   ~PIDController();
-   void move(int deltaPos);
-   void setSetPoint(int newPoint);
+	PIDController();
+	void changeGain(float p, float i, float d);
+	~PIDController();
+	void move(int deltaPos);
+	void setSetPoint(float newPoint);
 
-   	int PD(int currentValue);
-	int PI(int currentValue);
-	int PID(int currentValue);
-	int PID(int currentValue, int dTerm);
+	float PID(float currentValue);
+	float PID(float currentValue, float dTerm);
 private:
-	int setPoint;
-	int integralSumTerm;
-	int lastValue;
-	int kp, kd, ki;
-	int deltaTime, previousMillis;
-	int dTerm, error;
+	float setPoint;
+	float integralSumTerm;
+	float lastValue;
+	float kP, kD, kI;
+	float deltaTime, previousMillis;
+	float dTerm, error;
 };
 
 #endif

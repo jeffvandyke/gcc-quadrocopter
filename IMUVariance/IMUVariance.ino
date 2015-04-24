@@ -11,5 +11,6 @@ void setup()
 
 void loop()
 {
+	//Serial.println("vindaloop");
 	tester.executeCycle();
 }

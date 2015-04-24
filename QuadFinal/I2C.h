@@ -25,7 +25,7 @@ enum RETURN_CODE
    // The first 5 codes are from Arduino and the Wire library used for I2C
    // we used these as the basis for error codes in debugging and indicating success
    SUCCESS,         // 0
-   OVERFLOW,        // 1
+   OVERFLOW_,        // 1
    NACK_ADDRESS,    // 2
    NACK_DATA,       // 3
    ERROR,           // 4

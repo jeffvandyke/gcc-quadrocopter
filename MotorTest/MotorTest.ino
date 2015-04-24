@@ -5,7 +5,7 @@
 #define MOTOR_TRIG 53
 #define OUTPIN 6
 #define TRIGPIN 53
-#define PWMIN 90
+#define PWMIN 100
 
 #define MAX_MOTOR_SPEED 128
 #define MAX_ANGULAR_DEFLECTION 20
@@ -31,9 +31,9 @@ void setup()
 
 void loop()
 {
-	i=i*10;
 	motorSet(MOTOR2, i);
-	delay(2000);
+	delay(500);
+	i++;
 }
 
 int motorInitialize(void)
@@ -63,9 +63,9 @@ int motorSet(int motor, int speed)
 
 	analogWrite(motor, speed);
 
-//	delay(2000);
+//	delay(1000);
 //	analogWrite(motor, 0);
-//	delay(2000);
+//	delay(1000);
 
 
 	return 0;

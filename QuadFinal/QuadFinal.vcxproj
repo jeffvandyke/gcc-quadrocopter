@@ -44,10 +44,10 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>C:\Program Files\arduino-1.6.1\arduino-1.6.1\hardware\arduino\avr\cores\arduino;C:\Program Files\arduino-1.6.1\arduino-1.6.1\hardware\arduino\avr\variants\ethernet;C:\Users\kloostermancw1\Documents\GitHub\gcc-quadrocopter\QuadFinal;C:\Program Files\arduino-1.6.1\arduino-1.6.1\hardware\arduino\avr\libraries\Wire;C:\Program Files\arduino-1.6.1\arduino-1.6.1\hardware\arduino\avr\libraries\Wire\utility;C:\Program Files\arduino-1.6.1\arduino-1.6.1\libraries;C:\Program Files\arduino-1.6.1\arduino-1.6.1\hardware\arduino\avr\libraries;C:\Program Files\Arduino\Micro Platforms\default\debuggers;C:\Users\kloostermancw1\Documents\Arduino\libraries;c:\program files\arduino-1.6.1\arduino-1.6.1\hardware\tools\avr\avr\include\;c:\program files\arduino-1.6.1\arduino-1.6.1\hardware\tools\avr\avr\include\avr\;c:\program files\arduino-1.6.1\arduino-1.6.1\hardware\tools\avr\avr\;c:\program files\arduino-1.6.1\arduino-1.6.1\hardware\tools\avr\lib\gcc\avr\4.8.1\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Program Files\arduino-1.6.1\arduino-1.6.1\hardware\arduino\avr\cores\arduino;C:\Program Files\arduino-1.6.1\arduino-1.6.1\hardware\arduino\avr\variants\mega;C:\Users\kloostermancw1\Documents\GitHub\gcc-quadrocopter\QuadFinal;C:\Program Files\arduino-1.6.1\arduino-1.6.1\hardware\arduino\avr\libraries\Wire;C:\Program Files\arduino-1.6.1\arduino-1.6.1\hardware\arduino\avr\libraries\Wire\utility;C:\Program Files\arduino-1.6.1\arduino-1.6.1\libraries;C:\Program Files\arduino-1.6.1\arduino-1.6.1\hardware\arduino\avr\libraries;C:\Program Files\Arduino\Micro Platforms\default\debuggers;C:\Users\kloostermancw1\Documents\Arduino\libraries;c:\program files\arduino-1.6.1\arduino-1.6.1\hardware\tools\avr\avr\include\;c:\program files\arduino-1.6.1\arduino-1.6.1\hardware\tools\avr\avr\include\avr\;c:\program files\arduino-1.6.1\arduino-1.6.1\hardware\tools\avr\avr\;c:\program files\arduino-1.6.1\arduino-1.6.1\hardware\tools\avr\lib\gcc\avr\4.8.1\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <ForcedIncludeFiles>C:\Users\kloostermancw1\Documents\GitHub\gcc-quadrocopter\QuadFinal\Visual Micro\.QuadFinal.vsarduino.h;%(ForcedIncludeFiles)</ForcedIncludeFiles>
       <IgnoreStandardIncludePath>true</IgnoreStandardIncludePath>
-      <PreprocessorDefinitions>__AVR_ATmega328p__;__AVR_ATmega328P__;ARDUINO=161;ARDUINO_MAIN;__AVR__;__avr__;F_CPU=16000000L;__cplusplus;GCC_VERSION=40801;ARDUINO_ARCH_AVR;ARDUINO_AVR_ETHERNET;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>__AVR_ATmega2560__;ARDUINO=161;ARDUINO_MAIN;__AVR__;__avr__;F_CPU=16000000L;__cplusplus;GCC_VERSION=40801;ARDUINO_ARCH_AVR;ARDUINO_AVR_MEGA2560;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -109,6 +109,9 @@
     <ClInclude Include="I2Cdev.h">
       <FileType>CppCode</FileType>
     </ClInclude>
+    <ClInclude Include="ITG3200.h">
+      <FileType>CppCode</FileType>
+    </ClInclude>
     <ClInclude Include="Kalman.h">
       <FileType>CppCode</FileType>
     </ClInclude>
@@ -141,4 +144,9 @@
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
+  <ProjectExtensions>
+    <VisualStudio>
+      <UserProperties arduino.upload.port="COM6" />
+    </VisualStudio>
+  </ProjectExtensions>
 </Project>
