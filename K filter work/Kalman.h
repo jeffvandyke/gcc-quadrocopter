@@ -34,26 +34,30 @@ using namespace std;
 
 class KalmanFilter {
 	public:
-        KalmanFilter();
+        KalmanFilter() {}
 #if DEBUGK
-		KalmanFilter(ofstream& out);
+		KalmanFilter(ofstream& resultsOut, ofstream& out);
+        ofstream* rout;
         ofstream* fout;
 
         void log(float number) { *fout << number << '\t'; }
         void logr() { *fout << endl; }
         void log() { *fout << '\t'; }
         void log(string text) {*fout << text << '\t';}
+        void rlog(float number) { *rout << number << '\t'; }
+        void rlograw(string text) {*rout << text;}
         void logh(string text) {*fout << text << '\n';}
 #endif
 
-		void initialize(float, float, float);
+		void initialize(float biasAccX, float biasAccY, float biasAccZ,
+                float biasGyroX, float biasGyroY, float biasGyroZ,
+                int biasGpsX, int biasGpsY, int biasGpsZ);
 
 		void assignSensorValues(
 				int, int, int,	// acceleration
 				int, int, int,	// gyroscope
 				int, int, 	// Compass
 				int, int, int,	// GPS
-				// int, int, int,  // GPS velocity
 				bool); // use gps value
 
 		void predictAndUpdate();
@@ -67,8 +71,8 @@ class KalmanFilter {
                 float& x_p, float& x_v, float& x_a,
                 float& dT);
         void predictStateEstimateForRotation(
-                float& xp_a, float& xp_r, float& xp_b,
-                float& x_a, float& x_r, float& x_b,
+                float& xp_a, float& xp_r,
+                float& x_a, float& x_r,
                 float& dT);
         void predictStateCovarianceForPosition(
                 float& op1, float& op2, float& op3, float& op4, float& op5, float& op6,
@@ -100,6 +104,12 @@ class KalmanFilter {
                 float i1, float i2, float i3, float i4, float i5, float i6);
 
         bool usingGPS;
+        // biases:
+
+        float bias_ax, bias_ay, bias_az;
+        float bias_gx, bias_gy, bias_gz;
+        int bias_Gx, bias_Gy, bias_Gz;
+
 		// Constant Matrixes
 		//
 		// Process Noise - variance associated with each state variable
@@ -118,8 +128,8 @@ class KalmanFilter {
 
 		// Sensor error covariance - Diagonal Matrix
 		// (from lab)
-		float R_ax, R_ay, R_az;
-		float R_gx, R_gy, R_gz;
+		float R_axx, R_axy, R_axz, R_ayy, R_ayz, R_azz;
+		float R_gxx, R_gxy, R_gxz, R_gyy, R_gyz, R_gzz;
 		// 0.000349 r/s^2
 		float R_Px, R_Py, R_Pz;
 		float R_Ox, R_Oy, R_Oz;
@@ -134,17 +144,17 @@ class KalmanFilter {
 
 		// orientation
 		// a: angle, r: rotation (speed), b: bias
-		float x_Xa, x_Xr, x_Xb;
-		float x_Ya, x_Yr, x_Yb;
-		float x_Za, x_Zr, x_Zb;
+		float x_Xa, x_Xr;
+		float x_Ya, x_Yr;
+		float x_Za, x_Zr;
 
 		// P matrix
 		float P_xpp, P_xpv, P_xpa, P_xvv, P_xva, P_xaa;
 		float P_ypp, P_ypv, P_ypa, P_yvv, P_yva, P_yaa;
 		float P_zpp, P_zpv, P_zpa, P_zvv, P_zva, P_zaa;
-		float P_Xaa, P_Xar, P_Xrr/*, P_Xbb*/;
-		float P_Yaa, P_Yar, P_Yrr/*, P_Ybb*/;
-		float P_Zaa, P_Zar, P_Zrr/*, P_Zbb*/;
+		float P_Xaa, P_Xar, P_Xrr;
+		float P_Yaa, P_Yar, P_Yrr;
+		float P_Zaa, P_Zar, P_Zrr;
 
 		// sensor values
 		// a: accelerometer

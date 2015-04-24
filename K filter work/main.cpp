@@ -29,32 +29,35 @@ int main()
     quadState_t results;
     quadState_t covariance;
 
-	datFile.open("variance test.csv");
+	datFile.open("data");
     ofstream outFile;
     outFile.open("results.csv");
     ofstream debugFile;
     debugFile.open("debug.csv");
 
-    KalmanFilter kalman(debugFile);
-    kalman.initialize(-15.24991969, 1.94282043, 1.4240282686);
+    KalmanFilter kalman(outFile, debugFile);
+    kalman.initialize( 6.9158f, 9.9410f, 21.515f,
+            -16.027f, 0.9157f, 0.6185f,
+            -12504.f, -13316.f, -24942.f );
 
-    outFile << "xPo\tyPo\tzPo\txVe\tyVe\tzVe\txAc\tyAc\tzAc\txAn\tyAn\tzAn\txRo\tyRo\tzRo\n";
-	int i, j, k, vals[9];
-	for(i=0;i<3110;i++){
-		for(j=0;j<8;j++){
+    outFile << "x_xp\tx_yp\tx_zp\tx_xv\tx_yv\tx_zv\tx_xa\tx_ya\tx_za\t";
+    outFile << "x_Xa\tx_Ya\tx_Za\tx_Xr\tx_Yr\tx_Zr\n";
+
+    int i, j, k, vals[12];
+    while(!datFile.eof()) {
+		for(j=0;j<12;j++){
 			datFile >> vals[j];
 		}
+            results = kalman.getQuadState();
 			kalman.assignSensorValues(
 				vals[0], vals[1], vals[2],	// acceleration
 				vals[3], vals[4], vals[5],	// gyroscope
-				vals[6], vals[7], // Compass
-				0, 0, 0, (i + 2) % 60 == 0);	// GPS
+				0, 100, // Compass facing north - initial Z angle = 0
+				vals[8], vals[9], vals[10], static_cast<bool>(vals[11]));
+            // GPS and use (y/n)
             kalman.predictAndUpdate();
-            results = kalman.getQuadState();
-            covariance = kalman.getCovariance();
+            // covariance = kalman.getCovariance();
 
             outputStateToStream(outFile, results);
-            debugFile << "xPo\tyPo\tzPo\txVe\tyVe\tzVe\txAc\tyAc\tzAc\txAn\tyAn\tzAn\txRo\tyRo\tzRo\n";
-            outputStateToStream(debugFile, results);
 	}
 }

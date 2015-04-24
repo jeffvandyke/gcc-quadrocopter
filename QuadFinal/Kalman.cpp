@@ -2,10 +2,12 @@
 #define KALMAN_CPP
 #include "Kalman.h"
 
+// 1000 floats multiplications
+// 400 add multiplications
 
 
-const float aProcessNoise = 1;
-const float gProcessNoise = 6.f;
+float aProcessNoise;
+float gProcessNoise;
 
 inline float i10m(float a, float b) {
     return ((a)*(b));
@@ -20,8 +22,8 @@ inline float i10m3(float a, float b, float c) {
 }
 using namespace std;
 
-// 8.98 * 1024, just the average of the magnitude
-const float gravity = 8.9639096;
+// from Ggle!
+const float gravity = 9.80065;
 
 
 
@@ -32,19 +34,93 @@ const float gravity = 8.9639096;
 // Intermediate functions - used at several points in the kalman filter's
 // predict and update process
 
-KalmanFilter::KalmanFilter() {
-}
 
 #if DEBUGK
-KalmanFilter::KalmanFilter(ofstream& out) {
+KalmanFilter::KalmanFilter(ofstream& resultsOut, ofstream& out) {
+    rout = &resultsOut;
+
+    *rout << "H_gx_Xr\tH_gy_Yr\tH_gz_Zr\t";
+    *rout << "H_gx_Yr\tH_gy_Xr\tH_gx_Zr\t";
+    *rout << "H_gy_Zr\tH_gz_Xr\tH_gz_Yr\t";
+
+    *rout << "Cy\tCx\t";
+    *rout << "cx\tcy\tcz\tsx\tsy\tsz\t";
+    *rout << "z_ax\tz_ay\tz_az\t";
+    *rout << "z_gx\tz_gy\tz_gz\t";
+    *rout << "z_Px\tz_Py\tz_Pz\t";
+    *rout << "z_Ox\tz_Oy\tz_Oz\t";
+    *rout << "dropX\tdropY\t";
+    // UPDATE starts here
+
+    *rout << "xp_xp\txp_xv\txp_xa\txp_yp\txp_yv\txp_ya\txp_zp\txp_zv\txp_za\t";
+    *rout << "xp_Xa\txp_Xr\txp_Ya\txp_Yr\txp_Za\txp_Zr\t";
+
+    // Pp
+	*rout << "Pp_xpp\tPp_xpv\tPp_xpa\tPp_xvv\tPp_xva\tPp_xaa\t";
+    *rout << "Pp_ypp\tPp_ypv\tPp_ypa\tPp_yvv\tPp_yva\tPp_yaa\t";
+    *rout << "Pp_zpp\tPp_zpv\tPp_zpa\tPp_zvv\tPp_zva\tPp_zaa\t";
+    *rout << "Pp_Xaa\tPp_Xar\tPp_Xrr\t";
+    *rout << "Pp_Yaa\tPp_Yar\tPp_Yrr\t";
+    *rout << "Pp_Zaa\tPp_Zar\tPp_Zrr\t";
+
+    // y's
+    *rout << "y_ax\ty_ay\ty_az\t";
+    *rout << "y_gx\ty_gy\ty_gz\t";
+    *rout << "y_Px\ty_Py\ty_Pz\t";
+    *rout << "y_Ox\ty_Oy\ty_Oz\t";
+
+
+    // S's and inverse
+    rlograw("S_Oxx\tS_Oyy\tS_Ozz\t");
+    rlograw("S_Pxx\tS_Pyy\tS_Pzz\t");
+    rlograw("S_axx\tS_axy\tS_axz\tS_ayy\tS_ayz\tS_azz\t");
+    rlograw("S_gxx\tS_gxy\tS_gxz\tS_gyy\tS_gyz\tS_gzz\t");
+    rlograw("Si_Oxx\tSi_Oyy\tSi_Ozz\t");
+    rlograw("Si_Pxx\tSi_Pyy\tSi_Pzz\t");
+    rlograw("Si_axx\tSi_axy\tSi_axz\tSi_ayy\tSi_ayz\tSi_azz\t");
+    rlograw("Si_gxx\tSi_gxy\tSi_gxz\tSi_gyy\tSi_gyz\tSi_gzz\t");
+
+    rlograw("K_xa_ax\t");
+    rlograw("K_xa_ay\t");
+    rlograw("K_xa_az\t");
+    rlograw("K_ya_ax\t");
+    rlograw("K_ya_ay\t");
+    rlograw("K_ya_az\t");
+    rlograw("K_za_ax\t");
+    rlograw("K_za_ay\t");
+    rlograw("K_za_az\t");
+
+    rlograw("K_Xr_gx\t");
+    rlograw("K_Xr_gy\t");
+    rlograw("K_Xr_gz\t");
+    rlograw("K_Yr_gx\t");
+    rlograw("K_Yr_gy\t");
+    rlograw("K_Yr_gz\t");
+    rlograw("K_Zr_gx\t");
+    rlograw("K_Zr_gy\t");
+    rlograw("K_Zr_gz\t");
+
+	*rout << "P_xpp\tP_xpv\tP_xpa\tP_xvv\tP_xva\tP_xaa\t";
+    *rout << "P_ypp\tP_ypv\tP_ypa\tP_yvv\tP_yva\tP_yaa\t";
+    *rout << "P_zpp\tP_zpv\tP_zpa\tP_zvv\tP_zva\tP_zaa\t";
+    *rout << "P_Xaa\tP_Xar\tP_Xrr\t";
+    *rout << "P_Yaa\tP_Yar\tP_Yrr\t";
+    *rout << "P_Zaa\tP_Zar\tP_Zrr\t";
+
+
     fout = &out;
 }
 #endif
 
 
-void KalmanFilter::initialize(float xBias, float yBias, float zBias) {
+void KalmanFilter::initialize(
+        float bax, float bay, float baz,
+        float bgx, float bgy, float bgz,
+        int bGx, int bGy, int bGz) {
 
-    x_Xb = xBias; x_Yb = yBias; x_Zb = zBias;
+    bias_ax = bax; bias_ay = bay; bias_az = baz;
+    bias_gx = bgx; bias_gy = bgy; bias_gz = bgz;
+    bias_Gx = bGx; bias_Gy = bGy; bias_Gz = bGz;
 
     x_xp = 0.f; x_xv = 0.f; x_xa = 0.f;
     x_yp = 0.f; x_yv = 0.f; x_ya = 0.f;
@@ -61,20 +137,36 @@ void KalmanFilter::initialize(float xBias, float yBias, float zBias) {
     P_zpp = 0.0; P_zpv = 0.0; P_zpa = 0.0;
     P_zvv = 0.0; P_zva = 0.0; P_zaa = 0.0;
 
-    P_Xaa = 0.05; P_Xar = 0.05; P_Xrr = 0.05;
-    P_Yaa = 0.05; P_Yar = 0.05; P_Yrr = 0.05;
+    P_Xaa = 0; P_Xar = 0; P_Xrr = 0;
+    P_Yaa = 0; P_Yar = 0; P_Yrr = 0;
     // z rotation is the only real uncertainty
-    P_Zaa = 9.0; P_Zar = 0.0; P_Zrr = 0.0;
+    P_Zaa = 0; P_Zar = 0; P_Zrr = 0;
 
 
     // Sensor error covariance - Diagonal Matrix
     // (experimentation)
-    R_ax = R_ay = R_az = 0.04;
-    // 0.000349 (r/s^2)^2 = 1.1468 (°/s^2)^2
-    R_gx = R_gy = R_gz = 1.1468 - .5; // (compensate for process noice)
-    R_Px = R_Py = 1; R_Pz = 1;
+    R_axx = 0.0442159097;
+    R_axy = -0.0081595105;
+    R_axz = 0.01306149;
+    R_ayy = 0.0426882268;
+    R_ayz = -0.0080903605;
+    R_azz = 0.0437250403;
+
+    R_gxx = 0.0372999322;
+    R_gxy = -6.42900742451691e-005;
+    R_gxz = -0.0020455933;
+    R_gyy = 0.0353946081;
+    R_gyz = 0.0005318543;
+    R_gzz = 0.0474751213;
+
+    // R_gx = R_gy = R_gz = 1.1468 - .5; // (compensate for process noice)
+    R_Px = R_Py = R_Pz = 200;
     // large enough to promote steady state correctness without going overboard
-    R_Ox = R_Oy = R_Oz = 10;
+    R_Ox = R_Oy = R_Oz = 1000;
+
+    aProcessNoise = 10.f;
+    gProcessNoise = 100.f;
+
 }
 
 void KalmanFilter::assignSensorValues(
@@ -87,19 +179,20 @@ void KalmanFilter::assignSensorValues(
 
 
 #if DEBUGK
-    logh("===================================================================");
+    for (int i = 0; i < 15; i++){ log("==="); }
+    logr();
 #endif
 
     usingGPS = useGPS;
 
     // adjust with scaling factor of 0.038307
-    z_ax = (static_cast<float>(ax) * 0.038307);
-    z_ay = (static_cast<float>(ay) * 0.038307);
-    z_az = (static_cast<float>(az) * 0.038307);
+    z_ax = (static_cast<float>(ax) - bias_ax) * 0.038307;
+    z_ay = (static_cast<float>(ay) - bias_ay) * - 0.038307;
+    z_az = (static_cast<float>(az) - bias_az) * 0.038307;
     // adjust gyroscope factor of 0.069565 °/sec
-    z_gx = (static_cast<float>(gx - x_Xb) * 0.069565 );
-    z_gy = (static_cast<float>(gy - x_Yb) * 0.069565 );
-    z_gz = (static_cast<float>(gz - x_Zb) * 0.069565 );
+    z_gx = (static_cast<float>(gx) - bias_gx) * -0.069565;
+    z_gy = (static_cast<float>(gy) - bias_gy) * 0.069565;
+    z_gz = (static_cast<float>(gz) - bias_gz) * 0.069565;
 
 
     if (usingGPS)
@@ -107,9 +200,9 @@ void KalmanFilter::assignSensorValues(
 #if DEBUGK
         log("using gps");
 #endif
-        z_Px = Px * 1.f;
-        z_Py = Py * 1.f;
-        z_Pz = Pz * 1.f;
+        z_Px = (static_cast<float>(Px) - bias_Gx) * 1.f;
+        z_Py = (static_cast<float>(Py) - bias_Gy) * 1.f;
+        z_Pz = (static_cast<float>(Pz) - bias_Gz) * 1.f;
     } else {
 #if DEBUGK
         log("not using gps");
@@ -117,18 +210,18 @@ void KalmanFilter::assignSensorValues(
     }
 
 
-    float cx = cos(x_Xa * 3.14159 / 180);
-    float cy = cos(x_Ya * 3.14159 / 180);
-    float cz = cos(x_Za * 3.14159 / 180);
-    float sx = sin(x_Xa * 3.14159 / 180);
-    float sy = sin(x_Ya * 3.14159 / 180);
-    float sz = sin(x_Za * 3.14159 / 180);
+    float cx = cos(x_Xa * 3.14159 / 180); //1; //
+    float cy = cos(x_Ya * 3.14159 / 180); //1; //
+    float cz = cos(x_Za * 3.14159 / 180); //1; //
+    float sx = sin(x_Xa * 3.14159 / 180); //0; //
+    float sy = sin(x_Ya * 3.14159 / 180); //0; //
+    float sz = sin(x_Za * 3.14159 / 180); //0; //
 
     float dropX = (float)(atan2(-z_ay, -z_az )) * 180 / 3.14159;
     float dropY = (float)(atan2( z_ax, -z_az )) * 180 / 3.14159;
     z_Ox = i10m( dropX , cz ) + i10m ( dropY , sz );
     z_Oy = i10m( dropY , cz ) + i10m ( dropX ,-sz );
-    z_Oz = (float)(atan2(Cy, Cx)) * 180 / 3.14159;
+    z_Oz = (float)(atan2(-Cx, Cy)) * 180 / 3.14159;
 
 #if DEBUGK
     log("test for sin...\n");
@@ -136,6 +229,34 @@ void KalmanFilter::assignSensorValues(
     logr();
 #endif
 
+#define lockhs 1
+#if lockhs
+
+    H_gx_Xr = H_ax_xa = 1;
+    H_gy_Yr = H_ay_ya = 1;
+    H_gz_Zr = H_az_za = 1;
+
+    H_gx_Yr = H_ax_ya = 0;
+    H_gy_Xr = H_ay_xa = 0;
+    H_gx_Zr = H_ax_za = 0;
+    H_gy_Zr = H_ay_za = 0;
+    H_gz_Xr = H_az_xa = 0;
+    H_gz_Yr = H_az_ya = 0;
+
+#if DEBUGK
+    rlog(i10m( cy , cz ));
+    rlog(i10m( cz , cx ));
+    rlog(i10m( cx , cy ));
+
+    rlog(i10m( sz , cx ));
+    rlog(i10m(-sz , cy ));
+    rlog(i10m(-sy , cx ));
+    rlog(i10m( sx , cy ));
+    rlog(i10m( sy , cz ));
+    rlog(i10m(-sx , cz ));
+#endif
+
+#else
     H_gx_Xr = H_ax_xa = i10m( cy , cz );
     H_gy_Yr = H_ay_ya = i10m( cz , cx );
     H_gz_Zr = H_az_za = i10m( cx , cy );
@@ -148,7 +269,7 @@ void KalmanFilter::assignSensorValues(
 
     H_gz_Xr = H_az_xa = i10m( sy , cz );
     H_gz_Yr = H_az_ya = i10m(-sx , cz );
-
+#endif
 
 
 
@@ -161,6 +282,22 @@ void KalmanFilter::assignSensorValues(
     log(z_Px); log(z_Py); log(z_Pz);
     log(z_Ox); log(z_Oy); log(z_Oz);
     logr();
+
+#if !(lockhs)
+    rlog(H_gx_Xr); rlog(H_gy_Yr); rlog(H_gz_Zr);
+    rlog(H_gx_Yr); rlog(H_gy_Xr); rlog(H_gx_Zr);
+    rlog(H_gy_Zr); rlog(H_gz_Xr); rlog(H_gz_Yr);
+#endif
+
+    rlog(Cy); rlog(Cx);
+    rlog(cx); rlog(cy); rlog(cz); rlog(sx); rlog(sy); rlog(sz);
+    rlog(z_ax); rlog(z_ay); rlog(z_az);
+    rlog(z_gx); rlog(z_gy); rlog(z_gz);
+    rlog(z_Px); rlog(z_Py); rlog(z_Pz);
+    rlog(z_Ox); rlog(z_Oy); rlog(z_Oz);
+    rlog(dropX); rlog(dropY);
+
+
 #endif
 
 }
@@ -174,7 +311,7 @@ void KalmanFilter::predictAndUpdate()
     unsigned int currentTime = 0; // TODO: get current time
     float dT = (float)(currentTime - previousTimeRan);
 
-    dT = 1.f / 100;
+    dT = 1.f / 50;
 
     // Process noise Q matrix
 
@@ -192,9 +329,9 @@ void KalmanFilter::predictAndUpdate()
 
 
     // Rotation
-    Q_Xaa = Q_Yaa = Q_Zaa = i10m(dT_4 / 4 , gProcessNoise);
-    Q_Xar = Q_Yar = Q_Zar = i10m(dT_3 / 2 , gProcessNoise);
-    Q_Xrr = Q_Yrr = Q_Zrr = i10m(dT_2 , gProcessNoise);
+    Q_Xaa = Q_Yaa = Q_Zaa = i10m(dT_2 , gProcessNoise);
+    Q_Xar = Q_Yar = Q_Zar = i10m(dT , gProcessNoise);
+    Q_Xrr = Q_Yrr = Q_Zrr = i10m(1 , gProcessNoise);
 
     // predict stage
 
@@ -208,13 +345,13 @@ void KalmanFilter::predictAndUpdate()
     predictStateEstimateForPosition(
             xp_zp, xp_zv, xp_za, x_zp, x_zv, x_za, dT);
 
-    float xp_Xa, xp_Xr, xp_Xb, xp_Ya, xp_Yr, xp_Yb, xp_Za, xp_Zr, xp_Zb;
+    float xp_Xa, xp_Xr, xp_Ya, xp_Yr, xp_Za, xp_Zr;
     predictStateEstimateForRotation(
-            xp_Xa, xp_Xr, xp_Xb, x_Xa, x_Xr, x_Xb, dT);
+            xp_Xa, xp_Xr, x_Xa, x_Xr, dT);
     predictStateEstimateForRotation(
-            xp_Ya, xp_Yr, xp_Yb, x_Ya, x_Yr, x_Yb, dT);
+            xp_Ya, xp_Yr, x_Ya, x_Yr, dT);
     predictStateEstimateForRotation(
-            xp_Za, xp_Zr, xp_Zb, x_Za, x_Zr, x_Zb, dT);
+            xp_Za, xp_Zr, x_Za, x_Zr, dT);
 
 
     // Step 2: PREDICTED (A PRIORI) ESTIMATE COVARIANCE ========================
@@ -223,9 +360,9 @@ void KalmanFilter::predictAndUpdate()
     float Pp_xpp, Pp_xpv, Pp_xpa, Pp_xvv, Pp_xva, Pp_xaa;
     float Pp_ypp, Pp_ypv, Pp_ypa, Pp_yvv, Pp_yva, Pp_yaa;
     float Pp_zpp, Pp_zpv, Pp_zpa, Pp_zvv, Pp_zva, Pp_zaa;
-    float Pp_Xaa, Pp_Xar, Pp_Xrr; //  Pp_Xbb;
-    float Pp_Yaa, Pp_Yar, Pp_Yrr; //  Pp_Ybb;
-    float Pp_Zaa, Pp_Zar, Pp_Zrr; //  Pp_Zbb;
+    float Pp_Xaa, Pp_Xar, Pp_Xrr;
+    float Pp_Yaa, Pp_Yar, Pp_Yrr;
+    float Pp_Zaa, Pp_Zar, Pp_Zrr;
 
     predictStateCovarianceForPosition(
             Pp_xpp, Pp_xpv, Pp_xpa, Pp_xvv, Pp_xva, Pp_xaa,
@@ -240,16 +377,16 @@ void KalmanFilter::predictAndUpdate()
             P_zpp, P_zpv, P_zpa, P_zvv, P_zva, P_zaa,
             dT);
     predictStateCovarianceForRotation(
-            Pp_Xaa, Pp_Xar, Pp_Xrr, //Pp_Xbb,
-            P_Xaa, P_Xar, P_Xrr,// P_Xbb,
+            Pp_Xaa, Pp_Xar, Pp_Xrr,
+            P_Xaa, P_Xar, P_Xrr,
             dT);
     predictStateCovarianceForRotation(
-            Pp_Yaa, Pp_Yar, Pp_Yrr, //Pp_Ybb,
-            P_Yaa, P_Yar, P_Yrr, //P_Ybb,
+            Pp_Yaa, Pp_Yar, Pp_Yrr,
+            P_Yaa, P_Yar, P_Yrr,
             dT);
     predictStateCovarianceForRotation(
-            Pp_Zaa, Pp_Zar, Pp_Zrr, //Pp_Zbb,
-            P_Zaa, P_Zar, P_Zrr, //P_Zbb,
+            Pp_Zaa, Pp_Zar, Pp_Zrr,
+            P_Zaa, P_Zar, P_Zrr,
             dT);
 
     // degrade confidence by noise
@@ -273,14 +410,14 @@ void KalmanFilter::predictAndUpdate()
     Pp_zaa += Q_zaa;
     // rotation
     Pp_Xaa += Q_Xaa;
+    Pp_Xar += Q_Xar;
     Pp_Xrr += Q_Xrr;
-    //Pp_Xbb += Q_Xbb;
     Pp_Yaa += Q_Yaa;
+    Pp_Yar += Q_Yar;
     Pp_Yrr += Q_Yrr;
-    //Pp_Ybb += Q_Ybb;
     Pp_Zaa += Q_Zaa;
+    Pp_Zar += Q_Zar;
     Pp_Zrr += Q_Zrr;
-    // Pp_Zbb += Q_Zbb;
 
 
 #if DEBUGK
@@ -309,39 +446,36 @@ void KalmanFilter::predictAndUpdate()
     // UPDATE ==================================================================
     // Step 3: INNOVATION OR MEASUREMENT RESIDUAL ==============================
 
-    float y_ax = -(i10m(H_ax_xa, xp_xa) +
+    float y_ax = z_ax - (
+            i10m(H_ax_xa, xp_xa) +
             i10m(H_ax_ya, xp_ya) +
-            i10m(H_ax_za, xp_za - gravity) )+
-        z_ax;
-    float y_ay = -(i10m(H_ay_xa, xp_xa) +
+            i10m(H_ax_za, xp_za - gravity) );
+    float y_ay = z_ay - (
+            i10m(H_ay_xa, xp_xa) +
             i10m(H_ay_ya, xp_ya) +
-            i10m(H_ay_za, xp_za - gravity) )+
-        z_ay;
-    float y_az = -(i10m(H_az_xa, xp_xa) +
+            i10m(H_ay_za, xp_za - gravity) );
+    float y_az = z_az - (
+            i10m(H_az_xa, xp_xa) +
             i10m(H_az_ya, xp_ya) +
-            i10m(H_az_za, xp_za - gravity) )+
-        z_az;
+            i10m(H_az_za, xp_za - gravity) );
 
     // rotations
     float y_gx = z_gx - (
-            // xp_Xb +
             i10m(H_gx_Xr, xp_Xr) +
             i10m(H_gx_Yr, xp_Yr) +
             i10m(H_gx_Zr, xp_Zr));
     float y_gy = z_gy - (
-            // xp_Xb +
             i10m(H_gy_Xr, xp_Xr) +
             i10m(H_gy_Yr, xp_Yr) +
             i10m(H_gy_Zr, xp_Zr));
     float y_gz = z_gz - (
-            // xp_Zb +
             i10m(H_gz_Xr, xp_Xr) +
             i10m(H_gz_Yr, xp_Yr) +
             i10m(H_gz_Zr, xp_Zr));
 
-    float y_Px = -1;
-    float y_Py = -1;
-    float y_Pz = -1;
+    float y_Px = -0.1;
+    float y_Py = -0.1;
+    float y_Pz = -0.1;
     if (usingGPS) {
         y_Px = z_Px - xp_xp;
         y_Py = z_Py - xp_yp;
@@ -376,25 +510,25 @@ void KalmanFilter::predictAndUpdate()
     float S_axx, S_axy, S_axz, S_ayy, S_ayz, S_azz;
     innovationCovariance(S_axx, S_axy, S_axz,
             S_ayy, S_ayz, S_azz,
-            Pp_xaa, Pp_yaa, Pp_zaa, // 0, 0, 0, // no biases
+            Pp_xaa, Pp_yaa, Pp_zaa,
             H_ax_xa, H_ax_ya, H_ax_za,
             H_ay_xa, H_ay_ya, H_ay_za,
             H_az_xa, H_az_ya, H_az_za);
 
-    S_axx += R_ax; S_ayy += R_ay; S_azz += R_az;
+S_axx += R_axx; S_axy += R_axy; S_axz += R_axz;
+S_ayy += R_ayy; S_ayz += R_ayz; S_azz += R_azz;
 
     // gyroscope
     float S_gxx, S_gxy, S_gxz, S_gyy, S_gyz, S_gzz;
     innovationCovariance(S_gxx, S_gxy, S_gxz,
             S_gyy, S_gyz, S_gzz,
-            Pp_Xrr, Pp_Yrr, Pp_Zrr, // Pp_Xbb, Pp_Ybb, Pp_Zbb,
+            Pp_Xrr, Pp_Yrr, Pp_Zrr,
             H_gx_Xr, H_gx_Yr, H_gx_Zr,
             H_gy_Xr, H_gy_Yr, H_gy_Zr,
             H_gz_Xr, H_gz_Yr, H_gz_Zr);
 
-    S_gxx += R_gx; S_gyy += R_gy; S_gzz += R_gz;
-
-
+S_gxx += R_gxx; S_gxy += R_gxy; S_gxz += R_gxz;
+S_gyy += R_gyy; S_gyz += R_gyz; S_gzz += R_gzz;
 
     // GPS
     float S_Pxx = Pp_xpp + R_Px;
@@ -553,26 +687,22 @@ void KalmanFilter::predictAndUpdate()
     float K_Xa_gx = i10m( Pp_Xar , Ht_SiO1 ) ;
     float K_Xa_gy = i10m( Pp_Xar , Ht_SiO2 ) ;
     float K_Xa_gz = i10m( Pp_Xar , Ht_SiO3 ) ;
-
     float K_Ya_gx = i10m( Pp_Yar , Ht_SiO5 ) ;
     float K_Ya_gy = i10m( Pp_Yar , Ht_SiO4 ) ;
     float K_Ya_gz = i10m( Pp_Yar , Ht_SiO6 ) ;
-
     float K_Za_gx = i10m( Pp_Zar , Ht_SiO7 ) ;
     float K_Za_gy = i10m( Pp_Zar , Ht_SiO8 ) ;
     float K_Za_gz = i10m( Pp_Zar , Ht_SiO9 ) ;
 
-    float K_Xr_gx = i10m( Pp_Xrr , Ht_SiO1 ) ;
-    float K_Xr_gy = i10m( Pp_Xrr , Ht_SiO2 ) ;
-    float K_Xr_gz = i10m( Pp_Xrr , Ht_SiO3 ) ;
-
-    float K_Yr_gx = i10m( Pp_Yrr , Ht_SiO5 ) ;
-    float K_Yr_gy = i10m( Pp_Yrr , Ht_SiO4 ) ;
-    float K_Yr_gz = i10m( Pp_Yrr , Ht_SiO6 ) ;
-
-    float K_Zr_gx = i10m( Pp_Zrr , Ht_SiO7 ) ;
-    float K_Zr_gy = i10m( Pp_Zrr , Ht_SiO8 ) ;
-    float K_Zr_gz = i10m( Pp_Zrr , Ht_SiO9 ) ;
+    float K_Xr_gx = Pp_Xrr * Ht_SiO1;
+    float K_Xr_gy = Pp_Xrr * Ht_SiO2;
+    float K_Xr_gz = Pp_Xrr * Ht_SiO3;
+    float K_Yr_gx = Pp_Yrr * Ht_SiO5;
+    float K_Yr_gy = Pp_Yrr * Ht_SiO4;
+    float K_Yr_gz = Pp_Yrr * Ht_SiO6;
+    float K_Zr_gx = Pp_Zrr * Ht_SiO7;
+    float K_Zr_gy = Pp_Zrr * Ht_SiO8;
+    float K_Zr_gz = Pp_Zrr * Ht_SiO9;
 
     float K_Xa_Ox = (Pp_Xaa*Si_Oxx);
     float K_Ya_Oy = (Pp_Yaa*Si_Oyy);
@@ -660,19 +790,14 @@ void KalmanFilter::predictAndUpdate()
     P_zpa = i10m( Pi_1_Kz , Pp_zpa ) + i10m( Pi_mess_za , Pp_zaa );
 
     // more intermediates that are the same
-    float Pi_mess_xv =
-        -H_az_xa * K_xv_az - H_ay_xa * K_xv_ay - H_ax_xa * K_xv_ax;
-    float Pi_mess_yv =
-        -H_az_ya * K_yv_az - H_ay_ya * K_yv_ay - H_ax_ya * K_yv_ax;
-    float Pi_mess_zv =
-        -H_az_za * K_zv_az - H_ay_za * K_zv_ay - H_ax_za * K_zv_ax;
+    float Pi_mess_xv = -H_az_xa * K_xv_az - H_ay_xa * K_xv_ay - H_ax_xa * K_xv_ax;
+    float Pi_mess_yv = -H_az_ya * K_yv_az - H_ay_ya * K_yv_ay - H_ax_ya * K_yv_ax;
+    float Pi_mess_zv = -H_az_za * K_zv_az - H_ay_za * K_zv_ay - H_ax_za * K_zv_ax;
 
     P_xvv = Pp_xvv - i10m( K_xv_Px , Pp_xpv ) + i10m( Pi_mess_xv , Pp_xva );
     P_xva = Pp_xva - i10m( K_xv_Px , Pp_xpa ) + i10m( Pi_mess_xv , Pp_xaa );
-
     P_yvv = Pp_yvv - i10m( K_yv_Py , Pp_ypv ) + i10m( Pi_mess_yv , Pp_yva );
     P_yva = Pp_yva - i10m( K_yv_Py , Pp_ypa ) + i10m( Pi_mess_yv , Pp_yaa );
-
     P_zvv = Pp_zvv - i10m( K_zv_Pz , Pp_zpv ) + i10m( Pi_mess_zv , Pp_zva );
     P_zva = Pp_zva - i10m( K_zv_Pz , Pp_zpa ) + i10m( Pi_mess_zv , Pp_zaa );
 
@@ -683,16 +808,18 @@ void KalmanFilter::predictAndUpdate()
 
     // ORIENTATION
 
-    P_Xaa = i10m( ( -i10m( H_gz_Xr , K_Xa_gz ) - i10m( H_gy_Xr , K_Xa_gy ) - i10m( H_gx_Xr , K_Xa_gx ) ) , Pp_Xar) + i10m( (1-K_Xa_Ox) , Pp_Xaa );
-    P_Xar = i10m( ( -i10m( H_gz_Xr , K_Xa_gz ) - i10m( H_gy_Xr , K_Xa_gy ) - i10m( H_gx_Xr , K_Xa_gx ) ) , Pp_Xrr) + i10m( (1-K_Xa_Ox) , Pp_Xar );
-    P_Yaa = i10m( ( -i10m( H_gz_Yr , K_Ya_gz ) - i10m( H_gy_Yr , K_Ya_gy ) - i10m( H_gx_Yr , K_Ya_gx ) ) , Pp_Yar) + i10m( (1-K_Ya_Oy) , Pp_Yaa );
-    P_Yar = i10m( ( -i10m( H_gz_Yr , K_Ya_gz ) - i10m( H_gy_Yr , K_Ya_gy ) - i10m( H_gx_Yr , K_Ya_gx ) ) , Pp_Yrr) + i10m( (1-K_Ya_Oy) , Pp_Yar );
-    P_Zaa = i10m( ( -i10m( H_gz_Zr , K_Za_gz ) - i10m( H_gy_Zr , K_Za_gy ) - i10m( H_gx_Zr , K_Za_gx ) ) , Pp_Zar) + i10m( (1-K_Za_Oz) , Pp_Zaa );
-    P_Zar = i10m( ( -i10m( H_gz_Zr , K_Za_gz ) - i10m( H_gy_Zr , K_Za_gy ) - i10m( H_gx_Zr , K_Za_gx ) ) , Pp_Zrr) + i10m( (1-K_Za_Oz) , Pp_Zar );
+    // from wxm... exactly the same! P_Xaa = (-H_gz_Xr*K_Xa_gz-H_gy_Xr*K_Xa_gy-H_gx_Xr*K_Xa_gx)*Pp_Xar+(1-K_Xa_Ox)*Pp_Xaa;
+    P_Xaa = (-H_gz_Xr*K_Xa_gz-H_gy_Xr*K_Xa_gy-H_gx_Xr*K_Xa_gx)*Pp_Xar+(1-K_Xa_Ox)*Pp_Xaa;
+    P_Xar = (-H_gz_Xr*K_Xa_gz-H_gy_Xr*K_Xa_gy-H_gx_Xr*K_Xa_gx)*Pp_Xrr+(1-K_Xa_Ox)*Pp_Xar;
+    P_Yaa = (-H_gz_Yr*K_Ya_gz-H_gy_Yr*K_Ya_gy-H_gx_Yr*K_Ya_gx)*Pp_Yar+(1-K_Ya_Oy)*Pp_Yaa;
+    P_Yar = (-H_gz_Yr*K_Ya_gz-H_gy_Yr*K_Ya_gy-H_gx_Yr*K_Ya_gx)*Pp_Yrr+(1-K_Ya_Oy)*Pp_Yar;
+    P_Zaa = (-H_gz_Zr*K_Za_gz-H_gy_Zr*K_Za_gy-H_gx_Zr*K_Za_gx)*Pp_Zar+(1-K_Za_Oz)*Pp_Zaa;
+    P_Zar = (-H_gz_Zr*K_Za_gz-H_gy_Zr*K_Za_gy-H_gx_Zr*K_Za_gx)*Pp_Zrr+(1-K_Za_Oz)*Pp_Zar;
 
-    P_Xrr = i10m( ( -i10m( H_gz_Xr , K_Xr_gz ) - i10m( H_gy_Xr , K_Xr_gy ) - i10m( H_gx_Xr , K_Xr_gx ) +1 ) , Pp_Xrr) - i10m( K_Xr_Ox , Pp_Xar );
-    P_Yrr = i10m( ( -i10m( H_gz_Yr , K_Yr_gz ) - i10m( H_gy_Yr , K_Yr_gy ) - i10m( H_gx_Yr , K_Yr_gx ) +1 ) , Pp_Yrr) - i10m( K_Yr_Oy , Pp_Yar );
-    P_Zrr = i10m( ( -i10m( H_gz_Zr , K_Zr_gz ) - i10m( H_gy_Zr , K_Zr_gy ) - i10m( H_gx_Zr , K_Zr_gx ) +1 ) , Pp_Zrr) - i10m( K_Zr_Oz , Pp_Zar );
+    // from wxm... again, the same! P_Xrr = (-H_gz_Xr*K_Xr_gz-H_gy_Xr*K_Xr_gy-H_gx_Xr*K_Xr_gx+1)*Pp_Xrr-K_Xr_Ox*Pp_Xar
+    P_Xrr = (-H_gz_Xr*K_Xr_gz-H_gy_Xr*K_Xr_gy-H_gx_Xr*K_Xr_gx+1)*Pp_Xrr-K_Xr_Ox*Pp_Xar;
+    P_Yrr = (-H_gz_Yr*K_Yr_gz-H_gy_Yr*K_Yr_gy-H_gx_Yr*K_Yr_gx+1)*Pp_Yrr-K_Yr_Oy*Pp_Yar;
+    P_Zrr = (-H_gz_Zr*K_Zr_gz-H_gy_Zr*K_Zr_gy-H_gx_Zr*K_Zr_gx+1)*Pp_Zrr-K_Zr_Oz*Pp_Zar;
 
 
 #if DEBUGK
@@ -709,6 +836,79 @@ void KalmanFilter::predictAndUpdate()
     log(P_zpp); log(P_zpv); log(P_zpa); log(P_zvv); log(P_zva); log(P_zaa);
     log("- Z -"); log(P_Zaa); log(P_Zar); log(P_Zrr);
     logr();
+
+
+    rlog(xp_xp); rlog(xp_xv); rlog(xp_xa); rlog(xp_yp); rlog(xp_yv); rlog(xp_ya); rlog(xp_zp); rlog(xp_zv); rlog(xp_za);
+    rlog(xp_Xa); rlog(xp_Xr); rlog(xp_Ya); rlog(xp_Yr); rlog(xp_Za); rlog(xp_Zr);
+
+    rlog(Pp_xpp); rlog(Pp_xpv); rlog(Pp_xpa);
+    rlog(Pp_xvv); rlog(Pp_xva);
+    rlog(Pp_xaa);
+    rlog(Pp_ypp); rlog(Pp_ypv); rlog(Pp_ypa);
+    rlog(Pp_yvv); rlog(Pp_yva);
+    rlog(Pp_yaa);
+    rlog(Pp_zpp); rlog(Pp_zpv); rlog(Pp_zpa);
+    rlog(Pp_zvv); rlog(Pp_zva);
+    rlog(Pp_zaa);
+    rlog(Pp_Xaa); rlog(Pp_Xar); rlog(Pp_Xrr);
+    rlog(Pp_Yaa); rlog(Pp_Yar); rlog(Pp_Yrr);
+    rlog(Pp_Zaa); rlog(Pp_Zar); rlog(Pp_Zrr);
+
+    rlog(y_ax); rlog(y_ay); rlog(y_az);
+    rlog(y_gx); rlog(y_gy); rlog(y_gz);
+    rlog(y_Px); rlog(y_Py); rlog(y_Pz);
+    rlog(y_Ox); rlog(y_Oy); rlog(y_Oz);
+
+    rlog(S_Pxx); rlog(S_Pyy); rlog(S_Pzz);
+    rlog(S_Oxx); rlog(S_Oyy); rlog(S_Ozz);
+
+    rlog(S_axx); rlog(S_axy); rlog(S_axz);
+    rlog(S_ayy); rlog(S_ayz); rlog(S_azz);
+
+    rlog(S_gxx); rlog(S_gxy); rlog(S_gxz);
+    rlog(S_gyy); rlog(S_gyz); rlog(S_gzz);
+    rlog(Si_Oxx); rlog(Si_Oyy); rlog(Si_Ozz);
+    rlog(Si_Pxx); rlog(Si_Pyy); rlog(Si_Pzz);
+
+    rlog(Si_axx); rlog(Si_axy); rlog(Si_axz);
+    rlog(Si_ayy); rlog(Si_ayz); rlog(Si_azz);
+
+    rlog(Si_gxx); rlog(Si_gxy); rlog(Si_gxz);
+    rlog(Si_gyy); rlog(Si_gyz); rlog(Si_gzz);
+
+rlog(K_xa_ax);
+rlog(K_xa_ay);
+rlog(K_xa_az);
+rlog(K_ya_ax);
+rlog(K_ya_ay);
+rlog(K_ya_az);
+rlog(K_za_ax);
+rlog(K_za_ay);
+rlog(K_za_az);
+
+rlog(K_Xr_gx);
+rlog(K_Xr_gy);
+rlog(K_Xr_gz);
+rlog(K_Yr_gx);
+rlog(K_Yr_gy);
+rlog(K_Yr_gz);
+rlog(K_Zr_gx);
+rlog(K_Zr_gy);
+rlog(K_Zr_gz);
+
+    rlog(P_xpp); rlog(P_xpv); rlog(P_xpa);
+    rlog(P_xvv); rlog(P_xva);
+    rlog(P_xaa);
+    rlog(P_ypp); rlog(P_ypv); rlog(P_ypa);
+    rlog(P_yvv); rlog(P_yva);
+    rlog(P_yaa);
+    rlog(P_zpp); rlog(P_zpv); rlog(P_zpa);
+    rlog(P_zvv); rlog(P_zva);
+    rlog(P_zaa);
+    rlog(P_Xaa); rlog(P_Xar); rlog(P_Xrr);
+    rlog(P_Yaa); rlog(P_Yar); rlog(P_Yrr);
+    rlog(P_Zaa); rlog(P_Zar); rlog(P_Zrr);
+
 #endif
 
 
@@ -777,8 +977,8 @@ void KalmanFilter::predictStateEstimateForPosition(
 }
 
 void KalmanFilter::predictStateEstimateForRotation(
-        float& xp_a, float& xp_r, float& xp_b,
-        float& x_a, float& x_r, float& x_b,
+        float& xp_a, float& xp_r, //float& xp_b,
+        float& x_a, float& x_r, //float& x_b,
         float& dT)
 {
     // state transition matrix (rotations):
@@ -789,7 +989,7 @@ void KalmanFilter::predictStateEstimateForRotation(
 
     xp_a = x_a + i10m(x_r, dT);
     xp_r = x_r;
-    xp_b = x_b;
+    //xp_b = x_b;
 }
 
 void KalmanFilter::predictStateCovarianceForPosition(
@@ -829,9 +1029,19 @@ void KalmanFilter::predictStateCovarianceForRotation(
 {
     // [[1,t,0],[0,1,0],[0,0,1]] * [[p1,p2,0],[p2,p3,0],[0,0,p4]] * [[1,0,0],[t,1,0],[0,0,1]]
     // op4 = p4;
+    // op3 = p3;
+    // op2 = p2 + i10m(p3, dT);
+    // op1 = p1 + i10m(op2 + p2, dT);
+
     op3 = p3;
-    op2 = p2 + i10m(p3, dT);
-    op1 = p1 + i10m(op2 + p2, dT);
+
+    float p3t = i10m(p3, dT);
+    op2 = p3t + p2;
+
+    float p3t2 = i10m(p3t, dT);
+    float p2t = i10m(p2, dT);
+    op1 = p3t2 + 2 * p2t + p1;
+
 }
 
 

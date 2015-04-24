@@ -81,12 +81,24 @@ int Quad::setup(void)
 
 	findSensorBias();
 
+    // ordinarily, these would be the average of the gyro, acc, gps axis
+    // over several samples, but these may be just fine for our purposes.
+    Filter.initialize( 6.9158f, 9.9410f, 21.515f,
+            -16.027f, 0.9157f, 0.6185f,
+            //         -12504.f, -13316.f, -24942.f );
+        // gps = bogus values, so for now, bias is zero
+        0,0,0);
+
 	return 0;
 }
+
+// global counter, UNTESTED
+int nIteration = 0;
 
 int Quad::executeCycle(void)
 {
 
+    nIteration++;
 	this->readSerialCommand();
 
 	this->getSensorVals();
@@ -95,10 +107,18 @@ int Quad::executeCycle(void)
 	void Filter.assignSensorValues(
 		accX, accY, accZ,	// acceleration
 		gyroX, gyroY, gyroZ,	// gyroscope
-		compX, compY, 	// Compass
-		GPSlat, GPSlong, GPSalt,	// GPS
-		// int, int, int,  // GPS velocity
-		readGPS); // use gps value
+
+        // !!! bogus values for now, reads true north from compass,
+        // and static position for GPS
+
+        0,100, // (compass)
+        0,0,0, // (GPS)
+
+		// // compX, compY, 	// Compass
+		// // GPSlat, GPSlong, GPSalt,	// GPS
+
+        nIteration % 10 == 0);
+		//readGPS); // use gps value
 
 	Filter.predictAndUpdate();
 
