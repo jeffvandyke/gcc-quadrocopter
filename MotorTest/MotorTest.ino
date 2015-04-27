@@ -12,10 +12,10 @@
 #define MIN_ANGULAR_DEFLECTION -20
 #define MAX_ALTITUDE_CORRECTION 100
 
-#define MOTOR1 2
+#define MOTOR1 6
 #define MOTOR2 3
 #define MOTOR3 5
-#define MOTOR4 6
+#define MOTOR4 2
 
 int i=0;
 
@@ -31,7 +31,7 @@ void setup()
 
 void loop()
 {
-	motorSet(MOTOR2, i);
+	motorSet(MOTOR1, i);
 	delay(500);
 	i++;
 }

@@ -38,7 +38,7 @@ public:
 	int executeCycle(void);
 	int setup(void);
 	int motorInitialize(void);
-	int motorSet(int motor, int speed);
+	int motorSet(int, int);
 	int getSensorVals(void);
 //	int getGPSval(void);
 //	int findSensorBias(void);

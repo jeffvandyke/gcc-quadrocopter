@@ -63,7 +63,7 @@ float PIDController::PID(float currentValue, float dTerm)
 	// basis for this code was found at http://brettbeauregard.com/blog/2011/04/improving-the-beginners-pid-introduction/
 	//Same as last year's code
 	// current error
-	int error = setPoint - currentValue;
+	error = setPoint - currentValue;
 	// proportional term
 	//int pTerm = kP * error;
 
@@ -73,6 +73,9 @@ float PIDController::PID(float currentValue, float dTerm)
 
 	// integral term
 	integralSumTerm += error * deltaTime;
+
+	Serial1.print(integralSumTerm);
+	Serial1.println();
 
 	// update internal data
 	lastValue = currentValue;
