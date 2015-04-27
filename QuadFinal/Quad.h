@@ -9,6 +9,7 @@
 //#include "Trig.h"
 #include "Kalman.h"
 #include "PIDcontrol.h"
+#include "math.h"
 //#include <HardwareSerial.h>
 
 
@@ -43,13 +44,14 @@ public:
 //	int getGPSval(void);
 //	int findSensorBias(void);
 	int adjustMotors(void);
+	int adjustMotors(int);
 
 	int waitFor();
 
 	//ints to be passed to the Kalman filter
-	int compX, compY, compZ, 
-		gyroX, gyroY, gyroZ, 
-		accX, accY, accZ, 
+	int compX, compY, compZ,
+		gyroX, gyroY, gyroZ,
+		accX, accY, accZ,
 		GPSlat, GPSlong, GPSalt;
 	bool readGPS;
 

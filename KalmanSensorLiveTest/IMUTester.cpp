@@ -28,12 +28,6 @@ KalmanFilter kalman;
 
 int IMUTester::setupTester(void)
 {
-    kalman.initialize( 6.9158f, 9.9410f, 21.515f,
-            -16.027f, 0.9157f, 0.6185f,
-            //-12504.f, -13316.f, -24942.f );
-        0,0,0);
-
-
 #ifdef SERIAL_USB
 	Serial.begin(115200);
 	sensorMode = ALL;
@@ -43,9 +37,13 @@ int IMUTester::setupTester(void)
 	Serial1.println("R,1"); // restart it
 #endif
 
+    kalman.initialize( 6.9158f, 9.9410f, 21.515f,
+            -16.027f, 0.9157f, 0.6185f,
+       //     -12504.f, -13316.f, -24942.f );
+        0,0,0);
 
 	i2c.initialize();
-	//serialPrint("IMUTester::setupTester called");
+	serialPrint("IMUTester::setupTester called");
 	//acc.setup();
 	accel.begin();
 
@@ -58,7 +56,7 @@ int IMUTester::setupTester(void)
 	delay(1000);
 
 	//bar.setup();
-	//comp.setup();
+	comp.setup();
 	//gpssetup {
 	Serial2.begin(57600);
 	delay(1000);
@@ -101,59 +99,60 @@ int IMUTester::executeCycle(void)
 			//serialPrint("Accelerometer: \n");
 	//gyro.readRawX();
 		//serialPrint(accel.getX());  serialPrint("\n");
-		int accX = accel.getX(); //           serialPrint(",");
-		int accY = accel.getY(); //           serialPrint(",");
-		int accZ = accel.getZ(); //           serialPrint(",");
+		int accX = accel.getX();          // serialPrint(",");
+		int accY = accel.getY();          // serialPrint(",");
+		int accZ = accel.getZ();          // serialPrint(",");
 		//Serial1.print("\n");
 		//serialPrint("Gyroscope: \n");
-		int gyroX = gyro.getRotationX(); //         serialPrint(",");
-		int gyroY = gyro.getRotationY(); //         serialPrint(",");
-		int gyroZ = gyro.getRotationZ(); //         serialPrint(",");
+		int gyroX = gyro.getRotationX();  //        serialPrint(",");
+		int gyroY = gyro.getRotationY();  //        serialPrint(",");
+		int gyroZ = gyro.getRotationZ();  //        serialPrint(",");
 		//serialPrint("Compass: \n");
-		//serialPrint(comp.getRawX());           serialPrint(",");
-		//serialPrint(comp.getRawY());           serialPrint(",");
+		int compX = comp.getRawX(); //          serialPrint(",");
+		int compY = comp.getRawY(); //          serialPrint(",");
 		//serialPrint(comp.getRawZ());			serialPrint("\n");
-		//serialPrint("0,0,");
+		// serialPrint("0,0,");
 
 		gps.get_datetime(&date, &time);
 	if (newData && time != oldTime)
 	{
 			gps.get_position(&newLong, &newLat); //, &fixAge);
 
-			//serialPrint(newLat);  serialPrint(",");
-			//serialPrint(newLong); serialPrint(",");
-			//serialPrint(gps.altitude()); serialPrintln(",1");
+//			serialPrint(newLat);  serialPrint(",");
+//			serialPrint(newLong); serialPrint(",");
+//			serialPrint(gps.altitude()); serialPrintln(",1");
 			oldTime = time;
 
 	}
 		else
 		{
-			serialPrintln("0,0,0,0");
+//			serialPrintln("0,0,0,0");
 		}
 	sumCollectionTime += (millis() - sensorCollectionStart);
 	cycles++;
 
 
-    // K filter testing code
-
-
+    serialPrint("\n");
     kalman.assignSensorValues(
             accX, accY, accZ,
             gyroX, gyroY, gyroZ,
-            0,100,
-            0,0,0,
-            cycles % 10 == 5);
+            0, 100, // Compass facing north - initial Z angle = 0
+            0,0,0,cycles % 5 == 0);
     kalman.predictAndUpdate();
-    quadState_t stateVars = kalman.getQuadState();
-    quadState_t covariance = kalman.getCovariance();
 
-    serialPrint("Xa "); serialPrint(stateVars.xAngle);    serialPrint("\t"); serialPrint("P_Xa "); serialPrint(covariance.xAngle);    serialPrint("\n");
-    serialPrint("Ya "); serialPrint(stateVars.yAngle);    serialPrint("\t"); serialPrint("P_Ya "); serialPrint(covariance.yAngle);    serialPrint("\n");
-    serialPrint("Za "); serialPrint(stateVars.zAngle);    serialPrint("\t"); serialPrint("P_Za "); serialPrint(covariance.zAngle);    serialPrint("\n");
-    serialPrint("Xr "); serialPrint(stateVars.xRotation); serialPrint("\t"); serialPrint("P_Xr "); serialPrint(covariance.xRotation); serialPrint("\n");
-    serialPrint("Yr "); serialPrint(stateVars.yRotation); serialPrint("\t"); serialPrint("P_Yr "); serialPrint(covariance.yRotation); serialPrint("\n");
-    serialPrint("Zr "); serialPrint(stateVars.zRotation); serialPrint("\t"); serialPrint("P_Zr "); serialPrint(covariance.zRotation); serialPrint("\n");
-    serialPrint("----------------------------------------\n");
+    quadState_t covar = kalman.getCovariance();
+    quadState_t state = kalman.getQuadState();
+
+    serialPrint("Cx "); serialPrint(compX); serialPrint("\t");
+    serialPrint("Cy "); serialPrint(compY); serialPrint("\t");
+    serialPrint("a2 "); serialPrint((int)(180/3.1415 * atan2(-compY, -compX)));
+    serialPrint("\t");
+     serialPrint("Xa  ");serialPrint(state.xAngle); serialPrint("\t");
+     serialPrint("Ya  ");serialPrint(state.yAngle); serialPrint("\t");
+     serialPrint("Za  ");serialPrint(state.zAngle);
+     // serialPrint("Xr  ");serialPrint(state.xRotation); serialPrint("\t");
+     // serialPrint("Yr  ");serialPrint(state.yRotation); serialPrint("\t");
+// //    serialPrint("Zr  ");serialPrint(state.zRotation);
 
 
 	return 0;
@@ -161,9 +160,9 @@ int IMUTester::executeCycle(void)
 
 void IMUTester::printGPS()
 {
-	serialPrint(gps.readRawLat()); serialPrint(",");
-	serialPrint(gps.readRawLong()); serialPrint(",");
-	serialPrint(gps.altitude()); serialPrint(",");
+	serialPrint((int)gps.readRawLat()); serialPrint(",");
+	serialPrint((int)gps.readRawLong()); serialPrint(",");
+	serialPrint((int)gps.altitude()); serialPrint(",");
 	return;
 }
 
@@ -279,6 +278,17 @@ void IMUTester::serialPrint(String val)
 }
 
 void IMUTester::serialPrint(int val)
+{
+	#ifdef SERIAL_USB
+		Serial.print(val);
+	#endif
+	#ifdef SERIAL_BLUETOOTH
+		Serial1.print(val);
+	#endif
+}
+
+// -Jeff
+void IMUTester::serialPrint(float val)
 {
 	#ifdef SERIAL_USB
 		Serial.print(val);
