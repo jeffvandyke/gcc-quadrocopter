@@ -217,7 +217,7 @@ int Quad::executeCycle(void)
 	yAngCorrect = yAngle.PID(quadState.yAngle, quadState.yRotation);
 //	zAngCorrect = zAngle.PID(quadState.zAngle, quadState.zRotation);
 
-	adjustMotors();
+	//adjustMotors();
 
 	//wait until a constant time has passed.
 	waitFor();

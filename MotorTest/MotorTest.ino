@@ -13,9 +13,9 @@
 #define MAX_ALTITUDE_CORRECTION 100
 
 #define MOTOR1 6
-#define MOTOR2 3
+#define MOTOR2 2
 #define MOTOR3 5
-#define MOTOR4 2
+#define MOTOR4 3
 
 int i=0;
 
@@ -25,15 +25,26 @@ void setup()
 	pinMode(MOTOR2,OUTPUT);
 	pinMode(MOTOR3,OUTPUT);
 	pinMode(MOTOR4,OUTPUT);
+	delay(500);
 
 	motorInitialize();
 }
 
 void loop()
 {
-	motorSet(MOTOR1, i);
+	motorSet(MOTOR1, 30);
 	delay(500);
-	i++;
+	motorSet(MOTOR1, 0);
+	motorSet(MOTOR2, 30);
+	delay(500);
+	motorSet(MOTOR2, 0);
+	motorSet(MOTOR3, 30);
+	delay(500);
+	motorSet(MOTOR3, 0);
+	motorSet(MOTOR4, 30);
+	delay(500);
+	motorSet(MOTOR4, 0);
+	
 }
 
 int motorInitialize(void)
