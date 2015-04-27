@@ -368,7 +368,7 @@ int Quad::adjustMotors(void)
 // motor correction that takes z angle into account
 int Quad::adjustMotors(int zAngle)
 {
-    zAngle += 45; // for matching this coordinate system
+    zAngle -= 45; // for matching this coordinate system
     /*
      *            +y (for 0° Z angle)
      *
