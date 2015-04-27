@@ -1,7 +1,11 @@
 #ifndef KALMAN_H
 #define KALMAN_H
 #include "math.h"
+#include <Wire.h>
+#include "I2C.h"
 
+
+#define SLOG 1
 #define DEBUGK 0
 
 #if DEBUGK
@@ -48,6 +52,14 @@ class KalmanFilter {
         void rlograw(string text) {*rout << text;}
         void logh(string text) {*fout << text << '\n';}
 #endif
+#if SLOG
+        void slog(String header, float number){
+            Serial.print(header);
+            Serial.print(" ");
+            Serial.print(number);
+            Serial.print("\t");
+        }
+#endif
 
 		void initialize(float biasAccX, float biasAccY, float biasAccZ,
                 float biasGyroX, float biasGyroY, float biasGyroZ,
@@ -63,7 +75,7 @@ class KalmanFilter {
 		void predictAndUpdate();
         quadState_t getQuadState();
         quadState_t getCovariance();
-	private:
+	// private:
 		// repeated functions over variaus dimensions
 
         void predictStateEstimateForPosition(
