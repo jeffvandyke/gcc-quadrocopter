@@ -395,7 +395,6 @@ int Quad::adjustMotors(int zAngle)
     float zsin = sin(zAngle *3.14159 / 180);
 
 	// adjust for pitch and roll
-    m1f = basef;
 	m1f += xAngCorrect * xFactor * zcos;
     m3f -= xAngCorrect * xFactor * zcos;
     m2f += xAngCorrect * xFactor * zsin;
