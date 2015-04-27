@@ -1,0 +1,174 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="IMUVariance.ino" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Visual Micro\.IMUVariance.vsarduino.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="IMUTester.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Accelerometer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Gyroscope.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Barometer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Neil%27s backup\Neil%27s homework\design project\IMUVariance - Copy\IMUVariance - Copy\Visual Micro\.IMUVariance - Copy.vsarduino.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Neil%27s backup\Neil%27s homework\design project\IMUVariance - Copy\IMUVariance - Copy\Compass.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Neil%27s backup\Neil%27s homework\design project\IMUVariance - Copy\IMUVariance - Copy\HMC5883L.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Neil%27s backup\Neil%27s homework\design project\IMUVariance - Copy\IMUVariance - Copy\I2C.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Neil%27s backup\Neil%27s homework\design project\IMUVariance - Copy\IMUVariance - Copy\I2Cdev.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Neil%27s backup\Neil%27s homework\design project\IMUVariance - Copy\IMUVariance - Copy\Bluetooth.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Neil%27s backup\Neil%27s homework\design project\IMUVariance - Copy\IMUVariance - Copy\GPS.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Visual Micro\.IMUVariance - Copy.vsarduino.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Adafruit_ADXL345_U.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Adafruit_BMP085_U.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Adafruit_Sensor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Bluetooth.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Compass.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GPS.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="HMC5883L.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="I2C.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="I2Cdev.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ITG3200.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Neil%27s backup\Neil%27s homework\design project\IMUVariance - Copy\IMUVariance - Copy\Adafruit_Sensor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Neil%27s backup\Neil%27s homework\design project\IMUVariance - Copy\IMUVariance - Copy\Trig.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Trig.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="IMUTester.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Accelerometer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Gyroscope.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Barometer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\Neil%27s backup\Neil%27s homework\design project\IMUVariance - Copy\IMUVariance - Copy\Adafruit_Sensor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\Neil%27s backup\Neil%27s homework\design project\IMUVariance - Copy\IMUVariance - Copy\Compass.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\Neil%27s backup\Neil%27s homework\design project\IMUVariance - Copy\IMUVariance - Copy\HMC5883L.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\Neil%27s backup\Neil%27s homework\design project\IMUVariance - Copy\IMUVariance - Copy\I2C.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\Neil%27s backup\Neil%27s homework\design project\IMUVariance - Copy\IMUVariance - Copy\I2Cdev.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\Neil%27s backup\Neil%27s homework\design project\IMUVariance - Copy\IMUVariance - Copy\ITG3200.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\Neil%27s backup\Neil%27s homework\design project\IMUVariance - Copy\IMUVariance - Copy\Bluetooth.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\Neil%27s backup\Neil%27s homework\design project\IMUVariance - Copy\IMUVariance - Copy\GPS.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Adafruit_ADXL345_U.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Adafruit_BMP085_U.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Adafruit_Sensor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Bluetooth.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Compass.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GPS.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="HMC5883L.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="I2C.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="I2Cdev.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ITG3200.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\Neil%27s backup\Neil%27s homework\design project\IMUVariance - Copy\IMUVariance - Copy\Trig.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Trig.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

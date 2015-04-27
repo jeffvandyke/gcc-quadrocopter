@@ -218,6 +218,8 @@ int Quad::executeCycle(void)
 //	zAngCorrect = zAngle.PID(quadState.zAngle, quadState.zRotation);
 
 	//adjustMotors();
+	adjustMotors(quadState.zAngle);
+
 
 	//wait until a constant time has passed.
 	waitFor();
@@ -356,6 +358,89 @@ int Quad::adjustMotors(void)
 //	motorSet(MOTOR2, m2speed);
 	motorSet(MOTOR3, m3speed);
 //	motorSet(MOTOR4, m4speed);
+}
+
+// motor correction that takes z angle into account
+int Quad::adjustMotors(int zAngle)
+{
+    zAngle -= 45; // for matching this coordinate system
+    /*
+     *            +y (for 0° Z angle)
+     *
+     *   4  usb  1
+     *    \  |  /
+     *     QUxAD
+     *    /     \
+     *   3       2
+     *             +x
+     */
+
+    int m1speed = 0; int m2speed = 0; int m3speed = 0; int m4speed = 0;
+    float m1f = 0; float m2f = 0; float m3f = 0; float m4f = 0;
+
+    float xFactor, yFactor, zFactor, zPosFactor;
+
+    xFactor = yFactor = 0.3; // units: (motor ticks) per (deg/s)
+    zFactor = 0.3; // same units
+    zPosFactor = 1.0;
+
+	blue.println("adjustMotors with angle");
+
+    float zcos = cos(zAngle *3.14159 / 180);
+    float zsin = sin(zAngle *3.14159 / 180);
+
+	// adjust for pitch and roll
+	m1f += xAngCorrect * xFactor * zcos;
+    m3f -= xAngCorrect * xFactor * zcos;
+    m2f += xAngCorrect * xFactor * zsin;
+    m4f -= xAngCorrect * xFactor * zsin;
+
+	m4f += yAngCorrect * yFactor * zcos;
+	m2f -= yAngCorrect * yFactor * zcos;
+	m1f += yAngCorrect * yFactor * zsin;
+	m3f -= yAngCorrect * yFactor * zsin;
+
+	////adjust for altitude
+	m1f += zPosCorrect * zFactor;
+	m2f += zPosCorrect * zFactor;
+	m3f += zPosCorrect * zFactor;
+	m4f += zPosCorrect * zFactor;
+
+	//// adjust for yaw
+
+	m1f -= zAngCorrect;
+	m3f -= zAngCorrect;
+
+	m2f += zAngCorrect;
+	m4f += zAngCorrect;
+
+    // convert to motor outputs
+    m1speed = static_cast<int>(m1f);
+    m2speed = static_cast<int>(m2f);
+    m3speed = static_cast<int>(m3f);
+    m4speed = static_cast<int>(m4f);
+
+	if(m1speed	>	MAX_MOTOR_SPEED)
+		m1speed	=	MAX_MOTOR_SPEED;
+	else if(m1speed < 0)
+		m1speed = 0;
+	if(m2speed	>	MAX_MOTOR_SPEED)
+		m2speed	=	MAX_MOTOR_SPEED;
+	else if(m2speed < 0)
+		m2speed = 0;
+	if(m3speed	>	MAX_MOTOR_SPEED)
+		m3speed	=	MAX_MOTOR_SPEED;
+	else if(m1speed < 0)
+		m3speed = 0;
+	if(m4speed	>	MAX_MOTOR_SPEED)
+		m4speed	=	MAX_MOTOR_SPEED;
+	else if(m4speed < 0)
+		m4speed = 0;
+
+	motorSet(MOTOR1, m1speed);
+  	motorSet(MOTOR2, m2speed);
+	motorSet(MOTOR3, m3speed);
+  	motorSet(MOTOR4, m4speed);
 }
 
 int Quad::waitFor()

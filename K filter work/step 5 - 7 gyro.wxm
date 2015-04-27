@@ -2,6 +2,14 @@
 /* [ Created with wxMaxima version 14.12.1 ] */
 
 /* [wxMaxima: input   start ] */
+matrix([i1,i2,i3],[i2,i4,i5],[i3,i5,i6]);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+matrix([i1,i2,i3],[i2,i4,i5],[i3,i5,i6])^^-1;
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
 H : matrix(
 [1,0,0,0,0,0],
 [0,1,0,0,0,0],
@@ -46,7 +54,15 @@ K : matrix(
 /* [wxMaxima: input   end   ] */
 
 /* [wxMaxima: input   start ] */
-(ident(6) - K . H) . P;
+(ident(6) - (K . H)) . P;
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+6.42 * (1-0.76);
+/* [wxMaxima: input   end   ] */
+
+/* [wxMaxima: input   start ] */
+11*-.2;
 /* [wxMaxima: input   end   ] */
 
 /* Maxima can't load/batch files which end with a comment! */
