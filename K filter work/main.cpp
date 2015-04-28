@@ -52,7 +52,7 @@ int main()
 			kalman.assignSensorValues(
 				vals[0], vals[1], vals[2],	// acceleration
 				vals[3], vals[4], vals[5],	// gyroscope
-				0, 100, // Compass facing north - initial Z angle = 0
+				0, 100, 0, // Compass facing north - initial Z angle = 0
 				vals[8], vals[9], vals[10], static_cast<bool>(vals[11]));
             // GPS and use (y/n)
             kalman.predictAndUpdate();

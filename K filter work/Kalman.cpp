@@ -275,12 +275,9 @@ void KalmanFilter::assignSensorValues(
 
     float magX = H_ax_xa * Cx + H_ay_xa * Cy + H_az_xa * Cz;
     float magY = H_ax_ya * Cx + H_ay_ya * Cy + H_az_ya * Cz;
-    slog("magX",magX);
-    slog("magY",magY);
 
     z_Oz = (x_Za - static_cast<float>(atan2(magY, magX)) * 180 / 3.14159);
     z_Oz = fmod(z_Oz + 180, 360) - 180;
-    slog("z_Oz", z_Oz);
 
 #if DEBUGK
     log("test for sin...\n");
@@ -288,15 +285,15 @@ void KalmanFilter::assignSensorValues(
     logr();
 #endif
 
-// slog("H_x_x", H_ax_xa );
-// slog("H_y_y", H_ay_ya );
-// slog("H_z_z", H_az_za );
-// slog("H_x_y", H_ax_ya );
-// slog("H_y_x", H_ay_xa );
-// slog("H_x_z", H_ax_za );
-// slog("H_y_z", H_ay_za );
-// slog("H_z_x", H_az_xa );
-// slog("H_z_y", H_az_ya );
+//slg("H_x_x", H_ax_xa );
+//slg("H_y_y", H_ay_ya );
+//slg("H_z_z", H_az_za );
+//slg("H_x_y", H_ax_ya );
+//slg("H_y_x", H_ay_xa );
+//slg("H_x_z", H_ax_za );
+//slg("H_y_z", H_ay_za );
+//slg("H_z_x", H_az_xa );
+//slg("H_z_y", H_az_ya );
 
 #if DEBUGK
 
