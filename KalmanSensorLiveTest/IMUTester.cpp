@@ -110,8 +110,7 @@ int IMUTester::executeCycle(void)
 		//serialPrint("Compass: \n");
 		int compX = comp.getRawX(); //          serialPrint(",");
 		int compY = comp.getRawY(); //          serialPrint(",");
-		//serialPrint(comp.getRawZ());			serialPrint("\n");
-		// serialPrint("0,0,");
+		int compZ = comp.getRawZ(); //          serialPrint(",");
 
 		gps.get_datetime(&date, &time);
 	if (newData && time != oldTime)
@@ -136,17 +135,13 @@ int IMUTester::executeCycle(void)
     kalman.assignSensorValues(
             accX, accY, accZ,
             gyroX, gyroY, gyroZ,
-            0, 100, // Compass facing north - initial Z angle = 0
+            compX, compY, compZ,
             0,0,0,cycles % 5 == 0);
     kalman.predictAndUpdate();
 
     quadState_t covar = kalman.getCovariance();
     quadState_t state = kalman.getQuadState();
 
-    serialPrint("Cx "); serialPrint(compX); serialPrint("\t");
-    serialPrint("Cy "); serialPrint(compY); serialPrint("\t");
-    serialPrint("a2 "); serialPrint((int)(180/3.1415 * atan2(-compY, -compX)));
-    serialPrint("\t");
      serialPrint("Xa  ");serialPrint(state.xAngle); serialPrint("\t");
      serialPrint("Ya  ");serialPrint(state.yAngle); serialPrint("\t");
      serialPrint("Za  ");serialPrint(state.zAngle);

@@ -6,11 +6,11 @@ IMUTester tester;
 
 void setup()
 {
-	tester.setupTester();
+  tester.setupTester();
 }
 
 void loop()
 {
-	//Serial.println("vindaloop");
-	tester.executeCycle();
+  //Serial.println("vindaloop");
+  tester.executeCycle();
 }

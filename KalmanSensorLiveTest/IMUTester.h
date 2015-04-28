@@ -29,7 +29,7 @@ public:
 	IMUTester(void);
 	~IMUTester(void);
 
-	
+
 
 	Adafruit_ADXL345_Unified accel;
 	ITG3200 gyro;
@@ -80,7 +80,7 @@ public:
 	void serialPrintln(int i);
 
 private:
-	
+
 	void readSerialCommand(void);
 };
 
