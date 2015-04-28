@@ -68,7 +68,7 @@ class KalmanFilter {
 		void assignSensorValues(
 				int, int, int,	// acceleration
 				int, int, int,	// gyroscope
-				int, int, 	// Compass
+				int, int, int,	// Compass
 				int, int, int,	// GPS
 				bool); // use gps value
 

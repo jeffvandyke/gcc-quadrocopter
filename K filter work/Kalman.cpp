@@ -26,6 +26,9 @@ using namespace std;
 const float gravity = 9.80065;
 
 
+int bias_Cx = 54;
+int bias_Cy = -91;
+int bias_Cz = -80;
 
 
 
@@ -140,7 +143,7 @@ void KalmanFilter::initialize(
     P_Xaa = 0; P_Xar = 0; P_Xrr = 0;
     P_Yaa = 0; P_Yar = 0; P_Yrr = 0;
     // z rotation is the only real uncertainty
-    P_Zaa = 0; P_Zar = 0; P_Zrr = 0;
+    P_Zaa = 1000; P_Zar = 0; P_Zrr = 0;
 
 
     // Sensor error covariance - Diagonal Matrix
@@ -162,7 +165,8 @@ void KalmanFilter::initialize(
     // R_gx = R_gy = R_gz = 1.1468 - .5; // (compensate for process noice)
     R_Px = R_Py = R_Pz = 10;
     // large enough to promote steady state correctness without going overboard
-    R_Ox = R_Oy = R_Oz = 8;
+    R_Ox = R_Oy = 30;
+    R_Oz = 100;
 
     aProcessNoise = 10.f;
     gProcessNoise = 20;
@@ -172,43 +176,10 @@ void KalmanFilter::initialize(
 void KalmanFilter::assignSensorValues(
         int ax, int ay, int az,
         int gx, int gy, int gz,
-        int Cx, int Cy,  // cz not used
+        int Cx, int Cy, int Cz,
         int Px, int Py, int Pz,
         bool useGPS)
 {
-
-
-#if DEBUGK
-    for (int i = 0; i < 15; i++){ log("==="); }
-    logr();
-#endif
-
-    usingGPS = useGPS;
-
-    // adjust with scaling factor of 0.038307
-    z_ax = (static_cast<float>(ax) - bias_ax) * 0.038307;
-    z_ay = (static_cast<float>(ay) - bias_ay) * - 0.038307;
-    z_az = (static_cast<float>(az) - bias_az) * 0.038307;
-    // adjust gyroscope factor of 0.069565 °/sec
-    z_gx = (static_cast<float>(gx) - bias_gx) * -0.069565;
-    z_gy = (static_cast<float>(gy) - bias_gy) * 0.069565;
-    z_gz = (static_cast<float>(gz) - bias_gz) * 0.069565;
-
-
-    if (usingGPS)
-    {
-#if DEBUGK
-        log("using gps");
-#endif
-        z_Px = (static_cast<float>(Px) - bias_Gx) * 1.f;
-        z_Py = (static_cast<float>(Py) - bias_Gy) * 1.f;
-        z_Pz = (static_cast<float>(Pz) - bias_Gz) * 1.f;
-    } else {
-#if DEBUGK
-        log("not using gps");
-#endif
-    }
-
 
     float cx = cos(x_Xa * 3.14159 / 180); //1; //
     float cy = cos(x_Ya * 3.14159 / 180); //1; //
@@ -217,18 +188,7 @@ void KalmanFilter::assignSensorValues(
     float sy = sin(x_Ya * 3.14159 / 180); //0; //
     float sz = sin(x_Za * 3.14159 / 180); //0; //
 
-    float dropX = (float)(atan2(-z_ay, -z_az )) * 180 / 3.14159;
-    float dropY = (float)(atan2( z_ax, -z_az )) * 180 / 3.14159;
-    z_Ox = i10m( dropX , cz ) + i10m ( dropY , sz );
-    z_Oy = i10m( dropY , cz ) + i10m ( dropX ,-sz );
-    z_Oz = (float)(atan2(-Cx, Cy)) * 180 / 3.14159;
-
-#if DEBUGK
-    log("test for sin...\n");
-    log("dropx"); log(dropX); log("dropy"); log(dropY);
-    logr();
-#endif
-
+    // locks the H matrix so that sensors correspond to global axes.
 #define lockhs 0
 #if lockhs
 
@@ -264,11 +224,68 @@ void KalmanFilter::assignSensorValues(
     H_gx_Yr = H_ax_ya = i10m( sz , cx );
     H_gy_Xr = H_ay_xa = i10m(-sz , cy );
 
-    H_gx_Zr = H_ax_za = i10m(-sy , cx );
-    H_gy_Zr = H_ay_za = i10m( sx , cy );
+    float naiveH_x_z = -sy * cx;
+    float naiveH_y_z =  sx * cy;
+    H_gx_Zr = H_ax_za = naiveH_x_z * H_gx_Xr + naiveH_y_z * H_gx_Yr;
+    H_gy_Zr = H_ay_za = naiveH_y_z * H_gy_Yr + naiveH_x_z * H_gy_Xr;
 
-    H_gz_Xr = H_az_xa = i10m( sy , cz );
-    H_gz_Yr = H_az_ya = i10m(-sx , cz );
+    float naiveH_z_x = i10m( sy , cz );
+    float naiveH_z_y = i10m(-sx , cz );
+
+    H_gz_Xr = H_az_xa = naiveH_z_x * H_gy_Yr + naiveH_z_y * H_gy_Xr;
+    H_gz_Yr = H_az_ya = naiveH_z_y * H_gx_Xr + naiveH_z_x * H_gx_Yr;
+#endif
+
+    usingGPS = useGPS;
+
+    // adjust with scaling factor of 0.038307
+    z_ax = (static_cast<float>(ax) - bias_ax) * 0.038307;
+    z_ay = (static_cast<float>(ay) - bias_ay) * - 0.038307;
+    z_az = (static_cast<float>(az) - bias_az) * 0.038307;
+    // adjust gyroscope factor of 0.069565 °/sec
+    z_gx = (static_cast<float>(gx) - bias_gx) * -0.069565;
+    z_gy = (static_cast<float>(gy) - bias_gy) * 0.069565;
+    z_gz = (static_cast<float>(gz) - bias_gz) * -0.069565;
+
+
+    if (usingGPS)
+    {
+#if DEBUGK
+        log("using gps");
+#endif
+        z_Px = (static_cast<float>(Px) - bias_Gx) * 1.f;
+        z_Py = (static_cast<float>(Py) - bias_Gy) * 1.f;
+        z_Pz = (static_cast<float>(Pz) - bias_Gz) * 1.f;
+    } else {
+#if DEBUGK
+        log("not using gps");
+#endif
+    }
+
+
+    float dropX = (float)(atan2(-z_ay, -z_az )) * 180 / 3.14159;
+    float dropY = (float)(atan2( z_ax, -z_az )) * 180 / 3.14159;
+    z_Ox = i10m( dropX , cz ) + i10m ( dropY ,-sz );
+    z_Oy = i10m( dropY , cz ) + i10m ( dropX , sz );
+    Cx -= bias_Cx;
+    Cy -= bias_Cy;
+    Cz -= bias_Cz;
+    Cx = -Cx;
+    Cy = -Cy;
+
+    float magX = H_ax_xa * Cx + H_ay_xa * Cy + H_az_xa * Cz;
+    float magY = H_ax_ya * Cx + H_ay_ya * Cy + H_az_ya * Cz;
+    slog("magX",magX);
+    slog("magY",magY);
+
+    z_Oz = (x_Za - static_cast<float>(atan2(magY, magX)) * 180 / 3.14159);
+    z_Oz = fmod(z_Oz + 180, 360) - 180;
+    slog("z_Oz", z_Oz);
+
+#if DEBUGK
+    log("test for sin...\n");
+    log("dropx"); log(dropX); log("dropy"); log(dropY);
+    logr();
 #endif
 
 // slog("H_x_x", H_ax_xa );
@@ -316,7 +333,6 @@ void KalmanFilter::assignSensorValues(
 void KalmanFilter::predictAndUpdate()
 {
     nTimesRan++;
-    // unsigned int currentTime = 0; // TODO: get current time
     float dT; // = (float)(currentTime - previousTimeRan);
 
     dT = 1.f / 50;
@@ -735,7 +751,6 @@ S_gyy += R_gyy; S_gyz += R_gyz; S_gzz += R_gzz;
     x_za = xp_za +
         (K_za_ax * y_ax + K_za_ay * y_ay + K_za_az * y_az + K_za_Pz * y_Pz);
 
-
     // gyroscope updates to both x_*r
     x_Xa = xp_Xa +
         (K_Xa_gx * y_gx + K_Xa_gy * y_gy + K_Xa_gz * y_gz + K_Xa_Ox * y_Ox);
@@ -751,6 +766,7 @@ S_gyy += R_gyy; S_gyz += R_gyz; S_gzz += R_gzz;
     x_Zr = xp_Zr +
         (K_Zr_gx * y_gx + K_Zr_gy * y_gy + K_Zr_gz * y_gz + K_Zr_Oz * y_Oz);
 
+    z_Oz = fmod(z_Oz + 180, 360) - 180;
 
 
     // Step 7: UPDATED ESTIMATE COVARIANCE =====================================
