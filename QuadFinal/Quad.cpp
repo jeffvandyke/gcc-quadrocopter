@@ -16,31 +16,31 @@
 #define MIN_ANGULAR_DEFLECTION -20
 #define MAX_ALTITUDE_CORRECTION 100
 
-#define MOTOR1 2
+#define MOTOR1 6
 #define MOTOR2 3
 #define MOTOR3 5
-#define MOTOR4 6
+#define MOTOR4 2
 
 //The carefully tuned values for all of our PID control loops.
-#define X_POS_KP 1.6
-#define X_POS_KI 0.2
-#define X_POS_KD 0.6
+#define X_POS_KP 0
+#define X_POS_KI 0
+#define X_POS_KD 0
 
-#define Y_POS_KP 1.6
-#define Y_POS_KI 0.2
-#define Y_POS_KD 0.6
+#define Y_POS_KP 0
+#define Y_POS_KI 0
+#define Y_POS_KD 0
 
 #define Z_POS_KP 0
 #define Z_POS_KI 0
 #define Z_POS_KD 0
 
-#define X_ANG_KP 0
+#define X_ANG_KP 1.6
 #define X_ANG_KI 0
-#define X_ANG_KD 0
+#define X_ANG_KD 0.6
 
-#define Y_ANG_KP 0
+#define Y_ANG_KP 1.6
 #define Y_ANG_KI 0
-#define Y_ANG_KD 0
+#define Y_ANG_KD 0.6
 
 #define Z_ANG_KP 0
 #define Z_ANG_KI 0
@@ -68,25 +68,20 @@ Quad::~Quad(void)
 
 int Quad::motorInitialize(void)
 {
-	pinMode(MOTOR1,OUTPUT);
-	pinMode(MOTOR2,OUTPUT);
-	pinMode(MOTOR3,OUTPUT);
-	pinMode(MOTOR4,OUTPUT);
-
-	analogWrite(2,0);
-	analogWrite(3,0);
-	analogWrite(5,0);
-	analogWrite(6,0);
+	analogWrite(MOTOR1,0);
+	analogWrite(MOTOR2,0);
+	analogWrite(MOTOR3,0);
+	analogWrite(MOTOR4,0);
 	delay(2000);
-	analogWrite(2,PWMIN);
-	analogWrite(3,PWMIN);
-	analogWrite(5,PWMIN);
-	analogWrite(6,PWMIN);
+	analogWrite(MOTOR1,PWMIN);
+	analogWrite(MOTOR2,PWMIN);
+	analogWrite(MOTOR3,PWMIN);
+	analogWrite(MOTOR4,PWMIN);
 	delay(2000);
-	analogWrite(2,0);
-	analogWrite(3,0);
-	analogWrite(5,0);
-	analogWrite(6,0);
+	analogWrite(MOTOR1,0);
+	analogWrite(MOTOR2,0);
+	analogWrite(MOTOR3,0);
+	analogWrite(MOTOR4,0);
 	delay(2000);
 
 	return 0;
@@ -94,13 +89,10 @@ int Quad::motorInitialize(void)
 
 int Quad::motorSet(int motor, int speed)
 {
-	speed	=	floor(1.28 * speed) + PWMIN;
+	speed	=	speed + PWMIN;
 
 	analogWrite(motor, speed);
 
-//	delay(2000);
-	analogWrite(motor, 0);
-//	delay(2000);
 
 	/*blue.println("motorSet");
 	blue.print(motor);
@@ -148,7 +140,7 @@ int Quad::executeCycle(void)
 
     nIteration++;
 
-	this->readSerialCommand();
+	//this->readSerialCommand();
 	if(blue.readLine() == "x")
 		exit(1);
 	blue.println("!!executeCycle!!");
@@ -156,14 +148,14 @@ int Quad::executeCycle(void)
 	getSensorVals();
 	//readGPS = getGPSval();
 
-	Serial1.print(gyroX);
-	blue.println(" :gyroX");
-	Serial1.print(gyroY);
-	blue.println(" :gyroY");
-	Serial1.print(compX);
-	blue.println(" :compX");
-	Serial1.print(compY);
-	blue.println(" :compY");
+	//Serial1.print(gyroX);
+	//blue.println(" :gyroX");
+	//Serial1.print(gyroY);
+	//blue.println(" :gyroY");
+	//Serial1.print(compX);
+	//blue.println(" :compX");
+	//Serial1.print(compY);
+	//blue.println(" :compY");
 
 
 	Filter.assignSensorValues(
@@ -188,33 +180,30 @@ int Quad::executeCycle(void)
 	//retrieve values from Kalman Filter
 	quadState = Filter.getQuadState();
 
-	//Serial1.print(quadState.xAngle);
-	//blue.println(" :xAngle");
-	//Serial1.print(quadState.xRotation);
-	//blue.println(" :xRotation");
-	//Serial1.print(quadState.yAngle);
-	//blue.println(" :yAngle");
-	//Serial1.print(quadState.yRotation);
-	//blue.println(" :yRotation");
+	Serial1.print(quadState.xAngle);
+	blue.println(" :xAngle");
+	Serial1.print(quadState.xRotation);
+	blue.println(" :xRotation");
+	Serial1.print(quadState.yAngle);
+	blue.println(" :yAngle");
+	Serial1.print(quadState.yRotation);
+	blue.println(" :yRotation");
 
 	//calculate correctionfactors for position. X and Z are used to change the setpoint of the angular deflection
 	//the correction factors will be altered by the proportional gain to have values similar to degrees*1024.
 //	xPosCorrect = xPosition.PID(quadState.xPosition, quadState.xVelocity);
-	yPosCorrect = yPosition.PID(quadState.yPosition, quadState.yVelocity);
+//	yPosCorrect = yPosition.PID(quadState.yPosition, quadState.yVelocity);
 //	zPosCorrect = zPosition.PID(quadState.zPosition, quadState.zVelocity);
 
-	Serial1.print(yPosCorrect);
-	blue.println(" :yPosCorrect");
-
 	//Our design spec doesn't allow for angular deflection greater than 20 degrees.
-/*	if(xPosCorrect	>	MAX_ANGULAR_DEFLECTION)
-		xPosCorrect	=	MAX_ANGULAR_DEFLECTION;
-	if(xPosCorrect	<	-MIN_ANGULAR_DEFLECTION)
-		xPosCorrect	=	-MIN_ANGULAR_DEFLECTION;
-	if(yPosCorrect	>	MAX_ANGULAR_DEFLECTION)
-		yPosCorrect	=	MAX_ANGULAR_DEFLECTION;
-	if(yPosCorrect	<	-MIN_ANGULAR_DEFLECTION)
-		yPosCorrect	=	-MIN_ANGULAR_DEFLECTION*/;
+	//if(xPosCorrect	>	MAX_ANGULAR_DEFLECTION)
+	//	xPosCorrect	=	MAX_ANGULAR_DEFLECTION;
+	//if(xPosCorrect	<	-MIN_ANGULAR_DEFLECTION)
+	//	xPosCorrect	=	-MIN_ANGULAR_DEFLECTION;
+	//if(yPosCorrect	>	MAX_ANGULAR_DEFLECTION)
+	//	yPosCorrect	=	MAX_ANGULAR_DEFLECTION;
+	//if(yPosCorrect	<	-MIN_ANGULAR_DEFLECTION)
+	//	yPosCorrect	=	-MIN_ANGULAR_DEFLECTION;
 
 	////we also don't want our quad to attempt to fly too quickly upwards, either
 	//if(zPosCorrect	>	MAX_ALTITUDE_CORRECTION)
@@ -224,11 +213,13 @@ int Quad::executeCycle(void)
 	//yAngle.setSetPoint(yPosCorrect);
 
 	//With the corrected setpoint
-    xAngCorrect	= xAngle.PID(quadState.xAngle, quadState.xRotation);
-//	yAngCorrect = yAngle.PID(quadState.yAngle, quadState.yRotation);
+//   xAngCorrect	= xAngle.PID(quadState.xAngle, quadState.xRotation);
+	yAngCorrect = yAngle.PID(quadState.yAngle, quadState.yRotation);
 //	zAngCorrect = zAngle.PID(quadState.zAngle, quadState.zRotation);
 
+	//adjustMotors();
 	adjustMotors(quadState.zAngle);
+
 
 	//wait until a constant time has passed.
 	waitFor();
@@ -321,13 +312,17 @@ int Quad::getSensorVals(void)
 
 int Quad::adjustMotors(void)
 {
-	blue.println("adjustMotoros");
+	blue.println("adjustMotors");
 	// adjust for pitch and roll
 	m1speed += xAngCorrect;
+	m2speed += xAngCorrect;
     m3speed -= xAngCorrect;
+	m4speed -= xAngCorrect;
 
-	//m2speed -= yAngCorrect;
-	//m4speed += yAngCorrect;
+	//m1speed += yAngCorrect;
+	//m2speed += yAngCorrect;
+    //m3speed -= yAngCorrect;
+	//m4speed -= yAngCorrect;
 
 	////adjust for altitude
 	//m1speed += zPosCorrect;
@@ -352,7 +347,7 @@ int Quad::adjustMotors(void)
 	//	m2speed = 0;
 	if(m3speed	>	MAX_MOTOR_SPEED)
 		m3speed	=	MAX_MOTOR_SPEED;
-	else if(m1speed < 0)
+	else if(m3speed < 0)
 		m3speed = 0;
 	//if(m4speed	>	MAX_MOTOR_SPEED)
 	//	m4speed	=	MAX_MOTOR_SPEED;
@@ -455,6 +450,7 @@ int Quad::waitFor()
 
 	waitTime = millis()-loopTime;
 	Serial1.print(waitTime);
+	blue.println("");
 
 	if(waitTime < MAX_LOOP_TIME)
 		delay(waitTime);
