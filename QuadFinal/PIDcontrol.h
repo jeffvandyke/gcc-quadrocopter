@@ -26,11 +26,11 @@ public:
 
 	float PID(float currentValue);
 	float PID(float currentValue, float dTerm);
+	float kP, kD, kI;
 private:
 	float setPoint;
 	float integralSumTerm;
 	float lastValue;
-	float kP, kD, kI;
 	float deltaTime, previousMillis;
 	float dTerm, error;
 };

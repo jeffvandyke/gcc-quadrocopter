@@ -29,7 +29,7 @@ public:
 	Gyroscope gyro;
 //	Barometer bar;
 	Compass comp;
-//	GPS gps;
+	GPS gps;
 	KalmanFilter Filter;
 
     PIDController xPosition, yPosition, zPosition;
@@ -42,9 +42,10 @@ public:
 	int motorSet(int, int);
 	int getSensorVals(void);
 //	int getGPSval(void);
-//	int findSensorBias(void);
+	int findSensorBias(void);
 	int adjustMotors(void);
 	int adjustMotors(int);
+	void readSerialCommand(void);
 
 	int waitFor();
 

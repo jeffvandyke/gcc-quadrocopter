@@ -248,26 +248,26 @@ int Quad::getSensorVals(void)
 }
 
 //updates the internal GPS values
-//int Quad::getGPSval(void)
-//{
-//	//waits until a full signal is read from the gps
-//	while (Serial2.available())
-//     {
-//		char c = Serial2.read();
-//		if(gps.encode(c))
-//			break;
-//	}
-//
-//	//since there is no way to tell how stale the value that the GPS holds is, this function merely checks to see if
-//	//its a new value or not
-//	if (gps.readRawLat() == GPSlat)
-//		return false;
-//
-//	GPSlat	=	gps.readRawLat()-gpsLatBias;
-//	GPSlong	=	gps.readRawLong()-gpsLongBias;
-//	GPSalt	=	gps.readRawAlt()-gpsAltBias;
-//	return true;
-//}
+int Quad::getGPSval(void)
+{
+	//waits until a full signal is read from the gps
+	while (Serial2.available())
+     {
+		char c = Serial2.read();
+		if(gps.encode(c))
+			break;
+	}
+
+	//since there is no way to tell how stale the value that the GPS holds is, this function merely checks to see if
+	//its a new value or not
+	if (gps.readRawLat() == GPSlat)
+		return false;
+
+	GPSlat	=	gps.readRawLat()-gpsLatBias;
+	GPSlong	=	gps.readRawLong()-gpsLongBias;
+	GPSalt	=	gps.readRawAlt()-gpsAltBias;
+	return true;
+}
 
 //calculates sensor bias at startup
 //int Quad::findSensorBias(void)
@@ -448,67 +448,92 @@ int Quad::waitFor()
 	int waitTime;
 	blue.println("waitFor");
 
-	waitTime = millis()-loopTime;
+	/*waitTime = millis()-loopTime;
 	Serial1.print(waitTime);
-	blue.println("");
+	blue.println("");*/
 
 	if(waitTime < MAX_LOOP_TIME)
 		delay(waitTime);
 	loopTime=millis();
 }
 
-//void Quad::readSerialCommand(void) {
-//	int serialData = Serial.read();
-//
-//	if (serialData != -1)
-//		// clear some space
-//			Serial.print("\n\n\n");
-//
-//	switch (serialData)
-//	{
-//	case (int)'1':
-//		motorSet(100);
-//		break;
-//	case (int)'2':
-//		motorSet(120);
-//		break;
-//	case (int)'3':
-//		motorSet(130);
-//		break;
-//	case (int)'4':
-//		motorSet(140);
-//		break;
-//	case (int)'5':
-//		motorSet(150);
-//		break;
-//	case (int)'6':
-//		motorSet(160);
-//		break;
-//	case (int)'7':
-//		motorSet(170);
-//		break;
-//	case (int)'8':
-//		motorSet(180);
-//		break;
-//	case (int)'9':
-//		motorSet(190);
-//		break;
-//	case (int)'10':
-//		motorSet(200);
-//		break;
-//	case (int)'11':
-//		motorSet(210);
-//		break;
-//	case (int)'12':
-//		motorSet(220);
-//		break;
-//	case -1:
-//		break;
-//	default:
-//		Serial.print("unknown command: ");
-//		Serial.println((char)serialData);
-//	}
-//}
+void Quad::readSerialCommand(void) {
+	String serialData = blue.readLine();
+
+	if(serialData == "")
+		return;
+	if(serialData == "x"){
+		motorSet(MOTOR1, 0);
+		motorSet(MOTOR2, 0);
+		motorSet(MOTOR3, 20);
+		motorSet(MOTOR4, 0);
+		exit(1);
+	}
+	else if(serialData == "pu"){
+		motorSet(MOTOR1, 0);
+		motorSet(MOTOR2, 0);
+		motorSet(MOTOR3, 20);
+		motorSet(MOTOR4, 0);
+		delay(500);
+		xAngle.kP = xAngle.kP * 1.1;
+		blue.print(xAngle.kP);
+		blue.println("");
+	}
+	else if(serialData == "du"){
+		motorSet(MOTOR1, 0);
+		motorSet(MOTOR2, 0);
+		motorSet(MOTOR3, 20);
+		motorSet(MOTOR4, 0);
+		delay(500);
+		yAngle.kD = yAngle.kD * 1.1;
+		blue.print(yAngle.kD);
+		blue.println("");
+	}
+	else if(serialData == "iu"){
+		motorSet(MOTOR1, 0);
+		motorSet(MOTOR2, 0);
+		motorSet(MOTOR3, 20);
+		motorSet(MOTOR4, 0);
+		delay(500);
+		zAngle.kI = zAngle.kI * 1.1;
+		blue.print(zAngle.kI);
+		blue.println("");
+	}
+	else if(serialData == "pd"){
+		motorSet(MOTOR1, 0);
+		motorSet(MOTOR2, 0);
+		motorSet(MOTOR3, 20);
+		motorSet(MOTOR4, 0);
+		delay(500);
+		xAngle.kP = xAngle.kP / 1.1;
+		blue.print(xAngle.kP);
+		blue.println("");
+	}
+	else if(serialData == "dd"){
+		motorSet(MOTOR1, 0);
+		motorSet(MOTOR2, 0);
+		motorSet(MOTOR3, 20);
+		motorSet(MOTOR4, 0);
+		delay(500);
+		yAngle.kD = yAngle.kD / 1.1;
+		blue.print(yAngle.kD);
+		blue.println("");
+	}
+	else if(serialData == "id"){
+		motorSet(MOTOR1, 0);
+		motorSet(MOTOR2, 0);
+		motorSet(MOTOR3, 20);
+		motorSet(MOTOR4, 0);
+		delay(500);
+		zAngle.kI = zAngle.kI / 1.1;
+		blue.print(zAngle.kI);
+		blue.println("");
+	}
+	else{
+		Serial.print("unknown command: ");
+		Serial.println(serialData);
+	}
+}
 
 
 
