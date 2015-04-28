@@ -224,7 +224,6 @@ int Quad::executeCycle(void)
 	//wait until a constant time has passed.
 	waitFor();
 
-	delay(10);
 	return 0;
 }
 
