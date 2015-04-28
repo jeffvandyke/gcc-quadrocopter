@@ -162,32 +162,32 @@ int Quad::executeCycle(void)
 		accX, accY, accZ,	// acceleration
 		gyroX, gyroY, gyroZ,	// gyroscope
 
-		// // compX, compY, 	// Compass
-		// // GPSlat, GPSlong, GPSalt,	// GPS
+		 compX, compY, compZ,	// Compass
 
-        // !!! bogus values for now, reads true north from compass,
-        // and static position for GPS
-
-		// compX, compY, 	// Compass
-        0,100, // (compass bogus)
-		/*GPSlat, GPSlong, GPSalt,*/	// GPS
 		 0, 0, 0,
 		//readGPS); // use gps value
          nIteration % 10 == 0);
 
 	Filter.predictAndUpdate();
 
+	blue.println("done");
+
 	//retrieve values from Kalman Filter
 	quadState = Filter.getQuadState();
 
+	blue.println("Angles:");
 	Serial1.print(quadState.xAngle);
-	blue.println(" :xAngle");
-	Serial1.print(quadState.xRotation);
-	blue.println(" :xRotation");
+	blue.println("");
+	//Serial1.print(quadState.xRotation);
+	//blue.println(" :xRotation");
 	Serial1.print(quadState.yAngle);
-	blue.println(" :yAngle");
-	Serial1.print(quadState.yRotation);
-	blue.println(" :yRotation");
+	blue.println("");
+	//Serial1.print(quadState.yRotation);
+	//blue.println(" :yRotation");
+	Serial1.print(quadState.zAngle);
+	blue.println("");
+	//Serial1.print(quadState.yRotation);
+	//blue.println(" :zRotation");
 
 	//calculate correctionfactors for position. X and Z are used to change the setpoint of the angular deflection
 	//the correction factors will be altered by the proportional gain to have values similar to degrees*1024.
@@ -213,8 +213,8 @@ int Quad::executeCycle(void)
 	//yAngle.setSetPoint(yPosCorrect);
 
 	//With the corrected setpoint
-//   xAngCorrect	= xAngle.PID(quadState.xAngle, quadState.xRotation);
-	yAngCorrect = yAngle.PID(quadState.yAngle, quadState.yRotation);
+   xAngCorrect	= xAngle.PID(quadState.xAngle, quadState.xRotation);
+//	yAngCorrect = yAngle.PID(quadState.yAngle, quadState.yRotation);
 //	zAngCorrect = zAngle.PID(quadState.zAngle, quadState.zRotation);
 
 	//adjustMotors();
@@ -238,9 +238,9 @@ int Quad::getSensorVals(void)
 	accY=	acc.readRawY();
 	accZ=	acc.readRawZ();
 	//Gyroscope
-	gyroX=	gyro.readRawX()-gyroXBias;
-	gyroY=	gyro.readRawY()-gyroYBias;
-	gyroZ=	gyro.readRawZ()-gyroZBias;
+	gyroX=	gyro.readRawX();
+	gyroY=	gyro.readRawY();
+	gyroZ=	gyro.readRawZ();
 	//Compass
 	compX=	comp.getRawX();
 	compY=	comp.getRawY();
@@ -248,26 +248,26 @@ int Quad::getSensorVals(void)
 }
 
 //updates the internal GPS values
-int Quad::getGPSval(void)
-{
-	//waits until a full signal is read from the gps
-	while (Serial2.available())
-     {
-		char c = Serial2.read();
-		if(gps.encode(c))
-			break;
-	}
-
-	//since there is no way to tell how stale the value that the GPS holds is, this function merely checks to see if
-	//its a new value or not
-	if (gps.readRawLat() == GPSlat)
-		return false;
-
-	GPSlat	=	gps.readRawLat()-gpsLatBias;
-	GPSlong	=	gps.readRawLong()-gpsLongBias;
-	GPSalt	=	gps.readRawAlt()-gpsAltBias;
-	return true;
-}
+//int Quad::getGPSval(void)
+//{
+//	//waits until a full signal is read from the gps
+//	while (Serial2.available())
+//     {
+//		char c = Serial2.read();
+//		if(gps.encode(c))
+//			break;
+//	}
+//
+//	//since there is no way to tell how stale the value that the GPS holds is, this function merely checks to see if
+//	//its a new value or not
+//	if (gps.readRawLat() == GPSlat)
+//		return false;
+//
+//	GPSlat	=	gps.readRawLat()/*-gpsLatBias*/;
+//	GPSlong	=	gps.readRawLong()/*-gpsLongBias*/;
+//	GPSalt	=	gps.readRawAlt()/*-gpsAltBias*/;
+//	return true;
+//}
 
 //calculates sensor bias at startup
 //int Quad::findSensorBias(void)
@@ -380,8 +380,8 @@ int Quad::adjustMotors(int zAngle)
 
     float xFactor, yFactor, zFactor, zPosFactor;
 
-    xFactor = yFactor = 0.3; // units: (motor ticks) per (deg/s)
-    zFactor = 0.3; // same units
+    xFactor = yFactor = 1; // units: (motor ticks) per (deg/s)
+    zFactor = 1; // same units
     zPosFactor = 1.0;
 
 	blue.println("adjustMotors with angle");
