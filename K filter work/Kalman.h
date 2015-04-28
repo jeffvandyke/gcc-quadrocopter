@@ -1,12 +1,16 @@
 #ifndef KALMAN_H
 #define KALMAN_H
-#include "math.h"
-#include <Wire.h>
-#include "I2C.h"
-
 
 #define SLOG 1
 #define DEBUGK 0
+#define S_BLUETOOTH 1
+
+#include "math.h"
+#if !(DEBUGK)
+#include <Wire.h>
+#include "I2C.h"
+#endif
+
 
 #if DEBUGK
 
@@ -23,16 +27,6 @@ struct quadState_t {
     float xAngle, yAngle, zAngle;
     float xRotation, yRotation, zRotation;
 };
-
-// struct quadStateCovariance_t {
-//     int xPosition, yPosition, zPosition;
-//     int xVelocity, yVelocity, zVelocity;
-//     int xAcceleration, yAcceleration, zAcceleration;
-//
-//     int xAngle, yAngle, zAngle;
-//     int xRotation, yRotation, zRotation;
-// };
-
 
 using namespace std;
 
@@ -54,10 +48,17 @@ class KalmanFilter {
 #endif
 #if SLOG
         void slog(String header, float number){
+#if S_BLUETOOTH
+            Serial1.print(header);
+            Serial1.print(",");
+            Serial1.print(number);
+            Serial1.print("\t");
+#else
             Serial.print(header);
-            Serial.print(" ");
+            Serial.print(",");
             Serial.print(number);
             Serial.print("\t");
+#endif
         }
 #endif
 
