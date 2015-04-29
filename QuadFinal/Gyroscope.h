@@ -1,12 +1,12 @@
 #pragma once
-#include <ITG3200.h>
+#include "ITG3200.h"
 
 class Gyroscope
 {
 public:
 	Gyroscope(void);
 	~Gyroscope(void);
-	
+
 	ITG3200 gyro;
 
 	int readRawX(void);

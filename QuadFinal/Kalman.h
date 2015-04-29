@@ -3,7 +3,7 @@
 
 #define SLOG 1
 #define DEBUGK 0
-#define S_BLUETOOTH 1
+#define S_BLUETOOTH 0
 
 #include "math.h"
 #if !(DEBUGK)

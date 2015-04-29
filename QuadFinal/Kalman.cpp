@@ -140,8 +140,8 @@ void KalmanFilter::initialize(
     P_zpp = 0.1; P_zpv = 0.1; P_zpa = 0.1;
     P_zvv = 0.1; P_zva = 0.1; P_zaa = 0.1;
 
-    P_Xaa = 0; P_Xar = 0; P_Xrr = 0;
-    P_Yaa = 0; P_Yar = 0; P_Yrr = 0;
+    P_Xaa = 100; P_Xar = 0; P_Xrr = 0;
+    P_Yaa = 100; P_Yar = 0; P_Yrr = 0;
     // z rotation is the only real uncertainty
     P_Zaa = 1000; P_Zar = 0; P_Zrr = 0;
 
@@ -277,7 +277,7 @@ void KalmanFilter::assignSensorValues(
     float magY = H_ax_ya * Cx + H_ay_ya * Cy + H_az_ya * Cz;
 
     z_Oz = (x_Za - static_cast<float>(atan2(magY, magX)) * 180 / 3.14159);
-    z_Oz = fmod(z_Oz + 180, 360) - 180;
+    z_Oz = fmod(z_Oz + 180 , 360) - 180;
 
 #if DEBUGK
     log("test for sin...\n");
@@ -322,7 +322,7 @@ void KalmanFilter::assignSensorValues(
 
 #endif
 
-	slog("done",0);
+	//slog("done",0);
 
 
 }

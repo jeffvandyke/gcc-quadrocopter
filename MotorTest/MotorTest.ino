@@ -33,16 +33,16 @@ void setup()
 void loop()
 {
 	motorSet(MOTOR1, 30);
-	delay(500);
+	delay(3000);
 	motorSet(MOTOR1, 0);
 	motorSet(MOTOR2, 30);
-	delay(500);
+	delay(3000);
 	motorSet(MOTOR2, 0);
 	motorSet(MOTOR3, 30);
-	delay(500);
+	delay(3000);
 	motorSet(MOTOR3, 0);
 	motorSet(MOTOR4, 30);
-	delay(500);
+	delay(3000);
 	motorSet(MOTOR4, 0);
 	
 }

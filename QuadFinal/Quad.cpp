@@ -34,11 +34,11 @@
 #define Z_POS_KI 0
 #define Z_POS_KD 0
 
-#define X_ANG_KP 1.6
+#define X_ANG_KP 3.0
 #define X_ANG_KI 0
-#define X_ANG_KD 0.6
+#define X_ANG_KD 0.3
 
-#define Y_ANG_KP 1.6
+#define Y_ANG_KP 3.0
 #define Y_ANG_KI 0
 #define Y_ANG_KD 0.6
 
@@ -60,6 +60,42 @@ Quad::Quad(void)
 	zAngle.changeGain(Z_ANG_KP, Z_ANG_KI, Z_ANG_KD);
 
 	return;
+}
+
+void slog(String var, float val) {
+#if 0
+    Serial1.print(var);
+    Serial1.print(",");
+    Serial1.print(val);
+    Serial1.print("\t");
+#else
+    Serial.print(var);
+    Serial.print(",");
+    Serial.print(val);
+    Serial.print("\t");
+#endif
+}
+
+void slog(String var, int val) {
+#if 0
+    Serial1.print(var);
+    Serial1.print(",");
+    Serial1.print(val);
+    Serial1.print("\t");
+#else
+    Serial.print(var);
+    Serial.print(",");
+    Serial.print(val);
+    Serial.print("\t");
+#endif
+}
+
+void slogr() {
+#if 0
+    Serial1.print("\n");
+#else
+    Serial.print("\n");
+#endif
 }
 
 Quad::~Quad(void)
@@ -91,6 +127,10 @@ int Quad::motorSet(int motor, int speed)
 {
 	speed	=	speed + PWMIN;
 
+    if (motor == MOTOR3) {
+        speed += 20;
+    }
+	analogWrite(motor, 0);
 	analogWrite(motor, speed);
 
 
@@ -105,7 +145,9 @@ int Quad::motorSet(int motor, int speed)
 int Quad::setup(void)
 {
 	i2c.initialize();
-	Serial.begin(9600);
+	// Serial.begin(9600);
+    // debugging over usb
+	Serial.begin(115200);
 	acc.setup();
 	gyro.setup();
 //	bar.setup();
@@ -146,6 +188,7 @@ int Quad::executeCycle(void)
 	blue.println("!!executeCycle!!");
 
 	getSensorVals();
+    slog("gsv n:", nIteration);
 	//readGPS = getGPSval();
 
 	//Serial1.print(gyroX);
@@ -161,31 +204,32 @@ int Quad::executeCycle(void)
 	Filter.assignSensorValues(
 		accX, accY, accZ,	// acceleration
 		gyroX, gyroY, gyroZ,	// gyroscope
-
 		 compX, compY, compZ,	// Compass
-
 		 0, 0, 0,
-		//readGPS); // use gps value
          nIteration % 10 == 0);
 
 	Filter.predictAndUpdate();
 
-	blue.println("done");
+	// blue.println("done");
 
 	//retrieve values from Kalman Filter
 	quadState = Filter.getQuadState();
 
-	blue.println("Angles:");
-	Serial1.print(quadState.xAngle);
-	blue.println("");
+    slog("stXang", quadState.xAngle);
+    slog("stYang", quadState.yAngle);
+    slog("stZang", quadState.zAngle);
+
+	// blue.println("Angles:");
+	// Serial1.print(quadState.xAngle);
+	// blue.println("");
 	//Serial1.print(quadState.xRotation);
 	//blue.println(" :xRotation");
-	Serial1.print(quadState.yAngle);
-	blue.println("");
+	// Serial1.print(quadState.yAngle);
+	// blue.println("");
 	//Serial1.print(quadState.yRotation);
 	//blue.println(" :yRotation");
-	Serial1.print(quadState.zAngle);
-	blue.println("");
+	// Serial1.print(quadState.zAngle);
+	// blue.println("");
 	//Serial1.print(quadState.yRotation);
 	//blue.println(" :zRotation");
 
@@ -213,7 +257,9 @@ int Quad::executeCycle(void)
 	//yAngle.setSetPoint(yPosCorrect);
 
 	//With the corrected setpoint
-   xAngCorrect	= xAngle.PID(quadState.xAngle, quadState.xRotation);
+    xAngCorrect	= xAngle.PID(quadState.xAngle, quadState.xRotation);
+    slog("xACor", xAngCorrect);
+    slog("yACor", yAngCorrect);
 //	yAngCorrect = yAngle.PID(quadState.yAngle, quadState.yRotation);
 //	zAngCorrect = zAngle.PID(quadState.zAngle, quadState.zRotation);
 
@@ -224,13 +270,15 @@ int Quad::executeCycle(void)
 	//wait until a constant time has passed.
 	waitFor();
 
+    slogr();
+
 	return 0;
 }
 
 //updates all of the sensor values stored in the Quad object
 int Quad::getSensorVals(void)
 {
-	blue.println("getSensorVals");
+//	blue.println("getSensorVals");
 
 	//Accelerometer
 	accX=	acc.readRawX();
@@ -244,6 +292,8 @@ int Quad::getSensorVals(void)
 	compX=	comp.getRawX();
 	compY=	comp.getRawY();
 	compZ=	comp.getRawZ();
+ //   slog("compx",compX);
+
 }
 
 //updates the internal GPS values
@@ -362,8 +412,10 @@ int Quad::adjustMotors(void)
 // motor correction that takes z angle into account
 int Quad::adjustMotors(int zAngle)
 {
-    zAngle -= 45; // for matching this coordinate system
-    /*
+    
+    zAngle += (45); // for matching this coordinate system
+    slog("adjm:", (float)zAngle);
+	/*
      *            +y (for 0° Z angle)
      *
      *   4  usb  1
@@ -419,6 +471,12 @@ int Quad::adjustMotors(int zAngle)
     m3speed = static_cast<int>(m3f);
     m4speed = static_cast<int>(m4f);
 
+
+    slog("m1",m1speed);
+    slog("m2",m2speed);
+    slog("m3",m3speed);
+    slog("m4",m4speed);
+
 	if(m1speed	>	MAX_MOTOR_SPEED)
 		m1speed	=	MAX_MOTOR_SPEED;
 	else if(m1speed < 0)
@@ -447,9 +505,10 @@ int Quad::waitFor()
 	int waitTime;
 	blue.println("waitFor");
 
-	/*waitTime = millis()-loopTime;
-	Serial1.print(waitTime);
-	blue.println("");*/
+	waitTime = millis()-loopTime;
+    slog("wT", waitTime);
+	// Serial1.print(waitTime);
+	// blue.println("");
 
 	if(waitTime < MAX_LOOP_TIME)
 		delay(waitTime);
@@ -457,81 +516,81 @@ int Quad::waitFor()
 }
 
 void Quad::readSerialCommand(void) {
-	String serialData = blue.readLine();
+	//String serialData = blue.readLine();
 
-	if(serialData == "")
-		return;
-	if(serialData == "x"){
-		motorSet(MOTOR1, 0);
-		motorSet(MOTOR2, 0);
-		motorSet(MOTOR3, 20);
-		motorSet(MOTOR4, 0);
-		exit(1);
-	}
-	else if(serialData == "pu"){
-		motorSet(MOTOR1, 0);
-		motorSet(MOTOR2, 0);
-		motorSet(MOTOR3, 20);
-		motorSet(MOTOR4, 0);
-		delay(500);
-		xAngle.kP = xAngle.kP * 1.1;
-		blue.print(xAngle.kP);
-		blue.println("");
-	}
-	else if(serialData == "du"){
-		motorSet(MOTOR1, 0);
-		motorSet(MOTOR2, 0);
-		motorSet(MOTOR3, 20);
-		motorSet(MOTOR4, 0);
-		delay(500);
-		yAngle.kD = yAngle.kD * 1.1;
-		blue.print(yAngle.kD);
-		blue.println("");
-	}
-	else if(serialData == "iu"){
-		motorSet(MOTOR1, 0);
-		motorSet(MOTOR2, 0);
-		motorSet(MOTOR3, 20);
-		motorSet(MOTOR4, 0);
-		delay(500);
-		zAngle.kI = zAngle.kI * 1.1;
-		blue.print(zAngle.kI);
-		blue.println("");
-	}
-	else if(serialData == "pd"){
-		motorSet(MOTOR1, 0);
-		motorSet(MOTOR2, 0);
-		motorSet(MOTOR3, 20);
-		motorSet(MOTOR4, 0);
-		delay(500);
-		xAngle.kP = xAngle.kP / 1.1;
-		blue.print(xAngle.kP);
-		blue.println("");
-	}
-	else if(serialData == "dd"){
-		motorSet(MOTOR1, 0);
-		motorSet(MOTOR2, 0);
-		motorSet(MOTOR3, 20);
-		motorSet(MOTOR4, 0);
-		delay(500);
-		yAngle.kD = yAngle.kD / 1.1;
-		blue.print(yAngle.kD);
-		blue.println("");
-	}
-	else if(serialData == "id"){
-		motorSet(MOTOR1, 0);
-		motorSet(MOTOR2, 0);
-		motorSet(MOTOR3, 20);
-		motorSet(MOTOR4, 0);
-		delay(500);
-		zAngle.kI = zAngle.kI / 1.1;
-		blue.print(zAngle.kI);
-		blue.println("");
-	}
-	else{
-		Serial.print("unknown command: ");
-		Serial.println(serialData);
-	}
+	//if(serialData == "")
+	//	return;
+	//if(serialData == "x"){
+	//	motorSet(MOTOR1, 0);
+	//	motorSet(MOTOR2, 0);
+	//	motorSet(MOTOR3, 20);
+	//	motorSet(MOTOR4, 0);
+	//	exit(1);
+	//}
+	//else if(serialData == "pu"){
+	//	motorSet(MOTOR1, 0);
+	//	motorSet(MOTOR2, 0);
+	//	motorSet(MOTOR3, 20);
+	//	motorSet(MOTOR4, 0);
+	//	delay(500);
+	//	xAngle.kP = xAngle.kP * 1.1;
+	//	blue.print(xAngle.kP);
+	//	blue.println("");
+	//}
+	//else if(serialData == "du"){
+	//	motorSet(MOTOR1, 0);
+	//	motorSet(MOTOR2, 0);
+	//	motorSet(MOTOR3, 20);
+	//	motorSet(MOTOR4, 0);
+	//	delay(500);
+	//	yAngle.kD = yAngle.kD * 1.1;
+	//	blue.print(yAngle.kD);
+	//	blue.println("");
+	//}
+	//else if(serialData == "iu"){
+	//	motorSet(MOTOR1, 0);
+	//	motorSet(MOTOR2, 0);
+	//	motorSet(MOTOR3, 20);
+	//	motorSet(MOTOR4, 0);
+	//	delay(500);
+	//	zAngle.kI = zAngle.kI * 1.1;
+	//	blue.print(zAngle.kI);
+	//	blue.println("");
+	//}
+	//else if(serialData == "pd"){
+	//	motorSet(MOTOR1, 0);
+	//	motorSet(MOTOR2, 0);
+	//	motorSet(MOTOR3, 20);
+	//	motorSet(MOTOR4, 0);
+	//	delay(500);
+	//	xAngle.kP = xAngle.kP / 1.1;
+	//	blue.print(xAngle.kP);
+	//	blue.println("");
+	//}
+	//else if(serialData == "dd"){
+	//	motorSet(MOTOR1, 0);
+	//	motorSet(MOTOR2, 0);
+	//	motorSet(MOTOR3, 20);
+	//	motorSet(MOTOR4, 0);
+	//	delay(500);
+	//	yAngle.kD = yAngle.kD / 1.1;
+	//	blue.print(yAngle.kD);
+	//	blue.println("");
+	//}
+	//else if(serialData == "id"){
+	//	motorSet(MOTOR1, 0);
+	//	motorSet(MOTOR2, 0);
+	//	motorSet(MOTOR3, 20);
+	//	motorSet(MOTOR4, 0);
+	//	delay(500);
+	//	zAngle.kI = zAngle.kI / 1.1;
+	//	blue.print(zAngle.kI);
+	//	blue.println("");
+	//}
+	//else{
+	//	Serial.print("unknown command: ");
+	//	Serial.println(serialData);
+	//}
 }
 
 
