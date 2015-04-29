@@ -49,22 +49,25 @@ class KalmanFilter {
 #if SLOG
         void slog(String header, float number){
 #if S_BLUETOOTH
-            Serial1.print(header);
-            Serial1.print(",");
-            Serial1.print(number);
-            Serial1.print("\t");
+            Serial1.print(header); Serial1.print(",");
+            Serial1.print(number); Serial1.print("\t");
 #else
-            Serial.print(header);
-            Serial.print(",");
-            Serial.print(number);
-            Serial.print("\t");
+            Serial.print(header); Serial.print(",");
+            Serial.print(number); Serial.print("\t");
+#endif
+        }
+        void slog(float number){
+#if S_BLUETOOTH
+            Serial1.print(number); Serial1.print("\t");
+#else
+            Serial.print(number); Serial.print("\t");
 #endif
         }
 #endif
 
 		void initialize(float biasAccX, float biasAccY, float biasAccZ,
                 float biasGyroX, float biasGyroY, float biasGyroZ,
-                int biasGpsX, int biasGpsY, int biasGpsZ);
+                int biasGpsX, int biasGpsY, float biasGpsZ);
 
 		void assignSensorValues(
 				int, int, int,	// acceleration
@@ -81,20 +84,16 @@ class KalmanFilter {
 
         void predictStateEstimateForPosition(
                 float& xp_p, float& xp_v, float& xp_a,
-                float& x_p, float& x_v, float& x_a,
-                float& dT);
+                float& x_p, float& x_v, float& x_a);
         void predictStateEstimateForRotation(
                 float& xp_a, float& xp_r,
-                float& x_a, float& x_r,
-                float& dT);
+                float& x_a, float& x_r);
         void predictStateCovarianceForPosition(
                 float& op1, float& op2, float& op3, float& op4, float& op5, float& op6,
-                float& p1, float& p2, float& p3, float& p4, float& p5, float& p6,
-                float& dT);
+                float& p1, float& p2, float& p3, float& p4, float& p5, float& p6);
         void predictStateCovarianceForRotation(
                 float& op1, float& op2, float& op3, // float& op4,
-                float& p1, float& p2, float& p3, // float& p4,
-                float& dT);
+                float& p1, float& p2, float& p3);
         void innovationCovariance(
                 float& s1, float& s2, float& s3, float& s4, float& s5, float& s6,
                 float p1, float p2, float p3, // float p4, float p5, float p6,
@@ -121,7 +120,8 @@ class KalmanFilter {
 
         float bias_ax, bias_ay, bias_az;
         float bias_gx, bias_gy, bias_gz;
-        int bias_Gx, bias_Gy, bias_Gz;
+        int bias_Gx, bias_Gy;
+        float bias_Gz;
 
 		// Constant Matrixes
 		//

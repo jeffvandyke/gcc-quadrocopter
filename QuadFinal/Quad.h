@@ -27,7 +27,7 @@ public:
 
 	Accelerometer acc;
 	Gyroscope gyro;
-//	Barometer bar;
+  	Barometer bar;
 	Compass comp;
 	GPS gps;
 	KalmanFilter Filter;
@@ -53,6 +53,7 @@ public:
 	int compX, compY, compZ,
 		gyroX, gyroY, gyroZ,
 		accX, accY, accZ,
+        barZ,
 		GPSlat, GPSlong, GPSalt;
 	bool readGPS;
 

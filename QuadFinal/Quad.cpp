@@ -8,18 +8,19 @@
 #define OUTPIN 6
 #define TRIGPIN 53
 #define PWMIN 100
+#define PWHOVER 160
 
 #define MAX_LOOP_TIME 30
 
-#define MAX_MOTOR_SPEED 128
+#define MAX_MOTOR_SPEED 228
 #define MAX_ANGULAR_DEFLECTION 20
 #define MIN_ANGULAR_DEFLECTION -20
 #define MAX_ALTITUDE_CORRECTION 100
 
-#define MOTOR1 6
+#define MOTOR1 2
 #define MOTOR2 3
 #define MOTOR3 5
-#define MOTOR4 2
+#define MOTOR4 6
 
 //The carefully tuned values for all of our PID control loops.
 #define X_POS_KP 0
@@ -49,7 +50,6 @@
 Quad::Quad(void)
 {
 	i2c = I2C();
-	loopTime=millis();
 
 	xPosition.changeGain(X_POS_KP, X_POS_KI, X_POS_KD);
 	yPosition.changeGain(Y_POS_KP, Y_POS_KI, Y_POS_KD);
@@ -62,41 +62,47 @@ Quad::Quad(void)
 	return;
 }
 
+#if 1
 void slog(String var, float val) {
-#if 0
-    Serial1.print(var);
-    Serial1.print(",");
-    Serial1.print(val);
-    Serial1.print("\t");
-#else
-    Serial.print(var);
-    Serial.print(",");
-    Serial.print(val);
-    Serial.print("\t");
-#endif
+    Serial.print(var); Serial.print(",");
+    Serial.print(val); Serial.print("\t");
 }
 
 void slog(String var, int val) {
-#if 0
-    Serial1.print(var);
-    Serial1.print(",");
-    Serial1.print(val);
-    Serial1.print("\t");
-#else
-    Serial.print(var);
-    Serial.print(",");
-    Serial.print(val);
-    Serial.print("\t");
-#endif
+    Serial.print(var); Serial.print(",");
+    Serial.print(val); Serial.print("\t");
 }
 
-void slogr() {
-#if 0
-    Serial1.print("\n");
-#else
-    Serial.print("\n");
-#endif
+void slog(float val) {
+    Serial.print(val); Serial.print("\t");
 }
+
+void slog(int val) {
+    Serial.print(val); Serial.print("\t");
+}
+
+void slogr() { Serial.print("\n"); }
+#else
+void slog(String var, float val) {
+    Serial1.print(var); Serial1.print(",");
+    Serial1.print(val); Serial1.print("\t");
+}
+
+void slog(String var, int val) {
+    Serial1.print(var); Serial1.print(",");
+    Serial1.print(val); Serial1.print("\t");
+}
+
+void slog(float val) {
+    Serial1.print(val); Serial1.print("\t");
+}
+
+void slog(int val) {
+    Serial1.print(val); Serial1.print("\t");
+}
+
+void slogr() { Serial1.print("\n"); }
+#endif
 
 Quad::~Quad(void)
 {
@@ -125,20 +131,10 @@ int Quad::motorInitialize(void)
 
 int Quad::motorSet(int motor, int speed)
 {
-	speed	=	speed + PWMIN;
 
-    if (motor == MOTOR3) {
-        speed += 20;
-    }
-	analogWrite(motor, 0);
+	// analogWrite(motor, 0);
 	analogWrite(motor, speed);
 
-
-	/*blue.println("motorSet");
-	blue.print(motor);
-	blue.println("");
-	blue.print(speed);
-	blue.println("");*/
 	return 0;
 }
 
@@ -150,10 +146,18 @@ int Quad::setup(void)
 	Serial.begin(115200);
 	acc.setup();
 	gyro.setup();
-//	bar.setup();
+  	bar.setup();
 	comp.setup();
 	motorInitialize();
 	blue.initialize();
+    float barAvg = 0, gxAvg = 0,gyAvg = 0, gzAvg = 0;
+    for(int i = 0; i < 30; i++) {
+        barAvg += static_cast<float>(bar.readRawAltitude());
+        gxAvg += static_cast<float>(gyro.readRawX());
+        gyAvg += static_cast<float>(gyro.readRawY());
+        gzAvg += static_cast<float>(gyro.readRawZ());
+    }
+    barAvg /= 30; gxAvg /= 30; gyAvg /= 30; gzAvg /= 30; 
 
 	blue.println("setup");
 
@@ -166,11 +170,13 @@ int Quad::setup(void)
     // ordinarily, these would be the average of the gyro, acc, gps axis
     // over several samples, but these may be just fine for our purposes.
     Filter.initialize( 6.9158f, 9.9410f, 21.515f,
-            -16.027f, 0.9157f, 0.6185f,
+            gxAvg, gyAvg, gzAvg,
+            //gyro -16.027f, 0.9157f, 0.6185f,
             //         -12504.f, -13316.f, -24942.f );
         // gps = bogus values, so for now, bias is zero
-        0,0,0);
+        0,0,barAvg);
 
+	loopTime=millis();
 	return 0;
 }
 
@@ -181,6 +187,7 @@ int Quad::executeCycle(void)
 {
 
     nIteration++;
+    slog(nIteration);
 
 	//this->readSerialCommand();
 	if(blue.readLine() == "x")
@@ -188,7 +195,6 @@ int Quad::executeCycle(void)
 	blue.println("!!executeCycle!!");
 
 	getSensorVals();
-    slog("gsv n:", nIteration);
 	//readGPS = getGPSval();
 
 	//Serial1.print(gyroX);
@@ -201,12 +207,16 @@ int Quad::executeCycle(void)
 	//blue.println(" :compY");
 
 
+    int kTime = millis();
 	Filter.assignSensorValues(
 		accX, accY, accZ,	// acceleration
 		gyroX, gyroY, gyroZ,	// gyroscope
 		 compX, compY, compZ,	// Compass
-		 0, 0, 0,
+		 0, 0, barZ,
          nIteration % 10 == 0);
+
+    // slog("k-w", (int)millis() - kTime);
+    kTime = millis();
 
 	Filter.predictAndUpdate();
 
@@ -214,10 +224,12 @@ int Quad::executeCycle(void)
 
 	//retrieve values from Kalman Filter
 	quadState = Filter.getQuadState();
+    //slog("k-W", (int)millis() - kTime);
 
     slog("stXang", quadState.xAngle);
     slog("stYang", quadState.yAngle);
     slog("stZang", quadState.zAngle);
+    slog("stzpos", quadState.zPosition);
 
 	// blue.println("Angles:");
 	// Serial1.print(quadState.xAngle);
@@ -258,10 +270,15 @@ int Quad::executeCycle(void)
 
 	//With the corrected setpoint
     xAngCorrect	= xAngle.PID(quadState.xAngle, quadState.xRotation);
-    slog("xACor", xAngCorrect);
-    slog("yACor", yAngCorrect);
-//	yAngCorrect = yAngle.PID(quadState.yAngle, quadState.yRotation);
-//	zAngCorrect = zAngle.PID(quadState.zAngle, quadState.zRotation);
+  	yAngCorrect = yAngle.PID(quadState.yAngle, quadState.yRotation);
+  	zAngCorrect = zAngle.PID(quadState.zAngle, quadState.zRotation);
+
+    slog("xC", xAngCorrect);
+    slog("yC", yAngCorrect);
+    slog("zC", zAngCorrect);
+    // only adjust y for now
+    yAngCorrect = 0;
+    zAngCorrect = 0;
 
 	//adjustMotors();
 	adjustMotors(quadState.zAngle);
@@ -280,6 +297,7 @@ int Quad::getSensorVals(void)
 {
 //	blue.println("getSensorVals");
 
+    int sTime = millis();
 	//Accelerometer
 	accX=	acc.readRawX();
 	accY=	acc.readRawY();
@@ -292,7 +310,11 @@ int Quad::getSensorVals(void)
 	compX=	comp.getRawX();
 	compY=	comp.getRawY();
 	compZ=	comp.getRawZ();
- //   slog("compx",compX);
+    if(nIteration % 10 == 0)
+        barZ = bar.readRawAltitude();
+    // slog("barZ", barZ);
+
+    // slog("s-W", (int)millis() - sTime);
 
 }
 
@@ -359,62 +381,13 @@ int Quad::getSensorVals(void)
 //
 //}
 
-int Quad::adjustMotors(void)
-{
-	blue.println("adjustMotors");
-	// adjust for pitch and roll
-	m1speed += xAngCorrect;
-	m2speed += xAngCorrect;
-    m3speed -= xAngCorrect;
-	m4speed -= xAngCorrect;
-
-	//m1speed += yAngCorrect;
-	//m2speed += yAngCorrect;
-    //m3speed -= yAngCorrect;
-	//m4speed -= yAngCorrect;
-
-	////adjust for altitude
-	//m1speed += zPosCorrect;
-	//m2speed += zPosCorrect;
-	//m3speed += zPosCorrect;
-	//m4speed += zPosCorrect;
-
-	//// adjust for yaw
-	//m1speed -= zAngCorrect;
-	//m3speed -= zAngCorrect;
-
-	//m2speed += zAngCorrect;
-	//m4speed += zAngCorrect;
-
-	if(m1speed	>	MAX_MOTOR_SPEED)
-		m1speed	=	MAX_MOTOR_SPEED;
-	else if(m1speed < 0)
-		m1speed = 0;
-	//if(m2speed	>	MAX_MOTOR_SPEED)
-	//	m2speed	=	MAX_MOTOR_SPEED;
-	//else if(m2speed < 0)
-	//	m2speed = 0;
-	if(m3speed	>	MAX_MOTOR_SPEED)
-		m3speed	=	MAX_MOTOR_SPEED;
-	else if(m3speed < 0)
-		m3speed = 0;
-	//if(m4speed	>	MAX_MOTOR_SPEED)
-	//	m4speed	=	MAX_MOTOR_SPEED;
-	//else if(m4speed < 0)
-	//	m4speed = 0;
-
-	motorSet(MOTOR1, m1speed);
-//	motorSet(MOTOR2, m2speed);
-	motorSet(MOTOR3, m3speed);
-//	motorSet(MOTOR4, m4speed);
-}
 
 // motor correction that takes z angle into account
 int Quad::adjustMotors(int zAngle)
 {
-    
-    zAngle += (45); // for matching this coordinate system
-    slog("adjm:", (float)zAngle);
+    // vetted: good! as long as zAngle = 0 corresponds to N || usb
+    zAngle = zAngle - 45; // for matching this coordinate system
+    // slog("adjm:", (float)zAngle);
 	/*
      *            +y (for 0° Z angle)
      *
@@ -435,7 +408,7 @@ int Quad::adjustMotors(int zAngle)
     zFactor = 1; // same units
     zPosFactor = 1.0;
 
-	blue.println("adjustMotors with angle");
+	//blue.println("adjustMotors with angle");
 
     float zcos = cos(zAngle *3.14159 / 180);
     float zsin = sin(zAngle *3.14159 / 180);
@@ -477,6 +450,14 @@ int Quad::adjustMotors(int zAngle)
     slog("m3",m3speed);
     slog("m4",m4speed);
 
+    m2speed = -m2speed;
+    m4speed = -m4speed;
+
+    m1speed += PWHOVER;
+    m2speed += PWHOVER;
+    m3speed += PWHOVER;
+    m4speed += PWHOVER;
+
 	if(m1speed	>	MAX_MOTOR_SPEED)
 		m1speed	=	MAX_MOTOR_SPEED;
 	else if(m1speed < 0)
@@ -494,10 +475,17 @@ int Quad::adjustMotors(int zAngle)
 	else if(m4speed < 0)
 		m4speed = 0;
 
-	motorSet(MOTOR1, m1speed);
-  	motorSet(MOTOR2, m2speed);
-	motorSet(MOTOR3, m3speed);
-  	motorSet(MOTOR4, m4speed);
+    slog("M1", m1speed);
+    slog("M2", m2speed);
+    slog("M3", m3speed);
+    slog("M4", m4speed);
+
+    if(nIteration % 3 == 0) {
+        motorSet(MOTOR1, m1speed);
+        motorSet(MOTOR2, m2speed);
+        motorSet(MOTOR3, m3speed);
+        motorSet(MOTOR4, m4speed);
+    }
 }
 
 int Quad::waitFor()
@@ -511,7 +499,7 @@ int Quad::waitFor()
 	// blue.println("");
 
 	if(waitTime < MAX_LOOP_TIME)
-		delay(waitTime);
+		delay(MAX_LOOP_TIME - waitTime);
 	loopTime=millis();
 }
 
