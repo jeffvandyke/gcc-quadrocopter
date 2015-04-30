@@ -306,6 +306,7 @@ void KalmanFilter::assignSensorValues(
     // slog("cOz", - static_cast<float>(atan2(-Cx, Cy)) * 180 / 3.14159);
 
     z_Oz = fmod(z_Oz + 180 , 360) - 180;
+	z_Oz = -45;
     // slog("z_Oz", z_Oz);
 
 // s/log("Hx_", H_ax_xa );

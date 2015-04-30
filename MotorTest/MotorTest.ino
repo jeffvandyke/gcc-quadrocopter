@@ -38,7 +38,7 @@ void loop()
 	motorSet(MOTOR2, 30);
 	delay(3000);
 	motorSet(MOTOR2, 0);
-	motorSet(MOTOR3, 30);
+	motorSet(MOTOR3, 50);
 	delay(3000);
 	motorSet(MOTOR3, 0);
 	motorSet(MOTOR4, 30);
