@@ -8,9 +8,9 @@
 #define OUTPIN 6
 #define TRIGPIN 53
 #define PWMIN 100
-#define PWHOVER 100
+#define PWHOVER 150
 
-#define MAX_LOOP_TIME 30
+#define MAX_LOOP_TIME 25
 
 #define MAX_MOTOR_SPEED 228
 #define MAX_ANGULAR_DEFLECTION 20
@@ -35,9 +35,9 @@
 #define Z_POS_KI 0
 #define Z_POS_KD 0
 
-#define X_ANG_KP 0.3
-#define X_ANG_KI 0.0001 // prev was 0.001, too high
-#define X_ANG_KD 0.0
+#define X_ANG_KP 0.42 // prev was 0.5
+#define X_ANG_KI 0.0 // 30 // prev was 0.001, too high
+#define X_ANG_KD 0.13
 
 #define Y_ANG_KP 5.0
 #define Y_ANG_KI 0
@@ -64,24 +64,24 @@ Quad::Quad(void)
 
 #if 1
 void slog(String var, float val) {
-    Serial1.print(var); Serial.print(":");
-    Serial1.print(val); Serial.print("+");
+    //Serial.print(var); Serial.print(":");
+    Serial.print(val); Serial.print(",");
 }
 
 void slog(String var, int val) {
-    Serial1.print(var); Serial.print(":");
-    Serial1.print(val); Serial.print("+");
+    //Serial.print(var); Serial.print(":");
+    Serial.print(val); Serial.print(",");
 }
 
 void slog(float val) {
-    Serial1.print(val); Serial.print("+");
+    Serial.print(val); Serial.print(",");
 }
 
 void slog(int val) {
-    Serial1.print(val); Serial.print("\t");
+    Serial.print(val); Serial.print(",");
 }
 
-void slogr() { Serial1.print("\n"); }
+void slogr() { Serial.print("\n"); }
 #else
 void slog(String var, float val) {
     Serial1.print(var); Serial1.print(",");
@@ -138,6 +138,9 @@ int Quad::motorSet(int motor, int speed)
 	return 0;
 }
 
+float prevXangle = 0;
+float prevYangle = 0;
+
 int Quad::setup(void)
 {
 	i2c.initialize();
@@ -157,8 +160,7 @@ int Quad::setup(void)
         gyAvg += static_cast<float>(gyro.readRawY());
         gzAvg += static_cast<float>(gyro.readRawZ());
     }
-    barAvg /= 30; gxAvg /= 30; gyAvg /= 30; gzAvg /= 30; 
-
+    barAvg /= 30; gxAvg /= 30; gyAvg /= 30; gzAvg /= 30;
 	//blue.println("setup");
 
 	//gpssetup
@@ -177,6 +179,7 @@ int Quad::setup(void)
         0,0,barAvg);
 
 	loopTime=millis();
+	quadState = Filter.getQuadState();
 	return 0;
 }
 
@@ -269,9 +272,13 @@ int Quad::executeCycle(void)
 	//yAngle.setSetPoint(yPosCorrect);
 
 	//With the corrected setpoint
-    xAngCorrect	= xAngle.PID(quadState.xAngle, quadState.xRotation);
-  	//yAngCorrect = yAngle.PID(quadState.yAngle, quadState.yRotation);
-  	//zAngCorrect = zAngle.PID(quadState.zAngle, quadState.zRotation);
+
+
+
+
+    xAngCorrect	= xAngle.PID(quadState.xAngle);
+  //yAngCorrect = yAngle.PID(quadState.yAngle);
+  //zAngCorrect = zAngle.PID(quadState.zAngle);
 
     slog("xC", xAngCorrect);
     //slog("yC", yAngCorrect);
@@ -288,7 +295,7 @@ int Quad::executeCycle(void)
 	//wait until a constant time has passed.
 	waitFor();
 
-    //slogr();
+    slogr();
 
 	return 0;
 }
@@ -459,12 +466,6 @@ int Quad::adjustMotors(int zAngle)
     m3speed += PWHOVER;
     m4speed += PWHOVER;
 
-	// more hover
-	m1speed += 40;
-	m2speed += 40;
-	m3speed += 40;
-	m4speed += 40;
-
 	if(m1speed	>	MAX_MOTOR_SPEED)
 		m1speed	=	MAX_MOTOR_SPEED;
 	else if(m1speed < 0)
@@ -506,7 +507,7 @@ int Quad::waitFor()
 	//blue.println("waitFor");
 
 	waitTime = millis()-loopTime;
-    //slog("wT", waitTime);
+    slog("wT", waitTime);
 	// Serial1.print(waitTime);
 	// blue.println("");
 

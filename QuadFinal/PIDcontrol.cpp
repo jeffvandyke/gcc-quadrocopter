@@ -1,4 +1,5 @@
 #include "PIDcontrol.h"
+#define P_DELTAT 0.025
 using namespace std;
 
 PIDController::PIDController()
@@ -9,6 +10,7 @@ PIDController::PIDController()
 	kD=0;
 	kI=0;
 	previousMillis=millis();
+    deltaTime = P_DELTAT;
 }
 
 //starts the setpoint at bias
@@ -43,13 +45,13 @@ float PIDController::PID(float currentValue)
 	//int pTerm = kP * error;
 
 	//deltaTime
-	deltaTime=millis()-previousMillis;
+	// deltaTime=millis()-previousMillis;
 	previousMillis=millis();
 
 	// integral term
 	integralSumTerm += error * deltaTime;
 	// derivative term
-	dTerm = kD * (currentValue - lastValue) / deltaTime;
+	dTerm = dTerm * 0.0 + 1.0 * (kD * (currentValue - lastValue) / deltaTime);
 
 	// update internal data
 	lastValue = currentValue;
@@ -74,8 +76,8 @@ float PIDController::PID(float currentValue, float dTerm)
 	// integral term
 	integralSumTerm += error * deltaTime;
 
-	Serial1.print(integralSumTerm);
-	Serial1.println();
+	// Serial1.print(integralSumTerm);
+	// Serial1.println();
 
 	// update internal data
 	lastValue = currentValue;

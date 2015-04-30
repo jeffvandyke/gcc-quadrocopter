@@ -5,10 +5,10 @@
 // 1000 floats multiplications
 // 400 add multiplications
 
-const float dT = 0.030;
+const float dT = 0.025;
 
 const float aProcessNoise = 0.7;
-const float gProcessNoise = 0.5;
+const float gProcessNoise = 0.015;
 
 inline float i10m(float a, float b) {
     return ((a)*(b));
@@ -165,8 +165,8 @@ void KalmanFilter::initialize(
     Q_Xaa = Q_Yaa = Q_Zaa = i10m(dT_2 , gProcessNoise);
     Q_Xar = Q_Yar = Q_Zar = i10m(dT , gProcessNoise);
     Q_Xrr = Q_Yrr = Q_Zrr = i10m(1 , gProcessNoise);
-    slog("gpn", gProcessNoise);
-    slog("Q_Xrr", Q_Xrr);
+    // slog("gpn", gProcessNoise);
+    // slog("Q_Xrr", Q_Xrr);
 
 
     // Sensor error covariance - Diagonal Matrix
@@ -247,14 +247,14 @@ void KalmanFilter::assignSensorValues(
 
     float naiveH_x_z = -sy * cx;
     float naiveH_y_z =  sx * cy;
-    H_gx_Zr = H_ax_za = naiveH_x_z * H_gx_Xr + naiveH_y_z * H_gx_Yr;
-    H_gy_Zr = H_ay_za = naiveH_y_z * H_gy_Yr + naiveH_x_z * H_gy_Xr;
+    H_gx_Zr = H_ax_za = naiveH_x_z * cz + naiveH_y_z * sz;
+    H_gy_Zr = H_ay_za = naiveH_y_z * cz + naiveH_x_z *-sz;
 
     float naiveH_z_x = i10m( sy , cz );
     float naiveH_z_y = i10m(-sx , cz );
 
-    H_gz_Xr = H_az_xa = naiveH_z_x * H_gy_Yr + naiveH_z_y * H_gy_Xr;
-    H_gz_Yr = H_az_ya = naiveH_z_y * H_gx_Xr + naiveH_z_x * H_gx_Yr;
+    H_gz_Xr = H_az_xa = naiveH_z_x * cz + naiveH_z_y * sz;
+    H_gz_Yr = H_az_ya = naiveH_z_y * cz + naiveH_z_x *-sz;
 #endif
 
     usingGPS = useGPS;
@@ -926,6 +926,8 @@ rlog(K_Zr_gz);
 
 #endif
 
+    // slog("K_Xr_gx",K_Xr_gx);
+    // slog("K_Xr_gy",K_Xr_gy);
 
 } // END OF FILTER =============================================================
 

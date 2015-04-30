@@ -3,7 +3,7 @@
 
 Barometer::Barometer(void)
 {
-	
+
 }
 
 
