@@ -35,13 +35,13 @@
 #define Z_POS_KI 0
 #define Z_POS_KD 0
 
-#define X_ANG_KP 0.42 // prev was 0.5
-#define X_ANG_KI 0.0 // 30 // prev was 0.001, too high
-#define X_ANG_KD 0.13
+#define X_ANG_KP 0.6 // prev was 0.5
+#define X_ANG_KI 0.00003 // 30 // prev was 0.001, too high
+#define X_ANG_KD 0.2
 
-#define Y_ANG_KP 5.0
+#define Y_ANG_KP 0.42
 #define Y_ANG_KI 0
-#define Y_ANG_KD 3.0
+#define Y_ANG_KD 0.13
 
 #define Z_ANG_KP 0
 #define Z_ANG_KI 0
@@ -277,10 +277,11 @@ int Quad::executeCycle(void)
 
 
     xAngCorrect	= xAngle.PID(quadState.xAngle);
-  //yAngCorrect = yAngle.PID(quadState.yAngle);
-  //zAngCorrect = zAngle.PID(quadState.zAngle);
+	yAngCorrect = yAngle.PID(quadState.yAngle);
+	zAngCorrect = zAngle.PID(quadState.zAngle);
 
     slog("xC", xAngCorrect);
+	writeFloat(1,0.003f);
     //slog("yC", yAngCorrect);
     //slog("zC", zAngCorrect);
 	//slogr();
@@ -298,6 +299,13 @@ int Quad::executeCycle(void)
     slogr();
 
 	return 0;
+}
+
+void Quad::writeFloat(byte id, float f)
+{
+	byte * b = (byte *) &f;
+	Serial1.write(id);
+	Serial1.write(b,4);
 }
 
 //updates all of the sensor values stored in the Quad object

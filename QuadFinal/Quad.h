@@ -45,7 +45,9 @@ public:
 	int findSensorBias(void);
 	int adjustMotors(void);
 	int adjustMotors(int);
+
 	void readSerialCommand(void);
+	void writeFloat(byte, float);
 
 	int waitFor();
 

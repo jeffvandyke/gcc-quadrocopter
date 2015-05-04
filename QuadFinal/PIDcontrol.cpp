@@ -41,6 +41,7 @@ float PIDController::PID(float currentValue)
 	//Same as last year's code
 	// current error
 	error = setPoint - currentValue;
+
 	// proportional term
 	//int pTerm = kP * error;
 
@@ -49,6 +50,8 @@ float PIDController::PID(float currentValue)
 	previousMillis=millis();
 
 	// integral term
+	//if((integralSumTerm < 0 && error > 0 )|| (integralSumTerm > 0 && error < 0))
+	//integralSumTerm=0;
 	integralSumTerm += error * deltaTime;
 	// derivative term
 	dTerm = dTerm * 0.0 + 1.0 * (kD * (currentValue - lastValue) / deltaTime);
