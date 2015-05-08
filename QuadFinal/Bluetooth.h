@@ -31,6 +31,9 @@ public:
 
    void calibrateLoop();
 
+   void writeFloat(float f);
+   void writeByte(byte b);
+
 private:
    int dataIn;
 };

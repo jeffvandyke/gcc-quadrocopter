@@ -77,6 +77,7 @@ public:
 	int loopTime;
 
 	//void readSerialCommand(void);
+	void writeState(void);
 };
 
 

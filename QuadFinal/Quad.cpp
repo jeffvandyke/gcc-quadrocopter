@@ -602,5 +602,19 @@ void Quad::readSerialCommand(void) {
 	//}
 }
 
+void Quad::writeState()
+{
+	blue.writeByte(1);
+	blue.writeFloat(quadState.xPosition);
+	blue.writeFloat(quadState.yPosition);
+	blue.writeFloat(quadState.zPosition);
+	blue.writeFloat(quadState.xAngle);
+	blue.writeFloat(quadState.yAngle);
+	blue.writeFloat(quadState.zAngle);
+}
+
+
+
+
 
 

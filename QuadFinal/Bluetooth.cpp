@@ -51,5 +51,18 @@ void Bluetooth::calibrateLoop()
    }
 }
 
+void Bluetooth::writeByte(byte b)
+{
+	Serial1.write(&b, 1);
+	Serial.write(&b, 1);
+}
+
+
+void Bluetooth::writeFloat(float f)
+{
+	byte * b = (byte *)&f;
+	Serial1.write(b, 4);
+	Serial.write(b, 4);
+}
 
 
