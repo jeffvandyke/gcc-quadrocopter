@@ -29,9 +29,6 @@
       /// </summary>
       private void InitializeComponent()
       {
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.connectionButton = new System.Windows.Forms.Button();
             this.disconnectButton = new System.Windows.Forms.Button();
             this.connectionStatusLabel = new System.Windows.Forms.Label();
@@ -51,19 +48,8 @@
             this.currentPathLabel = new System.Windows.Forms.Label();
             this.filenameLabel = new System.Windows.Forms.Label();
             this.closeFileButton = new System.Windows.Forms.Button();
-            this.gpsDisplay = new System.Windows.Forms.Label();
-            this.gpsReadout = new System.Windows.Forms.Label();
             this.SensorButton = new System.Windows.Forms.Button();
-            this.gyroReadout = new System.Windows.Forms.Label();
-            this.gyroDisplay = new System.Windows.Forms.Label();
-            this.accelReadout = new System.Windows.Forms.Label();
-            this.accelDisplay = new System.Windows.Forms.Label();
-            this.chart1 = new System.Windows.Forms.DataVisualization.Charting.Chart();
-            this.compReadout = new System.Windows.Forms.Label();
-            this.compDisplay = new System.Windows.Forms.Label();
-            this.barReadout = new System.Windows.Forms.Label();
-            this.barDisplay = new System.Windows.Forms.Label();
-            ((System.ComponentModel.ISupportInitialize)(this.chart1)).BeginInit();
+            this.panel1 = new System.Windows.Forms.Panel();
             this.SuspendLayout();
             // 
             // connectionButton
@@ -247,26 +233,9 @@
             this.closeFileButton.UseVisualStyleBackColor = true;
             this.closeFileButton.Click += new System.EventHandler(this.closeFileButton_Click);
             // 
-            // gpsDisplay
-            // 
-            this.gpsDisplay.AutoSize = true;
-            this.gpsDisplay.Location = new System.Drawing.Point(56, 308);
-            this.gpsDisplay.Name = "gpsDisplay";
-            this.gpsDisplay.Size = new System.Drawing.Size(75, 13);
-            this.gpsDisplay.TabIndex = 20;
-            this.gpsDisplay.Text = "GPS Reading:";
-            // 
-            // gpsReadout
-            // 
-            this.gpsReadout.AutoSize = true;
-            this.gpsReadout.Location = new System.Drawing.Point(131, 308);
-            this.gpsReadout.Name = "gpsReadout";
-            this.gpsReadout.Size = new System.Drawing.Size(0, 13);
-            this.gpsReadout.TabIndex = 22;
-            // 
             // SensorButton
             // 
-            this.SensorButton.Location = new System.Drawing.Point(444, 460);
+            this.SensorButton.Location = new System.Drawing.Point(444, 303);
             this.SensorButton.Name = "SensorButton";
             this.SensorButton.Size = new System.Drawing.Size(131, 23);
             this.SensorButton.TabIndex = 23;
@@ -274,109 +243,20 @@
             this.SensorButton.UseVisualStyleBackColor = true;
             this.SensorButton.Click += new System.EventHandler(this.SensorButton_Click);
             // 
-            // gyroReadout
+            // panel1
             // 
-            this.gyroReadout.AutoSize = true;
-            this.gyroReadout.Location = new System.Drawing.Point(131, 337);
-            this.gyroReadout.Name = "gyroReadout";
-            this.gyroReadout.Size = new System.Drawing.Size(0, 13);
-            this.gyroReadout.TabIndex = 25;
-            // 
-            // gyroDisplay
-            // 
-            this.gyroDisplay.AutoSize = true;
-            this.gyroDisplay.Location = new System.Drawing.Point(27, 337);
-            this.gyroDisplay.Name = "gyroDisplay";
-            this.gyroDisplay.Size = new System.Drawing.Size(104, 13);
-            this.gyroDisplay.TabIndex = 24;
-            this.gyroDisplay.Text = "Gyroscope Reading:";
-            // 
-            // accelReadout
-            // 
-            this.accelReadout.AutoSize = true;
-            this.accelReadout.Location = new System.Drawing.Point(131, 366);
-            this.accelReadout.Name = "accelReadout";
-            this.accelReadout.Size = new System.Drawing.Size(0, 13);
-            this.accelReadout.TabIndex = 27;
-            // 
-            // accelDisplay
-            // 
-            this.accelDisplay.AutoSize = true;
-            this.accelDisplay.Location = new System.Drawing.Point(10, 366);
-            this.accelDisplay.Name = "accelDisplay";
-            this.accelDisplay.Size = new System.Drawing.Size(121, 13);
-            this.accelDisplay.TabIndex = 26;
-            this.accelDisplay.Text = "Accelerometer Reading:";
-            // 
-            // chart1
-            // 
-            chartArea1.Name = "ChartArea1";
-            this.chart1.ChartAreas.Add(chartArea1);
-            legend1.Name = "Legend1";
-            this.chart1.Legends.Add(legend1);
-            this.chart1.Location = new System.Drawing.Point(611, 366);
-            this.chart1.Name = "chart1";
-            series1.ChartArea = "ChartArea1";
-            series1.Legend = "Legend1";
-            series1.Name = "Series1";
-            this.chart1.Series.Add(series1);
-            this.chart1.Size = new System.Drawing.Size(509, 276);
-            this.chart1.TabIndex = 28;
-            this.chart1.Text = "chart1";
-            // 
-            // compReadout
-            // 
-            this.compReadout.AutoSize = true;
-            this.compReadout.Location = new System.Drawing.Point(131, 393);
-            this.compReadout.Name = "compReadout";
-            this.compReadout.Size = new System.Drawing.Size(0, 13);
-            this.compReadout.TabIndex = 30;
-            this.compReadout.Click += new System.EventHandler(this.label1_Click);
-            // 
-            // compDisplay
-            // 
-            this.compDisplay.AutoSize = true;
-            this.compDisplay.Location = new System.Drawing.Point(35, 393);
-            this.compDisplay.Name = "compDisplay";
-            this.compDisplay.Size = new System.Drawing.Size(96, 13);
-            this.compDisplay.TabIndex = 29;
-            this.compDisplay.Text = "Compass Reading:";
-            this.compDisplay.Click += new System.EventHandler(this.label2_Click);
-            // 
-            // barReadout
-            // 
-            this.barReadout.AutoSize = true;
-            this.barReadout.Location = new System.Drawing.Point(131, 420);
-            this.barReadout.Name = "barReadout";
-            this.barReadout.Size = new System.Drawing.Size(0, 13);
-            this.barReadout.TabIndex = 32;
-            // 
-            // barDisplay
-            // 
-            this.barDisplay.AutoSize = true;
-            this.barDisplay.Location = new System.Drawing.Point(30, 420);
-            this.barDisplay.Name = "barDisplay";
-            this.barDisplay.Size = new System.Drawing.Size(101, 13);
-            this.barDisplay.TabIndex = 31;
-            this.barDisplay.Text = "Barometer Reading:";
+            this.panel1.Location = new System.Drawing.Point(59, 337);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(488, 164);
+            this.panel1.TabIndex = 25;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1234, 661);
-            this.Controls.Add(this.barReadout);
-            this.Controls.Add(this.barDisplay);
-            this.Controls.Add(this.compReadout);
-            this.Controls.Add(this.compDisplay);
-            this.Controls.Add(this.chart1);
-            this.Controls.Add(this.accelReadout);
-            this.Controls.Add(this.accelDisplay);
-            this.Controls.Add(this.gyroReadout);
-            this.Controls.Add(this.gyroDisplay);
+            this.Controls.Add(this.panel1);
             this.Controls.Add(this.SensorButton);
-            this.Controls.Add(this.gpsReadout);
-            this.Controls.Add(this.gpsDisplay);
             this.Controls.Add(this.closeFileButton);
             this.Controls.Add(this.filenameLabel);
             this.Controls.Add(this.currentPathLabel);
@@ -401,7 +281,6 @@
             this.Text = "Quadrotor Control";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             this.Paint += new System.Windows.Forms.PaintEventHandler(this.Form1_Paint);
-            ((System.ComponentModel.ISupportInitialize)(this.chart1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -428,18 +307,8 @@
       private System.Windows.Forms.Label currentPathLabel;
       private System.Windows.Forms.Label filenameLabel;
       private System.Windows.Forms.Button closeFileButton;
-      private System.Windows.Forms.Label gpsDisplay;
-      private System.Windows.Forms.Label gpsReadout;
       private System.Windows.Forms.Button SensorButton;
-      private System.Windows.Forms.Label gyroReadout;
-      private System.Windows.Forms.Label gyroDisplay;
-      private System.Windows.Forms.Label accelReadout;
-      private System.Windows.Forms.Label accelDisplay;
-      private System.Windows.Forms.DataVisualization.Charting.Chart chart1;
-      private System.Windows.Forms.Label compReadout;
-      private System.Windows.Forms.Label compDisplay;
-      private System.Windows.Forms.Label barReadout;
-      private System.Windows.Forms.Label barDisplay;
+      private System.Windows.Forms.Panel panel1;
 
    }
 }

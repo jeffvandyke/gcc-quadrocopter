@@ -15,13 +15,16 @@ namespace Quadrotor_Control
         private System.Windows.Forms.Label Output;
 
         int currentData;
-        public SeriesCollection dataCollection;
+        public List<Series> dataCollection;
+        int average;
 
         public Variable(string name, char type, System.Windows.Forms.Label readout)
         {
+            dataCollection = new List<Series>();
             this.name = name;
             Output = readout;
             this.type = type;
+            average = 0;
         }
 
         public void UpdateStateVariables(string newData)
@@ -33,7 +36,7 @@ namespace Quadrotor_Control
 
         public void UpdateDisplay(string newData)
         {
-            Output.Text = newData;
+            Output.Text = name+": "+newData;
 
         }
 

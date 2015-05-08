@@ -14,16 +14,15 @@ namespace Quadrotor_Control
 {
    public partial class Form1 : Form
    {
-      private SerialPort bluetooth;
+      private Bluetooth bluetooth;
 
-      private List<Sensor> sensors;
-      private Sensor SpotlightSensor;
-
+      private List<Label> labels;
 
       private Pen connectionStatusPen;
       private Rectangle connectionStatusRectangle;
 
       private bool sensorRecording;
+      private bool dataReceived = false;
 
       // need to keep a flag to know when to ignore Left/Right presses because editing text
       private bool editingText;
@@ -48,6 +47,10 @@ namespace Quadrotor_Control
          this.streamWriter = null;
          this.latestFileName = "";
 
+         dataReceived = false;
+
+         labels = new List<Label>();
+
          InitializeComponent();
 
          this.AcceptButton = sendButton;
@@ -71,170 +74,106 @@ namespace Quadrotor_Control
          }
 
          // setup bluetooth connection
-         bluetooth = new SerialPort("COM", 115200, Parity.None, 8, StopBits.One);
+         bluetooth = new Bluetooth();
+         createNewLabel();
+         createNewLabel();
+         createNewLabel();
+         createNewLabel();
+         labels[0].Text = "no data";
 
-         this.InitializeSensors();
-         this.InitializeGraph();
          
          this.DrawConnectionStatus();
       }
 
-      public void InitializeSensors()
+      public Label createNewLabel()
       {
-          sensors = new List<Sensor>();
+          Label l = new Label();
+          l.Name = "varLabel" + labels.Count;
+          l.AutoSize = true;
+          if (labels.Count>0)
+              l.Top = labels[labels.Count - 1].Bottom;
 
-          sensors.Add(new Sensor('G', gpsReadout));
-          sensors.Add(new Sensor('Y', gyroReadout));
-          sensors.Add(new Sensor('A', accelReadout));
-          sensors.Add(new Sensor('C', compReadout));
-          sensors.Add(new Sensor('B', barReadout));
+          l.Font = new Font(l.Font.FontFamily, 16.0f);
 
-          SpotlightSensor = sensors[1];
+          panel1.Controls.Add(l);
+
+          labels.Add(l);
+
+          return l;
       }
-
-       public void InitializeGraph()
-      {
-          chart1.Series[0].Name = "X Dimension";
-          chart1.Series[0].Points.Clear();
-          chart1.Series[0].ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
-
-          chart1.Series.Add("Y Dimension");
-          chart1.Series[1].Points.Clear();
-          chart1.Series[1].ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
-
-          chart1.Series.Add("Z Dimension");
-          chart1.Series[2].Points.Clear();
-          chart1.Series[2].ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
-
-          //chart1.Hide();
-      }
-
-       public void PrintSensors()
-       {
-
-           foreach (Sensor s in sensors)
-           {
-           }
-
-           foreach(IEnumerator<string> en in ls)
-           {
-               
-           }
-       }
 
       private void DataReceivedHandler(object sender, SerialDataReceivedEventArgs e)
       {
-          SerialPort sp = (SerialPort)sender;
+          Bluetooth sp = (Bluetooth)sender;
 
           //int[] data;
           try
           {
+              /*char first = (char)sp.ReadByte();
+              if (first == '$')
+              {
+                  int size = sp.ReadByte();
+                  int command = sp.ReadByte();
+
+                  return;
+              }*/
 
               //string message = sp.ReadLine();
-              //DataReceived(message);
-
-              ParseReceivedData(sp);
+              int id = sp.ReadByte();
+              string data = sp.ReadFloat().ToString();
+             // labels[0].Text = data;
+              DataReceived(id, data);
+              //if (id != 1) DataReceived(0, " "+id);
+             // UpdateLabel(id, data);
           }
           catch (Exception)
           {
  
-          }         
-      }
-
-       private void ParseReceivedData(SerialPort serial)
-      {
-          serial.DataBits = 16;
-          
-           int command = serial.ReadByte();
-           
-           foreach (Sensor s in sensors)
-           {
-               List<int> argList = new List<int>(3);
-               for (int i=0; i<s.axisNum; i++) argList.Add(serial.ReadByte());
-               s.UpdateStateVariables(argList);
-           }
+          }
       }
 
       // This delegate enables asynchronous calls for setting 
       // the text property on a TextBox control. 
       delegate void SetTextCallback(string text);
 
-      private void DataReceived(string message)
+      // This delegate enables asynchronous calls for setting 
+      // the text property on labels. 
+      delegate void SetLabelCallback(int id, string text);
+
+      private void DataReceived(int id, string data)
       {
+
          // InvokeRequired required compares the thread ID of the 
          // calling thread to the thread ID of the creating thread. 
          // If these threads are different, it returns true. 
-         if (this.receivedDataTextBox.InvokeRequired)
-         {
-            SetTextCallback d = new SetTextCallback(SetReceivedText);
-            this.Invoke(d, new object[] { message });
-         }
-
-         else
-         {
-            this.SetReceivedText(message);
-
-         }
-      }
-
-       //the first character specifies the specific command - S for updating sensor data
-      private void ParseCommand(string command)
-      {
-          switch (command[0])
+          if (id > 0)
           {
-              case 'S':
-                  ParseSensorData(command.Substring(1));
-                  break;
-              case 'I':
-                  InitializeNewVariable(command.Substring(1));
-                  break;
-              case 'V':
-                  break;
-              case 'E':
-                  SendDataAndLog("$E"+command.Substring(1));
-                  break;
-              default: break;
-          }
-      }
-
-       //the first character specifies the type
-      private void ParseSensorData(string data)
-      {
-          foreach (Sensor s in sensors)
-          {
-              if (s.type == data[0])
+              if (this.panel1.InvokeRequired)
               {
-                  s.UpdateStateVariables(data.Substring(1));
-                  if (s.type == SpotlightSensor.type)
-                  {
-                      for (int i = 0; i < 3; i++ )
-                      {
-                          chart1.Series[i].Points.AddY(s.Data[i]);
-                      }
-
-                      int count = chart1.Series[0].Points.Count;
-                      if (count > this.pointsDisplayedPerChart)
-                          chart1.ChartAreas[0].AxisX.Minimum = count - this.pointsDisplayedPerChart;
-                  }
+                  SetLabelCallback d = new SetLabelCallback(UpdateLabel);
+                  this.Invoke(d, new object[] { id, data });
               }
+              else UpdateLabel(id, data);
           }
+          else
+          {
+              if (this.receivedDataTextBox.InvokeRequired)
+              {
+                  SetTextCallback d = new SetTextCallback(SetReceivedText);
+                  this.Invoke(d, new object[] { data });
+              }
+              else this.SetReceivedText(data);
+         }
       }
 
-       private void InitializeNewVariable(string text)
-      {
-          variables.add(new Variable(text, text[0], new Label()));
-      }
 
       private void SetReceivedText(string text)
       {
           if (text.Length == 0) return;
 
-          if (text[0] == '$')
-              this.ParseCommand(text.Substring(1));
-
 
          this.receivedDataTextBox.AppendText(text + Environment.NewLine);
-         if (writeToFile) streamWriter.Write(text); // add text to log file
+         //if (sensorRecording && pathSelected) streamWriter.Write(text+"\n"); // add text to log file
       }
 
       private void connectionButton_Click(object sender, EventArgs e)
@@ -271,7 +210,7 @@ namespace Quadrotor_Control
 
       private void Disconnect()
       {
-         if (writeToFile) streamWriter.Close(); // close the file if it was opened
+         //if (writeToFile && sensorRecording) streamWriter.Close(); // close the file if it was opened
          try
          {
             // close connection
@@ -405,6 +344,7 @@ namespace Quadrotor_Control
       private void Form1_FormClosing(object sender, FormClosingEventArgs e)
       {
          this.Disconnect();
+
       }
 
       private void startNewFileButton_Click(object sender, EventArgs e)
@@ -419,6 +359,7 @@ namespace Quadrotor_Control
             streamWriter = new StreamWriter(filename);
             filenameLabel.Text = filename;
             latestFileName = filename;
+            streamWriter.Write("a.x,a.y,a.z,g.x,g.y,g.z,c.x,c.y,G.x,G.y,G.z,G.b\n");
          }
          else
          {
@@ -442,11 +383,12 @@ namespace Quadrotor_Control
       {
          if (streamWriter != null) streamWriter.Close();
          filenameLabel.Text = "";
+         sensorRecording = false;
       }
 
       private void SensorButton_Click(object sender, EventArgs e)
       {
-          if (sensorRecording)
+          if (sensorRecording && writeToFile)
           {
               SensorButton.Text = "Start Sensor Recording";
               sensorRecording = false;
@@ -455,10 +397,6 @@ namespace Quadrotor_Control
           {
               SensorButton.Text = "Stop Sensor Recording";
               sensorRecording = true;
-          }
-          foreach (Sensor s in sensors)
-          {
-              s.ToggleRecording(sensorRecording);
           }
       }
 
@@ -470,6 +408,15 @@ namespace Quadrotor_Control
       private void label1_Click(object sender, EventArgs e)
       {
 
+      }
+
+      private void UpdateLabel(int id, string data)
+      {
+          while (id > labels.Count)
+          {
+             createNewLabel();
+          }
+          labels[id - 1].Text = data;
       }
 
       //private void matlabButton_Click(object sender, EventArgs e)

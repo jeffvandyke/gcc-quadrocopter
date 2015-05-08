@@ -1,9 +1,0 @@
-C:\Users\ousleyjd1\Documents\GitHub\gcc-quadrocopter\gcc-quadrocopter\CSV Creator\CSV Creator\CSV Creator\bin\Debug\CSV Creator.exe.config
-C:\Users\ousleyjd1\Documents\GitHub\gcc-quadrocopter\gcc-quadrocopter\CSV Creator\CSV Creator\CSV Creator\bin\Debug\CSV Creator.exe
-C:\Users\ousleyjd1\Documents\GitHub\gcc-quadrocopter\gcc-quadrocopter\CSV Creator\CSV Creator\CSV Creator\bin\Debug\CSV Creator.pdb
-C:\Users\ousleyjd1\Documents\GitHub\gcc-quadrocopter\gcc-quadrocopter\CSV Creator\CSV Creator\CSV Creator\obj\Debug\CSV Creator.csprojResolveAssemblyReference.cache
-C:\Users\ousleyjd1\Documents\GitHub\gcc-quadrocopter\gcc-quadrocopter\CSV Creator\CSV Creator\CSV Creator\obj\Debug\CSV_Creator.Properties.Resources.resources
-C:\Users\ousleyjd1\Documents\GitHub\gcc-quadrocopter\gcc-quadrocopter\CSV Creator\CSV Creator\CSV Creator\obj\Debug\CSV Creator.csproj.GenerateResource.Cache
-C:\Users\ousleyjd1\Documents\GitHub\gcc-quadrocopter\gcc-quadrocopter\CSV Creator\CSV Creator\CSV Creator\obj\Debug\CSV Creator.exe
-C:\Users\ousleyjd1\Documents\GitHub\gcc-quadrocopter\gcc-quadrocopter\CSV Creator\CSV Creator\CSV Creator\obj\Debug\CSV Creator.pdb
-C:\Users\ousleyjd1\Documents\GitHub\gcc-quadrocopter\gcc-quadrocopter\CSV Creator\CSV Creator\CSV Creator\obj\Debug\CSV_Creator.Form1.resources

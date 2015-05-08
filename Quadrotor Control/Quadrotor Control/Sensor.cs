@@ -24,13 +24,12 @@ namespace Quadrotor_Control
         public Sensor(char type, System.Windows.Forms.Label readout, int varNum)
             : base(type+"", type, readout)
         {
-
             Data = new List<int>();
             axisNum = varNum;
             for (int i = 0; i < varNum; i++)
             {
                 Data.Add(0);
-                dataCollection.Add(name + axisNames[i]);
+                dataCollection.Add(new Series(name + axisNames[i]));
             }
         }
 
@@ -78,7 +77,7 @@ namespace Quadrotor_Control
 
         public void UpdateDisplay()
         {
-            //Output.Text = Data[0] + ", " + Data[1] + ", " + Data[2];
+            UpdateDisplay(Data[0] + ", " + Data[1] + ", " + Data[2]);
             /*string text = "";
             
 
@@ -89,11 +88,6 @@ namespace Quadrotor_Control
 
             if (text.Length == 0) Output.Text = errorText;
             else Output.Text = text.Substring(2);*/
-        }
-
-        public SensorEnumerator getEnumerator()
-        {
-            return new SensorEnumerator(dataCollection);
         }
 
         public void WriteToFile()
